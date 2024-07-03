@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: "Mulish", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+    color: white
+}
+
+form{
+    width: 24%;
+    background-color: #002E60;
+    padding: 50px;
+    border-radius: 20px;
+    margin-top: 150px;
+    width: 500px;
+    height: auto;
+}
+
+#titulo-login{
+    font-family: "Mulish", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+    color: white;
+    text-align: center;
+}
+
+.btn-primary{
+    background-color: #208c7d;
+    margin-left: 32px;
+}
+
+#logo-utez{
+    width: 230px;
+    height: auto;
+}

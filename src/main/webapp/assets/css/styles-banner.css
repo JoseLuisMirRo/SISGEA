@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+*{
+    font-family: "Mulish", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
+
+
+.navbar {
+    background-color:#002e60 !important;
+}
+
+.navbar-brand{
+    color: #009475 !important;
+    font-weight: 900 !important;
+    font-size:30px !important;
+}
+
+.btn-secondary{
+    background-color: #208c7d !important;
+    margin-left: 32px !important;
+}
+
+#nombreUsuario{
+    font-size: 18px;
+    color: white
+}
+
+#rolUsuario{
+    font-size: 18px;
+    font-weight: 800;
+    color: white
+}
+
+
+
+
