@@ -6,6 +6,33 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<style>
+    .modal-content {
+        background-color: #fff; /* Fondo blanco para el modal */
+        border-radius: 10px;
+    }
+    .modal-header {
+        background-color: #004d99; /* Azul oscuro para el encabezado del modal */
+        color: #fff; /* Texto blanco */
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    .modal-body {
+        color: #333; /* Texto gris oscuro */
+    }
+    .modal-footer {
+        background-color: #004d99; /* Azul oscuro para el pie de página del modal */
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+    .form-label {
+        color: #004d99; /* Azul oscuro para etiquetas */
+    }
+    .form-control {
+        border-color: #004d99; /* Borde azul oscuro para campos de entrada */
+    }
+</style>
+<!-- Modal -->
 <div class="modal fade" id="userRegisterModal" tabindex="-1" aria-labelledby="userRegisterTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -14,37 +41,58 @@
             </div>
             <div class="modal-body">
                 <form id="registerForm" action="<%=request.getContextPath()%>/userServlet" method="post">
-                    <label for="name">Nombre:</label>
-                    <input id="name" type="text" name="name" required/>
-                    <br><br>
-                    <label for="lastNameP">Apellido Paterno:</label>
-                    <input id="lastNameP" type="text" name="lastNameP" required/>
-                    <br><br>
-                    <label for="lastNameM">Apellido Materno:</label>
-                    <input id="lastNameM" type="text" name="lastNameM" required/>
-                    <br><br>
-                    <label for="email">Correo Institucional:</label>
-                    <input id="email" type="email" name="email" required/>
-                    <br><br>
-                    <label for="password">Contraseña:</label>
-                    <input id="password" type="password" name="password" required/>
-                    <br><br>
-                    <label for="confirmPassword">Confirmar contraseña:</label>
-                    <input id="confirmPassword" type="password" name="confirmPassword" required/>
-                    <br><br>
-                    <label for="role">Tipo de usuario:</label>
-                    <select id="role" name="role">
-                        <option value="Administrador">Administrador</option>
-                        <option value="Docente">Docente</option>
-                        <option value="Estudiante">Estudiante</option>
-                    </select>
-                    <input type="text" name="action" value="add" hidden/> <!--VALOR PARA INDICAR AL SERVLET QUE ES UN ACCION DE AÑADIR-->
+                    <div class="mb-3 row">
+                        <label for="name" class="col-sm-4 col-form-label form-label">Nombre:</label>
+                        <div class="col-sm-8">
+                            <input id="name" type="text" class="form-control" name="name" required />
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="lastNameP" class="col-sm-4 col-form-label form-label">Apellido Paterno:</label>
+                        <div class="col-sm-8">
+                            <input id="lastNameP" type="text" class="form-control" name="lastNameP" required />
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="lastNameM" class="col-sm-4 col-form-label form-label">Apellido Materno:</label>
+                        <div class="col-sm-8">
+                            <input id="lastNameM" type="text" class="form-control" name="lastNameM" required />
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="email" class="col-sm-4 col-form-label form-label">Correo Institucional:</label>
+                        <div class="col-sm-8">
+                            <input id="email" type="email" class="form-control" name="email" required />
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="password" class="col-sm-4 col-form-label form-label">Contraseña:</label>
+                        <div class="col-sm-8">
+                            <input id="password" type="password" class="form-control" name="password" required />
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="confirmPassword" class="col-sm-4 col-form-label form-label">Confirmar contraseña:</label>
+                        <div class="col-sm-8">
+                            <input id="confirmPassword" type="password" class="form-control" name="confirmPassword" required />
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="role" class="col-sm-4 col-form-label form-label">Tipo de usuario:</label>
+                        <div class="col-sm-8">
+                            <select id="role" class="form-select" name="role">
+                                <option value="Administrador">Administrador</option>
+                                <option value="Docente">Docente</option>
+                                <option value="Estudiante">Estudiante</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="text" name="action" value="add" hidden /> <!--VALOR PARA INDICAR AL SERVLET QUE ES UN ACCION DE AÑADIR-->
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button id="submitButtonAdd" type="button" class="btn btn-primary">Registrar</button>
-
+                <button id="submitButtonAdd" type="button" class="btn btn-success">Registrar</button>
             </div>
         </div>
     </div>
