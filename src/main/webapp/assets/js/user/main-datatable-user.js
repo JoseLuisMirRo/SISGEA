@@ -13,7 +13,7 @@ const dataTableOptions={
     ],
     pageLength:10,
     language:{
-        url:'//cdn.datatables.net/plug-ins/2.0.8/i18n/es-ES.json'
+        url:'https://cdn.datatables.net/plug-ins/2.0.8/i18n/es-ES.json'
     }
 };
 const initDataTable=async()=>{

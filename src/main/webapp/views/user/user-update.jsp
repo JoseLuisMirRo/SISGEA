@@ -68,8 +68,7 @@
             <div class="modal-body">
                 <form id="updateForm" action="<%=request.getContextPath()%>/userServlet" method="post">
                     <div class="form-group">
-                        <label for="updateUserId" class="form-label">ID:</label>
-                        <input id="updateUserId" type="text" name="updateUserId" class="form-control" readonly/>
+                        <input id="updateUserId" type="hidden" name="updateUserId" class="form-control" />
                     </div>
                     <div class="form-group">
                         <label for="updateName" class="form-label">Nombre:</label>

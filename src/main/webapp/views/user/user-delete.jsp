@@ -21,7 +21,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button id="submitButtonDelete" type="button" class="btn btn-primary">Eliminar</button>
+                <button id="submitButtonDelete" type="button" class="btn btn-success">Eliminar</button>
 
             </div>
         </div>
@@ -49,7 +49,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button id="submitButtonRevertDelete" type="button" class="btn btn-primary">Reactivar</button>
+                <button id="submitButtonRevertDelete" type="button" class="btn btn-success">Reactivar</button>
 
             </div>
         </div>
