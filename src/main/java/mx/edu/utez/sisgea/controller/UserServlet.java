@@ -9,7 +9,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import java.util.ArrayList;
+import java.util.List;
 import mx.edu.utez.sisgea.dao.UserDao;
+import mx.edu.utez.sisgea.model.RoleBean;
 import mx.edu.utez.sisgea.model.UserBean;
 
 @WebServlet("/userServlet")
@@ -30,13 +33,20 @@ import mx.edu.utez.sisgea.model.UserBean;
                 case "add":
                     System.out.println("AGREGANDO USUARIO");
                     try {
-                        userBean.setfirstName(req.getParameter("name"));
+                        userBean.setFirstName(req.getParameter("name"));
                         userBean.setLastNameP(req.getParameter("lastNameP"));
                         userBean.setLastNameM(req.getParameter("lastNameM"));
                         userBean.setEmail(req.getParameter("email"));
                         userBean.setPassword(req.getParameter("password"));
-                        userBean.setRole(req.getParameter("role"));
                         userBean.setStatus(true);
+
+                        //SOPORTE MULTIROL
+                        String[] roleIds = req.getParameterValues("roles");
+                        List<Integer> roles = new ArrayList<>();
+                        for (String roleId : roleIds) {
+                            roles.add(Integer.parseInt(roleId));
+                        }
+                        userBean.setRoles(roles);
 
                         userDao.insertData(userBean);
 
@@ -50,13 +60,19 @@ import mx.edu.utez.sisgea.model.UserBean;
 
                 case "update":
                     try{
-                        userBean.setID(req.getParameter("updateUserId"));
-                        userBean.setfirstName(req.getParameter("name"));
+                        userBean.setId(req.getParameter("updateUserId"));
+                        userBean.setFirstName(req.getParameter("name"));
                         userBean.setLastNameP(req.getParameter("lastNameP"));
                         userBean.setLastNameM(req.getParameter("lastNameM"));
                         userBean.setEmail(req.getParameter("email"));
                         userBean.setPassword(req.getParameter("password"));
-                        userBean.setRole(req.getParameter("role"));
+
+                        String[] roleIds = req.getParameterValues("roles");
+                        List<RoleBean> updateRoles = new ArrayList<>();
+                        for (String roleId : roleIds) {
+                            updateRoles.add(Integer.parseInt(roleId));
+                        }
+                        userBean.setRoles(updateRoles);
                         userDao.updateData(userBean);
                         resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=updateOk");
 

@@ -1,9 +1,11 @@
 package mx.edu.utez.sisgea.model;
+import java.util.List;
 
 public class LoginBean {
+    private int id;
     private String email;
     private String password;
-    private String role;
+    private List<String> roles;
     private String firstName;
     private String lastNameM;
     private String lastNameP;
@@ -13,6 +15,9 @@ public class LoginBean {
         this.password = password;
     }
 
+    public int getId() {
+        return id;
+    }
     public String getEmail() {
         return email;
     }
@@ -21,8 +26,8 @@ public class LoginBean {
         return password;
     }
 
-    public String getRole() {
-        return role;
+    public List<String> getRoles() {
+        return roles;
     }
 
     public String getFirstName() {
@@ -36,6 +41,9 @@ public class LoginBean {
     public String getLastNameP() {
         return lastNameP;
     }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -45,8 +53,8 @@ public class LoginBean {
         this.password = password;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 
     public void setFirstName(String firstName) {

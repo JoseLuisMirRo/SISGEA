@@ -81,9 +81,9 @@
                         <label for="role" class="col-sm-4 col-form-label form-label">Tipo de usuario:</label>
                         <div class="col-sm-8">
                             <select id="role" class="form-select" name="role">
-                                <option value="Administrador">Administrador</option>
-                                <option value="Docente">Docente</option>
-                                <option value="Estudiante">Estudiante</option>
+                                <option value="1">Administrador</option>
+                                <option value="2">Docente</option>
+                                <option value="3">Estudiante</option>
                             </select>
                         </div>
                     </div>
@@ -138,3 +138,4 @@
         }
     });
 </script>
+<script>alert('Hola mundo!');</script>

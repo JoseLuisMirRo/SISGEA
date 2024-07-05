@@ -1,5 +1,6 @@
 package mx.edu.utez.sisgea.dao;
 
+import mx.edu.utez.sisgea.model.RoleBean;
 import mx.edu.utez.sisgea.model.UserBean;
 import mx.edu.utez.sisgea.utility.DataBaseConnection;
 
@@ -11,20 +12,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao extends DataBaseConnection {
+    private RoleDao roleDao = new RoleDao();
 
     public int insertData(UserBean user) throws SQLException {
         try{
             boolean result=false;
-            CallableStatement cs = createConnection().prepareCall("INSERT INTO usuario (id,rol,correo_institucional,nombre,apellido_paterno,apellido_materno,password,estado) VALUES (?, ?, ?, ?, ?, ?, ?,?)");
-            cs.setString(1, generateID(user.getEmail()));
-            cs.setString(2, user.getRole());
-            cs.setString(3, user.getEmail());
-            cs.setString(4, user.getFirstName());
-            cs.setString(5, user.getLastNameP());
-            cs.setString(6, user.getLastNameM());
-            cs.setString(7, user.getPassword());
-            cs.setBoolean(8, user.isStatus());
+            CallableStatement cs = createConnection().prepareCall("INSERT INTO user (email,firstname,lastnamep,lastnamem,password,status) VALUES (?, ?, ?, ?, ?, ?)");
+            cs.setString(1, user.getEmail());
+            cs.setString(2, user.getFirstName());
+            cs.setString(3, user.getLastNameP());
+            cs.setString(4, user.getLastNameM());
+            cs.setString(5, user.getPassword());
+            cs.setBoolean(6, user.isStatus());
             result = cs.execute();
+
+            ResultSet generatedKeys = cs.getGeneratedKeys();
+            int userId = 0;
+            if (generatedKeys.next()) {
+                userId = generatedKeys.getInt(1);
+            }
+
+            for (RoleBean role : user.getRoles()) {
+
+            }
+
             cs.close();
             if(!result) return 1;
         } catch (Exception e){
@@ -43,15 +54,21 @@ public class UserDao extends DataBaseConnection {
             ResultSet rs = st.getResultSet();
 
             while (rs.next()) {
-                String role = rs.getString("rol");
-                String email = rs.getString("correo_institucional");
-                String firstname = rs.getString("nombre");
-                String lastNameP = rs.getString("apellido_paterno");
-                String lastNameM = rs.getString("apellido_materno");
+                String email = rs.getString("email");
+                String firstname = rs.getString("firstname");
+                String lastNameP = rs.getString("lastnamep");
+                String lastNameM = rs.getString("lastnamem");
                 String password = rs.getString("password");
-                boolean status = rs.getBoolean("estado");
-                user = new UserBean(role, email, firstname, lastNameP, lastNameM, password, status);
+                boolean status = rs.getBoolean("status");
+                user = new UserBean(id, null, email, firstname, lastNameP, lastNameM, password, status);
             }
+
+            List<Integer> roles = getUserRoles(id);
+            if (user != null){
+                user.setRoles(roles);
+            }
+            st.close();
+            rs.close();
         }catch (Exception e){
             throw new SQLException(e.getMessage());
         }
@@ -95,7 +112,7 @@ public class UserDao extends DataBaseConnection {
             cs.setString(4,user.getLastNameP());
             cs.setString(5,user.getLastNameM());
             cs.setString(6, user.getPassword());
-            cs.setString(7,user.getID());
+            cs.setString(7,user.getId());
             cs.execute();
             cs.close();
 
@@ -107,7 +124,7 @@ public class UserDao extends DataBaseConnection {
 
     public int deleteData(String id) throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("UPDATE usuario SET estado=? WHERE id=?");
+            CallableStatement cs = createConnection().prepareCall("UPDATE user SET status=? WHERE id=?");
             cs.setBoolean(1,false);
             cs.setString(2,id);
             cs.execute();
@@ -121,7 +138,7 @@ public class UserDao extends DataBaseConnection {
 
     public int revertDeleteData(String id) throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("UPDATE usuario SET estado=? WHERE id=?");
+            CallableStatement cs = createConnection().prepareCall("UPDATE user SET status=? WHERE id=?");
             cs.setBoolean(1,true);
             cs.setString(2,id);
             cs.execute();
@@ -131,12 +148,6 @@ public class UserDao extends DataBaseConnection {
             throw new SQLException(e.getMessage());
         }
         return 0;
-    }
-
-    private String generateID(String email) {
-        int atsignPosition = email.indexOf("@");
-        String id = email.substring(0, atsignPosition);
-        return id;
     }
 }
 

@@ -1,8 +1,9 @@
 package mx.edu.utez.sisgea.model;
+import java.util.List;
 
 public class UserBean {
-    private String ID;
-    private String role;
+    private String id;
+    private List<RoleBean> roles;
     private String email;
     private String firstName;
     private String lastNameP;
@@ -13,8 +14,8 @@ public class UserBean {
     public UserBean(){
     }
 
-    public UserBean(String role, String email, String firstName, String lastNameP, String lastNameM, String password, boolean status) {
-        this.role = role;
+    public UserBean(List<RoleBean> roles, String email, String firstName, String lastNameP, String lastNameM, String password, boolean status) {
+        this.roles = roles;
         this.email = email;
         this.firstName = firstName;
         this.lastNameP = lastNameP;
@@ -23,9 +24,9 @@ public class UserBean {
         this.status = status;
     }
 
-    public UserBean(String ID, String role, String email, String firstName, String lastNameP, String lastNameM, String password, boolean status) {
-        this.ID = ID;
-        this.role = role;
+    public UserBean(String id, List<RoleBean> roles, String email, String firstName, String lastNameP, String lastNameM, String password, boolean status) {
+        this.id = id;
+        this.roles = roles;
         this.email = email;
         this.firstName = firstName;
         this.lastNameP = lastNameP;
@@ -34,12 +35,12 @@ public class UserBean {
         this.status = status;
     }
 
-    public String getID() {
-        return ID;
+    public String getId() {
+        return id;
     }
 
-    public String getRole() {
-        return role;
+    public List<RoleBean> getRoles() {
+        return roles;
     }
 
     public String getEmail() {
@@ -66,19 +67,19 @@ public class UserBean {
         return status;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(List<RoleBean> roles) {
+        this.roles = roles;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public void setfirstName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
