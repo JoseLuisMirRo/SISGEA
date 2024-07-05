@@ -85,6 +85,8 @@ import mx.edu.utez.sisgea.model.UserBean;
                     } catch (Exception e) {
                         e.printStackTrace();
                         resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=revertDeleteError");
+                        //req.setAttribute("usuarios", lista);
+                        //req.getRequestDispatcher("jsp").forward(req, resp);
                     }
                     break;
 
