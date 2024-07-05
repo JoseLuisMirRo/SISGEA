@@ -35,7 +35,7 @@ import mx.edu.utez.sisgea.model.UserBean;
                         userBean.setLastNameM(req.getParameter("lastNameM"));
                         userBean.setEmail(req.getParameter("email"));
                         userBean.setPassword(req.getParameter("password"));
-                        userBean.setRole(req.getParameter("role"));
+                        userBean.setRole(1);
                         userBean.setStatus(true);
 
                         userDao.insertData(userBean);
@@ -56,7 +56,7 @@ import mx.edu.utez.sisgea.model.UserBean;
                         userBean.setLastNameM(req.getParameter("lastNameM"));
                         userBean.setEmail(req.getParameter("email"));
                         userBean.setPassword(req.getParameter("password"));
-                        userBean.setRole(req.getParameter("role"));
+                        userBean.setRole(1);
                         userDao.updateData(userBean);
                         resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=updateOk");
 

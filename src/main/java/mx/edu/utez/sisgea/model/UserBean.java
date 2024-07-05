@@ -2,7 +2,7 @@ package mx.edu.utez.sisgea.model;
 
 public class UserBean {
     private String ID;
-    private String role;
+    private int role;
     private String email;
     private String firstName;
     private String lastNameP;
@@ -13,7 +13,7 @@ public class UserBean {
     public UserBean(){
     }
 
-    public UserBean(String role, String email, String firstName, String lastNameP, String lastNameM, String password, boolean status) {
+    public UserBean(int role, String email, String firstName, String lastNameP, String lastNameM, String password, boolean status) {
         this.role = role;
         this.email = email;
         this.firstName = firstName;
@@ -23,7 +23,7 @@ public class UserBean {
         this.status = status;
     }
 
-    public UserBean(String ID, String role, String email, String firstName, String lastNameP, String lastNameM, String password, boolean status) {
+    public UserBean(String ID, int role, String email, String firstName, String lastNameP, String lastNameM, String password, boolean status) {
         this.ID = ID;
         this.role = role;
         this.email = email;
@@ -38,7 +38,7 @@ public class UserBean {
         return ID;
     }
 
-    public String getRole() {
+    public int getRole() {
         return role;
     }
 
@@ -70,7 +70,7 @@ public class UserBean {
         this.ID = ID;
     }
 
-    public void setRole(String role) {
+    public void setRole(int role) {
         this.role = role;
     }
 

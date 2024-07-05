@@ -14,7 +14,7 @@ public class DataBaseConnection {
         String driver = "com.mysql.jdbc.Driver";
 
         //Conexion con LocalHost
-        String url = "jdbc:mysql://localhost:3306/sisgea";
+        String url = "jdbc:mysql://localhost:3306/sisgea_dev";
         String user = "root";
         String password = "root";
 
