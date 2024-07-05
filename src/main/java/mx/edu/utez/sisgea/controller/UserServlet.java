@@ -46,6 +46,12 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                         //SOPORTE MULTIROL
                         String[] roleIds = req.getParameterValues("roles");
                         List<UserroleBean> roles = new ArrayList<>();
+
+                        if (rolesIds != null){
+                            for (String roleID : roleIds) {
+                                Userrolebean role =
+                            }
+                        }
                         for (String roleId : roleIds) {
 
                         }

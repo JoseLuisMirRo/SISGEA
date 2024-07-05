@@ -80,11 +80,18 @@
                     <div class="mb-3 row">
                         <label for="role" class="col-sm-4 col-form-label form-label">Tipo de usuario:</label>
                         <div class="col-sm-8">
-                            <select id="role" class="form-select" name="role">
-                                <option value="1">Administrador</option>
-                                <option value="2">Docente</option>
-                                <option value="3">Estudiante</option>
-                            </select>
+                            <label>
+                                <input type="checkbox" name="roles" value="1"> Administrador
+                            </label>
+                            <br>
+                            <label>
+                                <input type="checkbox" name="roles" value="2"> Docente
+                            </label>
+                            <br>
+                            <label>
+                                <input type="checkbox" name="roles" value="3"> Estudiante
+                            </label>
+                            <br>
                         </div>
                     </div>
                     <input type="text" name="action" value="add" hidden /> <!--VALOR PARA INDICAR AL SERVLET QUE ES UN ACCION DE AÑADIR-->
@@ -98,6 +105,26 @@
     </div>
 </div>
 <script>
+    //LIMITAMOS SELECCION DE CHECKBOXES
+    function limitCheckboxes(min, max) {
+        const checkboxes = document.querySelectorAll('input[name="roles"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const checkedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked);
+                if (checkedCheckboxes.length > max) {
+                    this.checked = false;
+                } else if (checkedCheckboxes.length < min) {
+                    checkboxes.forEach(cb => cb.disabled = false);
+                }
+            });
+        });
+    }
+
+    window.onload = function() {
+        limitCheckboxes(1, 2); // Permitir de 1 a 2 opciones
+    }
+
+
     document.getElementById("submitButtonAdd").addEventListener("click",function () {
         const form= document.getElementById("registerForm");
         const {name,lastNameP,lastNameM,email,password,confirmPassword,role}=form.elements;

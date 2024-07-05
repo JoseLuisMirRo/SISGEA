@@ -1004,21 +1004,21 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     <schema id="289" parent="1" name="mysql">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
-    <schema id="290" parent="1" name="niveles">
+    <schema id="290" parent="1" name="performance_schema">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
-    <schema id="291" parent="1" name="performance_schema">
+    <schema id="291" parent="1" name="sisgea">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
-    <schema id="292" parent="1" name="sisgea">
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
-    </schema>
-    <schema id="293" parent="1" name="sisgea_dev">
+    <schema id="292" parent="1" name="sisgea_dev">
       <Current>1</Current>
       <LastIntrospectionLocalTimestamp>2024-07-05.17:48:59</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb3_bin</CollationName>
     </schema>
-    <schema id="294" parent="1" name="sys">
+    <schema id="293" parent="1" name="sys">
+      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+    </schema>
+    <schema id="294" parent="1" name="niveles">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <user id="295" parent="1" name="mysql.infoschema">
@@ -1040,51 +1040,51 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Host>localhost</Host>
       <Plugin>caching_sha2_password</Plugin>
     </user>
-    <table id="299" parent="293" name="building">
+    <table id="299" parent="292" name="building">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb3_bin</CollationName>
     </table>
-    <table id="300" parent="293" name="class">
+    <table id="300" parent="292" name="class">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb3_bin</CollationName>
     </table>
-    <table id="301" parent="293" name="nonbusinessday">
+    <table id="301" parent="292" name="nonbusinessday">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb3_bin</CollationName>
     </table>
-    <table id="302" parent="293" name="program">
+    <table id="302" parent="292" name="program">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb3_bin</CollationName>
     </table>
-    <table id="303" parent="293" name="quarter">
+    <table id="303" parent="292" name="quarter">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb3_bin</CollationName>
     </table>
-    <table id="304" parent="293" name="reserve">
+    <table id="304" parent="292" name="reserve">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb3_bin</CollationName>
     </table>
-    <table id="305" parent="293" name="role">
+    <table id="305" parent="292" name="role">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb3_bin</CollationName>
     </table>
-    <table id="306" parent="293" name="room">
+    <table id="306" parent="292" name="room">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb3_bin</CollationName>
     </table>
-    <table id="307" parent="293" name="roomtype">
+    <table id="307" parent="292" name="roomtype">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb3_bin</CollationName>
     </table>
-    <table id="308" parent="293" name="schedule">
+    <table id="308" parent="292" name="schedule">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb3_bin</CollationName>
     </table>
-    <table id="309" parent="293" name="user">
+    <table id="309" parent="292" name="user">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb3_bin</CollationName>
     </table>
-    <table id="310" parent="293" name="userrole">
+    <table id="310" parent="292" name="userrole">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb3_bin</CollationName>
     </table>
