@@ -24,7 +24,7 @@ public class DataUsersServlet extends HttpServlet {
         //Borre usuario bean
         UserDao userDao = new UserDao();
 
-        List<UserBean> usersList = userDao.readAllData();
+        List<UserBean> usersList = userDao.readAllUsers();
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 

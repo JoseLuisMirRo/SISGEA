@@ -2,6 +2,7 @@ package mx.edu.utez.sisgea.dao;
 
 import mx.edu.utez.sisgea.model.RoleBean;
 import mx.edu.utez.sisgea.model.UserBean;
+import mx.edu.utez.sisgea.model.UserroleBean;
 import mx.edu.utez.sisgea.utility.DataBaseConnection;
 
 import java.sql.CallableStatement;
@@ -14,7 +15,7 @@ import java.util.List;
 public class UserDao extends DataBaseConnection {
     private RoleDao roleDao = new RoleDao();
 
-    public int insertData(UserBean user) throws SQLException {
+    public int insertUser(UserBean user) throws SQLException {
         try{
             boolean result=false;
             CallableStatement cs = createConnection().prepareCall("INSERT INTO user (email,firstname,lastnamep,lastnamem,password,status) VALUES (?, ?, ?, ?, ?, ?)");
@@ -26,16 +27,6 @@ public class UserDao extends DataBaseConnection {
             cs.setBoolean(6, user.isStatus());
             result = cs.execute();
 
-            ResultSet generatedKeys = cs.getGeneratedKeys();
-            int userId = 0;
-            if (generatedKeys.next()) {
-                userId = generatedKeys.getInt(1);
-            }
-
-            for (RoleBean role : user.getRoles()) {
-
-            }
-
             cs.close();
             if(!result) return 1;
         } catch (Exception e){
@@ -45,7 +36,7 @@ public class UserDao extends DataBaseConnection {
         return 0;
     }
 
-    public UserBean getData(String id) throws SQLException {
+    public UserBean getUser(String id) throws SQLException {
         UserBean user = null;
         try {
             PreparedStatement st = createConnection().prepareCall("SELECT * FROM usuario WHERE id=?");
@@ -62,10 +53,8 @@ public class UserDao extends DataBaseConnection {
                 boolean status = rs.getBoolean("status");
                 user = new UserBean(id, null, email, firstname, lastNameP, lastNameM, password, status);
             }
-
-            List<Integer> roles = getUserRoles(id);
-            if (user != null){
-                user.setRoles(roles);
+            for (RoleBean role : roleDao.getRoles()) {
+                List<UserroleBean
             }
             st.close();
             rs.close();
@@ -75,7 +64,7 @@ public class UserDao extends DataBaseConnection {
         return user;
     }
 
-    public List<UserBean> readAllData() {
+    public List<UserBean> readAllUsers() {
         try {
             List<UserBean> usersList = new ArrayList<UserBean>();
             CallableStatement cs = createConnection().prepareCall("SELECT * FROM usuario");
@@ -103,7 +92,7 @@ public class UserDao extends DataBaseConnection {
         return List.of();
     }
 
-    public void updateData(UserBean user) throws SQLException {
+    public void updateUser(UserBean user) throws SQLException {
         try{
             CallableStatement cs = createConnection().prepareCall("UPDATE usuario SET rol=?,correo_institucional=?,nombre=?,apellido_paterno=?,apellido_materno=?,password=? WHERE id=?");
             cs.setString(1,user.getRole());
@@ -122,7 +111,7 @@ public class UserDao extends DataBaseConnection {
         }
     }
 
-    public int deleteData(String id) throws SQLException {
+    public int deleteUser(String id) throws SQLException {
         try{
             CallableStatement cs = createConnection().prepareCall("UPDATE user SET status=? WHERE id=?");
             cs.setBoolean(1,false);
@@ -136,7 +125,7 @@ public class UserDao extends DataBaseConnection {
         return 0;
     }
 
-    public int revertDeleteData(String id) throws SQLException {
+    public int revertDeleteUser(String id) throws SQLException {
         try{
             CallableStatement cs = createConnection().prepareCall("UPDATE user SET status=? WHERE id=?");
             cs.setBoolean(1,true);

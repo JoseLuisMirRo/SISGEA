@@ -12,8 +12,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import mx.edu.utez.sisgea.dao.UserDao;
+import mx.edu.utez.sisgea.dao.UserroleDao;
 import mx.edu.utez.sisgea.model.RoleBean;
 import mx.edu.utez.sisgea.model.UserBean;
+import mx.edu.utez.sisgea.model.UserroleBean;
 
 @WebServlet("/userServlet")
     public class UserServlet extends HttpServlet {
@@ -26,6 +28,7 @@ import mx.edu.utez.sisgea.model.UserBean;
 
             UserBean userBean = new UserBean();
             UserDao userDao = new UserDao();
+            UserroleDao userRoleDao = new UserroleDao();
 
             String action = req.getParameter("action");
             System.out.println(action);
@@ -42,13 +45,13 @@ import mx.edu.utez.sisgea.model.UserBean;
 
                         //SOPORTE MULTIROL
                         String[] roleIds = req.getParameterValues("roles");
-                        List<Integer> roles = new ArrayList<>();
+                        List<UserroleBean> roles = new ArrayList<>();
                         for (String roleId : roleIds) {
-                            roles.add(Integer.parseInt(roleId));
+
                         }
                         userBean.setRoles(roles);
 
-                        userDao.insertData(userBean);
+                        userDao.insertUser(userBean);
 
                         resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=registerOk");
 
@@ -73,7 +76,7 @@ import mx.edu.utez.sisgea.model.UserBean;
                             updateRoles.add(Integer.parseInt(roleId));
                         }
                         userBean.setRoles(updateRoles);
-                        userDao.updateData(userBean);
+                        userDao.updateUser(userBean);
                         resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=updateOk");
 
                     }catch(Exception e) {
@@ -85,7 +88,7 @@ import mx.edu.utez.sisgea.model.UserBean;
                 case "delete": //Eliminacion logica
                     try{
                         id=(req.getParameter("deleteUserId"));
-                        userDao.deleteData(id);
+                        userDao.deleteUser(id);
                         resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=deleteOk");
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -96,7 +99,7 @@ import mx.edu.utez.sisgea.model.UserBean;
                 case "revertDelete": //Deshacer eliminacion logica
                     try{
                         id=(req.getParameter("revertDeleteUserId"));
-                        userDao.revertDeleteData(id);
+                        userDao.revertDeleteUser(id);
                         resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=revertDeleteOk");
                     } catch (Exception e) {
                         e.printStackTrace();
