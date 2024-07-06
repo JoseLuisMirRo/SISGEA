@@ -17,6 +17,7 @@ public class UserDao extends DataBaseConnection {
 
     public int insertUser(UserBean user) throws SQLException {
         try{
+            int userId=0;
             boolean result=false;
             CallableStatement cs = createConnection().prepareCall("INSERT INTO user (email,firstname,lastnamep,lastnamem,password,status) VALUES (?, ?, ?, ?, ?, ?)");
             cs.setString(1, user.getEmail());
@@ -27,8 +28,12 @@ public class UserDao extends DataBaseConnection {
             cs.setBoolean(6, user.isStatus());
             result = cs.execute();
 
+            ResultSet rs = cs.getGeneratedKeys();
+            while (rs.next()) {
+                userId = rs.getInt(1);
+            }
             cs.close();
-            if(!result) return 1;
+            if(!result) return userId;
         } catch (Exception e){
             e.printStackTrace();
             throw new SQLException(e.getMessage());
@@ -53,9 +58,6 @@ public class UserDao extends DataBaseConnection {
                 boolean status = rs.getBoolean("status");
                 user = new UserBean(id, null, email, firstname, lastNameP, lastNameM, password, status);
             }
-            for (RoleBean role : roleDao.getRoles()) {
-                List<UserroleBean
-            }
             st.close();
             rs.close();
         }catch (Exception e){
@@ -71,15 +73,14 @@ public class UserDao extends DataBaseConnection {
             cs.execute();
             ResultSet rs = cs.getResultSet();
             while(rs.next()) {
-                String id = rs.getString("id");
-                String role = rs.getString("rol");
+                int id = rs.getInt("id");
                 String email = rs.getString("correo_institucional");
                 String firstname = rs.getString("nombre");
                 String lastNameP = rs.getString("apellido_paterno");
                 String lastNameM = rs.getString("apellido_materno");
                 String password = rs.getString("password");
                 boolean status = rs.getBoolean("estado");
-                usersList.add(new UserBean(id,role,email,firstname,lastNameP,lastNameM,password,status));
+                usersList.add(new UserBean(id,email,firstname,lastNameP,lastNameM,password,status));
             }
             cs.close();
             rs.close();
@@ -101,7 +102,7 @@ public class UserDao extends DataBaseConnection {
             cs.setString(4,user.getLastNameP());
             cs.setString(5,user.getLastNameM());
             cs.setString(6, user.getPassword());
-            cs.setString(7,user.getId());
+            cs.setInt(7,user.getId());
             cs.execute();
             cs.close();
 

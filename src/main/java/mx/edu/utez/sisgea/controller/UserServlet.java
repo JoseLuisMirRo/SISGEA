@@ -43,21 +43,18 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                         userBean.setPassword(req.getParameter("password"));
                         userBean.setStatus(true);
 
+                        int createdId=userDao.insertUser(userBean);
+
                         //SOPORTE MULTIROL
-                        String[] roleIds = req.getParameterValues("roles");
-                        List<UserroleBean> roles = new ArrayList<>();
+                        String[] rolesIds = req.getParameterValues("roles");
 
                         if (rolesIds != null){
-                            for (String roleID : roleIds) {
-                                Userrolebean role =
+                            for (String roleID : rolesIds) {
+                                UserroleBean userrole = new UserroleBean(createdId, Integer.parseInt(roleID));
+                                userRoleDao.insertUserRole(userrole);
                             }
                         }
-                        for (String roleId : roleIds) {
 
-                        }
-                        userBean.setRoles(roles);
-
-                        userDao.insertUser(userBean);
 
                         resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=registerOk");
 
@@ -76,12 +73,7 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                         userBean.setEmail(req.getParameter("email"));
                         userBean.setPassword(req.getParameter("password"));
 
-                        String[] roleIds = req.getParameterValues("roles");
-                        List<RoleBean> updateRoles = new ArrayList<>();
-                        for (String roleId : roleIds) {
-                            updateRoles.add(Integer.parseInt(roleId));
-                        }
-                        userBean.setRoles(updateRoles);
+
                         userDao.updateUser(userBean);
                         resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=updateOk");
 

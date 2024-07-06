@@ -2,8 +2,7 @@ package mx.edu.utez.sisgea.model;
 import java.util.List;
 
 public class UserBean {
-    private String id;
-    private List<RoleBean> roles;
+    private int id;
     private String email;
     private String firstName;
     private String lastNameP;
@@ -14,8 +13,7 @@ public class UserBean {
     public UserBean(){
     }
 
-    public UserBean(List<RoleBean> roles, String email, String firstName, String lastNameP, String lastNameM, String password, boolean status) {
-        this.roles = roles;
+    public UserBean(String email, String firstName, String lastNameP, String lastNameM, String password, boolean status) {
         this.email = email;
         this.firstName = firstName;
         this.lastNameP = lastNameP;
@@ -24,9 +22,8 @@ public class UserBean {
         this.status = status;
     }
 
-    public UserBean(String id, List<RoleBean> roles, String email, String firstName, String lastNameP, String lastNameM, String password, boolean status) {
+    public UserBean(int id,String email, String firstName, String lastNameP, String lastNameM, String password, boolean status) {
         this.id = id;
-        this.roles = roles;
         this.email = email;
         this.firstName = firstName;
         this.lastNameP = lastNameP;
@@ -35,12 +32,8 @@ public class UserBean {
         this.status = status;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
-    }
-
-    public List<RoleBean> getRoles() {
-        return roles;
     }
 
     public String getEmail() {
@@ -67,12 +60,8 @@ public class UserBean {
         return status;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    public void setRoles(List<RoleBean> roles) {
-        this.roles = roles;
     }
 
     public void setEmail(String email) {

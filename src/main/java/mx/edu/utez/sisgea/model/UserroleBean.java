@@ -4,6 +4,9 @@ public class UserroleBean {
     private int user_id;
     private int role_id;
 
+    public UserroleBean() {
+    }
+
     public UserroleBean(int user_id, int role_id) {
         this.user_id = user_id;
         this.role_id = role_id;

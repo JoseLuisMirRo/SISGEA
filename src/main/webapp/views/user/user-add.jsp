@@ -81,15 +81,15 @@
                         <label for="role" class="col-sm-4 col-form-label form-label">Tipo de usuario:</label>
                         <div class="col-sm-8">
                             <label>
-                                <input type="checkbox" name="roles" value="1"> Administrador
+                                <input type="checkbox" name="roles" value=1> Administrador
                             </label>
                             <br>
                             <label>
-                                <input type="checkbox" name="roles" value="2"> Docente
+                                <input type="checkbox" name="roles" value=2> Docente
                             </label>
                             <br>
                             <label>
-                                <input type="checkbox" name="roles" value="3"> Estudiante
+                                <input type="checkbox" name="roles" value=3> Estudiante
                             </label>
                             <br>
                         </div>

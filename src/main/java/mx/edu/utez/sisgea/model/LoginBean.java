@@ -5,7 +5,7 @@ public class LoginBean {
     private int id;
     private String email;
     private String password;
-    private List<String> roles;
+    private List<RoleBean> roles;
     private String firstName;
     private String lastNameM;
     private String lastNameP;
@@ -26,7 +26,7 @@ public class LoginBean {
         return password;
     }
 
-    public List<String> getRoles() {
+    public List<RoleBean> getRoles() {
         return roles;
     }
 
@@ -53,7 +53,7 @@ public class LoginBean {
         this.password = password;
     }
 
-    public void setRoles(List<String> roles) {
+    public void setRoles(List<RoleBean> roles) {
         this.roles = roles;
     }
 

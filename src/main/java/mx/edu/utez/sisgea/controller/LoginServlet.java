@@ -7,10 +7,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import mx.edu.utez.sisgea.dao.LoginDao;
+import mx.edu.utez.sisgea.dao.UserroleDao;
 import mx.edu.utez.sisgea.model.LoginBean;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/loginForm")
 public class LoginServlet extends HttpServlet {
@@ -21,9 +24,12 @@ public class LoginServlet extends HttpServlet {
 
         PrintWriter out = resp.getWriter();
 
-        //Roles y rutas del sistema
-        String[] roles = {"Administrador", "Docente", "Alumno"};
+        //Rutas del sistema
         String[] routes = {"mainAdministrador", "mainDocente", "mainAlumno"};
+        //Roles del sistema
+        Integer[] roles = {1, 2, 3};
+
+
 
         String email = req.getParameter("inputEmail");
         String password = req.getParameter("inputPassword");
@@ -43,9 +49,14 @@ public class LoginServlet extends HttpServlet {
         try {
             LoginBean user = logDao.loginValidate(logBean);
             if (user != null) {
+                int userId=user.getId();
+                List<Integer> userRoles = new ArrayList<>();
+                UserroleDao userRoleDao = new UserroleDao();
+                userRoles = userRoleDao.getUserRoles(userId); //RECIBO LOS ROLES DISPONIBLES PARA EL USUARIO
+
                 //Verificacion de rol
                 for (int i = 0; i < roles.length; i++) {
-                    if (roles[i].equals(user.getRole())) {
+                    if (roles[i].equals(userRoles.get(0))) {
                         HttpSession activeSession = req.getSession();
                         activeSession.setAttribute("activeUser", user);
                         req.getRequestDispatcher("/views/" + routes[i] + ".jsp").forward(req, resp);

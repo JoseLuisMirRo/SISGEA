@@ -6,6 +6,8 @@ import mx.edu.utez.sisgea.utility.DataBaseConnection;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserroleDao extends DataBaseConnection {
     public void insertUserRole(UserroleBean userrole) throws SQLException {
@@ -19,15 +21,16 @@ public class UserroleDao extends DataBaseConnection {
             throw new SQLException(e.getMessage());
         }
     }
-    public void getUserRole(UserroleBean userrole) throws SQLException {
+    public List<Integer> getUserRoles(int id) throws SQLException {
         try{
+            List<Integer> roles = new ArrayList<Integer>();
             CallableStatement cs = createConnection().prepareCall("SELECT * FROM userrole WHERE user_id=?");
-            cs.setInt(1,userrole.getUser_id());
+            cs.setInt(1, id);
             ResultSet rs = cs.executeQuery();
             while (rs.next()){
-                userrole.setRole_id(rs.getInt("role_id"));
-                userrole.setUser_id(rs.getInt("user_id"));
+                roles.add((rs.getInt("role_id")));
             }
+            return roles;
         }catch (Exception e){
             e.printStackTrace();
             throw new SQLException(e.getMessage());

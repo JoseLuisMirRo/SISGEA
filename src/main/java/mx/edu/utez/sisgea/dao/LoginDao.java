@@ -1,6 +1,7 @@
 package mx.edu.utez.sisgea.dao;
 
 import mx.edu.utez.sisgea.model.LoginBean;
+import mx.edu.utez.sisgea.model.RoleBean;
 import mx.edu.utez.sisgea.utility.DataBaseConnection;
 
 import java.sql.CallableStatement;
@@ -17,30 +18,23 @@ public class LoginDao extends DataBaseConnection {
         ResultSet rs = null;
 
         try{
-            st = createConnection().prepareCall(
-                    "SELECT u.id, u.email, u.firstname, u.lastnamep, u.lastnamem, u.status, r.name AS rol" +
-                            "FROM user u JOIN userrole ur ON u.id=ur.user_id" +
-                            "JOIN role r ON ur.role_id = r.id" +
-                            "WHERE u.email = ? AND u.password =?");
+            boolean status = false;
+            int id;
+            List<RoleBean> roles = new ArrayList<RoleBean>();
+            st = createConnection().prepareCall("SELECT id, email, firstname,lastnamep,lastnamem,status FROM user WHERE email = ? AND password =?");
             st.setString(1, email);
             st.setString(2,password);
             st.execute();
             rs = st.getResultSet();
 
-            if(rs.next()){
+            if(rs.next()) {
+                id=rs.getInt("id");
                 login.setId(rs.getInt("id"));
                 login.setEmail(rs.getString("email"));
                 login.setFirstName(rs.getString("firstname"));
                 login.setLastNameP(rs.getString("lastnamep"));
                 login.setLastNameM(rs.getString("lastnamem"));
-                boolean status = rs.getBoolean("status");
-
-                List<String> roles = new ArrayList<String>();
-                do{
-                    roles.add(rs.getString("rol"));
-                } while (rs.next());
-                login.setRoles(roles);
-
+                status = rs.getBoolean("status");
                 st.close();
                 rs.close();
                 if(status) {
