@@ -5,7 +5,7 @@ public class LoginBean {
     private int id;
     private String email;
     private String password;
-    private List<RoleBean> roles;
+    private RoleBean role;
     private String firstName;
     private String lastNameM;
     private String lastNameP;
@@ -13,6 +13,14 @@ public class LoginBean {
     public LoginBean(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public RoleBean getRole() {
+        return role;
+    }
+
+    public void setRole(RoleBean role) {
+        this.role = role;
     }
 
     public int getId() {
@@ -24,10 +32,6 @@ public class LoginBean {
 
     public String getPassword() {
         return password;
-    }
-
-    public List<RoleBean> getRoles() {
-        return roles;
     }
 
     public String getFirstName() {
@@ -51,10 +55,6 @@ public class LoginBean {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setRoles(List<RoleBean> roles) {
-        this.roles = roles;
     }
 
     public void setFirstName(String firstName) {

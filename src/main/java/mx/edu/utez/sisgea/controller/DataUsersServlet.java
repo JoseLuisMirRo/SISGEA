@@ -34,7 +34,7 @@ public class DataUsersServlet extends HttpServlet {
             int id = userBean.getId(); //Pido ID del usuario
             UserroleDao userroleDao = new UserroleDao(); //Creo nuevo usserrole DAO que guarda id usuario y id role
             List<Integer> rolIds = userroleDao.getUserRoles(id); //Obtengo lista de roles de usuario a partir del id.
-            System.out.println(userroleDao.getUserRoles(id));
+          // System.out.println(userroleDao.getUserRoles(id));
             List<RoleBean> roles = new ArrayList<>(); // Creo una lista de roles vacía
 
             for (Integer roleId : rolIds) {

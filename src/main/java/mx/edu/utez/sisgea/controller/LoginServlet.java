@@ -7,8 +7,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import mx.edu.utez.sisgea.dao.LoginDao;
+import mx.edu.utez.sisgea.dao.RoleDao;
 import mx.edu.utez.sisgea.dao.UserroleDao;
 import mx.edu.utez.sisgea.model.LoginBean;
+import mx.edu.utez.sisgea.model.RoleBean;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -50,17 +52,37 @@ public class LoginServlet extends HttpServlet {
             LoginBean user = logDao.loginValidate(logBean);
             if (user != null) {
                 int userId=user.getId();
-                List<Integer> userRoles = new ArrayList<>();
                 UserroleDao userRoleDao = new UserroleDao();
-                userRoles = userRoleDao.getUserRoles(userId); //RECIBO LOS ROLES DISPONIBLES PARA EL USUARIO
+                List<Integer> userRoles = userRoleDao.getUserRoles(userId); //RECIBO LOS ID DE ROLES DISPONIBLES PARA EL USUARIO
+                System.out.println(userRoles.size());
+                List<RoleBean> roleBeansList = new ArrayList<>(); // Creo una lista de rolebeans vacía
+                for (Integer roleId : userRoles) {
+                    RoleDao roleDao = new RoleDao(); // Creo un nuevo RoleDao
+                    RoleBean role = roleDao.getRoleById(roleId); // Obtengo el objeto RoleBean a partir del id
+                    roleBeansList.add(role); // Agrego el objeto RoleBean a la lista de roles
+                }
 
-                //Verificacion de rol
-                for (int i = 0; i < roles.length; i++) {
-                    if (roles[i].equals(userRoles.get(0))) {
-                        System.out.println(userRoles.get(0)); //LINEA DE PRUEBA PARA VER EL ROL QUE ESTA TOMANDO EN 0
-                        HttpSession activeSession = req.getSession();
-                        activeSession.setAttribute("activeUser", user);
-                        req.getRequestDispatcher("/views/" + routes[i] + ".jsp").forward(req, resp);
+                if(userRoles.size()>1){
+                    req.setAttribute("userRoles",roleBeansList); //ENVIO CON LA PETICION LA LISTA DE roleBeans para el usuario
+                    req.getRequestDispatcher("/views/user/user-multirol.jsp").forward(req,resp);
+                    Integer result = (Integer) req.getAttribute("result");
+                    for (int i = 0; i < roles.length; i++) {
+                        if (roles[i].equals(result)) {
+                            user.setRole(roleBeansList.get(result));
+                            HttpSession activeSession = req.getSession();
+                            activeSession.setAttribute("activeUser", user);
+                            req.getRequestDispatcher("/views/" + routes[i] + ".jsp").forward(req, resp);
+                        }
+                    }
+                }
+                else {
+                    for (int j = 0; j < roles.length; j++) {
+                        if (roles[j].equals(userRoles.get(0))) {
+                            user.setRole(roleBeansList.get(0)); //LE PASO EL UNICO ROL EN LA POSICION CERO
+                            HttpSession activeSession = req.getSession();
+                            activeSession.setAttribute("activeUser", user);
+                            req.getRequestDispatcher("/views/" + routes[j] + ".jsp").forward(req, resp);
+                        }
                     }
                 }
             } else {
