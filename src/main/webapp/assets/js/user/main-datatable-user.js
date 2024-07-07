@@ -38,9 +38,10 @@ const listUsers=async()=>{
 
         let content= ``;
         users.forEach((user,index) => {
+            let rolesNames = user.roles.map(role => role.name).join(', ');
             content+=`
             <tr>
-                <td>${user.role}</td>
+                <td>${rolesNames}</td>
                 <td>${user.email}</td>
                 <td>${user.firstName}</td>
                 <td>${user.lastNameP}</td>
@@ -52,7 +53,7 @@ const listUsers=async()=>{
                     </i>
                     </td>
                 <td>
-                    <button class="btn btn-primary btn-sm edit-btn" data-id="${user.ID}" 
+                    <button class="btn btn-primary btn-sm edit-btn" data-id="${user.id}" 
                     data-role="${user.role}"
                     data-email="${user.email}"
                     data-firstname="${user.firstName}" //CUIDADO: NO USAR MAYUSCULAS EN DATA
@@ -62,7 +63,7 @@ const listUsers=async()=>{
                     ><i class="bi bi-pencil-square"></i></button>
                     
                     <button class="${user.status ? 'btn btn-danger btn-sm delete-btn' : 'btn btn-success btn-sm enable-btn'}"
-                    data-id="${user.ID}"
+                    data-id="${user.id}"
                     data-status="${user.status}"
                     ><i class="${user.status ? 'bi bi-trash3-fill' : 'bi bi-check-square-fill'}"></i></button>
                 </td>
