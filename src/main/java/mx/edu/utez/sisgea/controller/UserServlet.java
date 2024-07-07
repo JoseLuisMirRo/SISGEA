@@ -43,10 +43,10 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                         userBean.setPassword(req.getParameter("password"));
                         userBean.setStatus(true);
 
-                        int createdId=userDao.insertUser(userBean);
+                        int createdId=userDao.insertUser(userBean); //Al ejecutar la insercion del usuario, el metodo devuelve su ID
 
                         //SOPORTE MULTIROL
-                        String[] rolesIds = req.getParameterValues("roles");
+                        String[] rolesIds = req.getParameterValues("roles[]");
 
                         if (rolesIds != null){
                             for (String roleID : rolesIds) {

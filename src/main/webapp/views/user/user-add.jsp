@@ -78,18 +78,18 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="role" class="col-sm-4 col-form-label form-label">Tipo de usuario:</label>
+                        <label class="col-sm-4 col-form-label form-label">Tipo de usuario:</label>
                         <div class="col-sm-8">
                             <label>
-                                <input type="checkbox" name="roles" value=1> Administrador
+                                <input type="checkbox" name="roles[]" value='1'> Administrador
                             </label>
                             <br>
                             <label>
-                                <input type="checkbox" name="roles" value=2> Docente
+                                <input type="checkbox" name="roles[]" value='2'> Docente
                             </label>
                             <br>
                             <label>
-                                <input type="checkbox" name="roles" value=3> Estudiante
+                                <input type="checkbox" name="roles[]" value='3'> Estudiante
                             </label>
                             <br>
                         </div>
@@ -127,14 +127,30 @@
 
     document.getElementById("submitButtonAdd").addEventListener("click",function () {
         const form= document.getElementById("registerForm");
-        const {name,lastNameP,lastNameM,email,password,confirmPassword,role}=form.elements;
-
-        if(name.value && lastNameP.value && lastNameM.value && email.value && password.value && confirmPassword.value && role.value) {
+        const {name,lastNameP,lastNameM,email,password,confirmPassword}=form.elements;
+        const roles = form.querySelectorAll('input[name="roles[]"]');
+        let rolesSelected = false;
+        for (let role of roles){
+            if (role.checked){
+                rolesSelected=true;
+                break;
+            }
+        }
+        if (name.value && lastNameP.value && lastNameM.value && email.value && password.value && confirmPassword.value) {
             if (email.value.substring(email.value.lastIndexOf("@") + 1) === "utez.edu.mx") {
                 if (password.value === confirmPassword.value) {
-                    form.submit();
-                }
-                else {
+                    if(rolesSelected) {
+                        form.submit();
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Debes seleccionar al menos un rol",
+                            confirmButtonText: "Revisar",
+                            confirmButtonColor: "#dc3545",
+                        });
+                    }
+                } else {
                     Swal.fire({
                         icon: "error",
                         title: "Error",
@@ -143,8 +159,7 @@
                         confirmButtonColor: "#dc3545",
                     });
                 }
-            }
-            else {
+            } else {
                 Swal.fire({
                     icon: "error",
                     title: "Error, ",
@@ -153,8 +168,7 @@
                     confirmButtonColor: "#dc3545",
                 });
             }
-        }
-        else {
+        } else {
             Swal.fire({
                 icon: "error",
                 title: "Error",
@@ -165,4 +179,3 @@
         }
     });
 </script>
-<script>alert('Hola mundo!');</script>

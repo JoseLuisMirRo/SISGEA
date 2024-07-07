@@ -15,7 +15,7 @@ public class UserroleDao extends DataBaseConnection {
             CallableStatement cs = createConnection().prepareCall("INSERT INTO userrole VALUES (?,?)");
             cs.setInt(1,userrole.getUser_id());
             cs.setInt(2,userrole.getRole_id());
-            ResultSet rs = cs.executeQuery();
+            cs.execute();
         } catch (Exception e){
             e.printStackTrace();
             throw new SQLException(e.getMessage());
