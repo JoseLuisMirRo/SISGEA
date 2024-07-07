@@ -31,4 +31,24 @@ public class RoleDao extends DataBaseConnection {
         }
         return roles;
     }
+
+    public RoleBean getRoleById(int id) {
+        RoleBean role = null;
+        try {
+            CallableStatement cs = createConnection().prepareCall("SELECT * FROM role WHERE id = ?");
+            cs.setInt(1, id);
+            ResultSet rs = cs.executeQuery();
+
+            while (rs.next()) {
+                int idE = rs.getInt("id");
+                String name = rs.getString("name");
+                role = new RoleBean(idE, name);
+            }
+            cs.close();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return role;
+    }
 }

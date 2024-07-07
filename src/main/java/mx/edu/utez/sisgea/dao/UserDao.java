@@ -1,6 +1,5 @@
 package mx.edu.utez.sisgea.dao;
 
-import mx.edu.utez.sisgea.model.RoleBean;
 import mx.edu.utez.sisgea.model.UserBean;
 import mx.edu.utez.sisgea.model.UserroleBean;
 import mx.edu.utez.sisgea.utility.DataBaseConnection;

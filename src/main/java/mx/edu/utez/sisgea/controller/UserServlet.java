@@ -9,11 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import java.util.ArrayList;
-import java.util.List;
 import mx.edu.utez.sisgea.dao.UserDao;
 import mx.edu.utez.sisgea.dao.UserroleDao;
-import mx.edu.utez.sisgea.model.RoleBean;
 import mx.edu.utez.sisgea.model.UserBean;
 import mx.edu.utez.sisgea.model.UserroleBean;
 

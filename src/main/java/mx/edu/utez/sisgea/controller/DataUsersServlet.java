@@ -7,11 +7,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import mx.edu.utez.sisgea.dao.RoleDao;
 import mx.edu.utez.sisgea.dao.UserDao;
+import mx.edu.utez.sisgea.dao.UserroleDao;
+import mx.edu.utez.sisgea.model.RoleBean;
 import mx.edu.utez.sisgea.model.UserBean;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/data/users")
@@ -26,8 +30,22 @@ public class DataUsersServlet extends HttpServlet {
 
         List<UserBean> usersList = userDao.readAllUsers();
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        for (UserBean userBean : usersList) {
+            int id = userBean.getId(); //Pido ID del usuario
+            UserroleDao userroleDao = new UserroleDao(); //Creo nuevo usserrole DAO que guarda id usuario y id role
+            List<Integer> rolIds = userroleDao.getUserRoles(id); //Obtengo lista de roles de usuario a partir del id.
+            System.out.println(userroleDao.getUserRoles(id));
+            List<RoleBean> roles = new ArrayList<>(); // Creo una lista de roles vacía
 
+            for (Integer roleId : rolIds) {
+            RoleDao roleDao = new RoleDao(); // Creo un nuevo RoleDao
+            RoleBean role = roleDao.getRoleById(roleId); // Obtengo el objeto RoleBean a partir del id
+            roles.add(role); // Agrego el objeto RoleBean a la lista de roles
+            }
+            userBean.setRoles(roles); // Agrego la lista de roles al objeto UserBean
+        }
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonArray = gson.toJson(usersList);
         //System.out.println("Número de usuarios en la lista: " + usersList.size());
 

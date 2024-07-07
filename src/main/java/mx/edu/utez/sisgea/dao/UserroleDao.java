@@ -21,7 +21,7 @@ public class UserroleDao extends DataBaseConnection {
             throw new SQLException(e.getMessage());
         }
     }
-    public List<Integer> getUserRoles(int id) throws SQLException {
+    public List<Integer> getUserRoles(int id) {
         try{
             List<Integer> roles = new ArrayList<Integer>();
             CallableStatement cs = createConnection().prepareCall("SELECT * FROM userrole WHERE user_id=?");
@@ -33,7 +33,7 @@ public class UserroleDao extends DataBaseConnection {
             return roles;
         }catch (Exception e){
             e.printStackTrace();
-            throw new SQLException(e.getMessage());
+            return null;
         }
     }
 

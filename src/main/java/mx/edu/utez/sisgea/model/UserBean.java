@@ -9,6 +9,7 @@ public class UserBean {
     private String lastNameM;
     private String password;
     private boolean status;
+    private List<RoleBean> roles; //AGREGADO POR QUE EN ALGUNAS OCASIONES ES MAS CONVENIENTE CONSULTAR AL USUARIO SIN ROLES, Y EN OTRAS CON ROLES
 
     public UserBean(){
     }
@@ -30,6 +31,14 @@ public class UserBean {
         this.lastNameM = lastNameM;
         this.password = password;
         this.status = status;
+    }
+
+    public List<RoleBean> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleBean> roles) {
+        this.roles = roles;
     }
 
     public int getId() {
