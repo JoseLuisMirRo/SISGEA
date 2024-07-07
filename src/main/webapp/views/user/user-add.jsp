@@ -105,26 +105,6 @@
     </div>
 </div>
 <script>
-    //LIMITAMOS SELECCION DE CHECKBOXES
-    function limitCheckboxes(min, max) {
-        const checkboxes = document.querySelectorAll('input[name="roles"]');
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const checkedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked);
-                if (checkedCheckboxes.length > max) {
-                    this.checked = false;
-                } else if (checkedCheckboxes.length < min) {
-                    checkboxes.forEach(cb => cb.disabled = false);
-                }
-            });
-        });
-    }
-
-    window.onload = function() {
-        limitCheckboxes(1, 2); // Permitir de 1 a 2 opciones
-    }
-
-
     document.getElementById("submitButtonAdd").addEventListener("click",function () {
         const form= document.getElementById("registerForm");
         const {name,lastNameP,lastNameM,email,password,confirmPassword}=form.elements;

@@ -123,34 +123,32 @@
 </div>
 
 <script>
-    //LIMITAMOS SELECCION DE CHECKBOXES
-    function limitCheckboxes(min, max) {
-        const checkboxes = document.querySelectorAll('input[name="roles"]');
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const checkedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked);
-                if (checkedCheckboxes.length > max) {
-                    this.checked = false;
-                } else if (checkedCheckboxes.length < min) {
-                    checkboxes.forEach(cb => cb.disabled = false);
-                }
-            });
-        });
-    }
-
-    window.onload = function() {
-        limitCheckboxes(1, 2); // Permitir de 1 a 2 opciones
-    }
-
-
     document.getElementById("submitButtonUpdate").addEventListener("click",function () {
         const form= document.getElementById("updateForm");
         const {updateName,updateLastNameP,updateLastNameM,updateEmail,updatePassword,updateConfirmPassword}=form.elements;
+        const roles = form.querySelectorAll('input[name="updateRoles[]"]');
+        let rolesSelected = false;
+        for (let role of roles){
+            if (role.checked){
+                rolesSelected=true;
+                break;
+            }
+        }
 
         if(updateName.value && updateLastNameP.value && updateLastNameM.value && updateEmail.value && updatePassword.value && updateConfirmPassword.value) {
             if (updateEmail.value.substring(updateEmail.value.lastIndexOf("@") + 1) === "utez.edu.mx") {
                 if (updatePassword.value === updateConfirmPassword.value) {
-                    form.submit();
+                    if(rolesSelected){
+                        form.submit();
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Debes seleccionar al menos un rol",
+                            confirmButtonText: "Revisar",
+                            confirmButtonColor: "#dc3545",
+                        });
+                    }
                 }
                 else {
                     Swal.fire({
