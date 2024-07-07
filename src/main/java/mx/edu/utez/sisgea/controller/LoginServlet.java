@@ -62,20 +62,14 @@ public class LoginServlet extends HttpServlet {
                     roleBeansList.add(role); // Agrego el objeto RoleBean a la lista de roles
                 }
 
-                if(userRoles.size()>1){
+                if(userRoles.size()>1){ //Si un usuario tiene mas de un rol
                     req.setAttribute("userRoles",roleBeansList); //ENVIO CON LA PETICION LA LISTA DE roleBeans para el usuario
-                    req.getRequestDispatcher("/views/user/user-multirol.jsp").forward(req,resp);
+                    HttpSession activeSession = req.getSession();
+                    activeSession.setAttribute("user",user); //ENVIO EL USUARIO
+                    req.getRequestDispatcher("/views/user/user-multirole.jsp").forward(req,resp);
                     Integer result = (Integer) req.getAttribute("result");
-                    for (int i = 0; i < roles.length; i++) {
-                        if (roles[i].equals(result)) {
-                            user.setRole(roleBeansList.get(result));
-                            HttpSession activeSession = req.getSession();
-                            activeSession.setAttribute("activeUser", user);
-                            req.getRequestDispatcher("/views/" + routes[i] + ".jsp").forward(req, resp);
-                        }
-                    }
                 }
-                else {
+                else { //Si solo tiene un rol
                     for (int j = 0; j < roles.length; j++) {
                         if (roles[j].equals(userRoles.get(0))) {
                             user.setRole(roleBeansList.get(0)); //LE PASO EL UNICO ROL EN LA POSICION CERO
