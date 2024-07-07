@@ -32,7 +32,7 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <label id="rolUsuario"><%=(user.getRole())%></label>
+                            <label id="rolUsuario"><%=(user.getFirstName())%></label>
                         </div>
                     </div>
                 </li>

@@ -57,6 +57,7 @@ public class LoginServlet extends HttpServlet {
                 //Verificacion de rol
                 for (int i = 0; i < roles.length; i++) {
                     if (roles[i].equals(userRoles.get(0))) {
+                        System.out.println(userRoles.get(0)); //LINEA DE PRUEBA PARA VER EL ROL QUE ESTA TOMANDO EN 0
                         HttpSession activeSession = req.getSession();
                         activeSession.setAttribute("activeUser", user);
                         req.getRequestDispatcher("/views/" + routes[i] + ".jsp").forward(req, resp);

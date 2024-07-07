@@ -19,7 +19,7 @@ import mx.edu.utez.sisgea.model.UserroleBean;
 
 @WebServlet("/userServlet")
     public class UserServlet extends HttpServlet {
-        public String id;
+        public int id;
         //PENDIENTE AGREGAR LOGGERS EN CATCH
         @Override
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -54,8 +54,6 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                                 userRoleDao.insertUserRole(userrole);
                             }
                         }
-
-
                         resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=registerOk");
 
                     } catch (Exception e) {
@@ -66,7 +64,7 @@ import mx.edu.utez.sisgea.model.UserroleBean;
 
                 case "update":
                     try{
-                        userBean.setId(req.getParameter("updateUserId"));
+                        userBean.setId(Integer.parseInt(req.getParameter("updateUserId")));
                         userBean.setFirstName(req.getParameter("name"));
                         userBean.setLastNameP(req.getParameter("lastNameP"));
                         userBean.setLastNameM(req.getParameter("lastNameM"));
@@ -85,7 +83,7 @@ import mx.edu.utez.sisgea.model.UserroleBean;
 
                 case "delete": //Eliminacion logica
                     try{
-                        id=(req.getParameter("deleteUserId"));
+                        id=(Integer.parseInt(req.getParameter("deleteUserId")));
                         userDao.deleteUser(id);
                         resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=deleteOk");
                     } catch (Exception e) {
@@ -96,7 +94,7 @@ import mx.edu.utez.sisgea.model.UserroleBean;
 
                 case "revertDelete": //Deshacer eliminacion logica
                     try{
-                        id=(req.getParameter("revertDeleteUserId"));
+                        id=(Integer.parseInt(req.getParameter("revertDeleteUserId")));
                         userDao.revertDeleteUser(id);
                         resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=revertDeleteOk");
                     } catch (Exception e) {

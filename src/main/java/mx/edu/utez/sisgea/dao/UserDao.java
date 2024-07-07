@@ -56,7 +56,7 @@ public class UserDao extends DataBaseConnection {
                 String lastNameM = rs.getString("lastnamem");
                 String password = rs.getString("password");
                 boolean status = rs.getBoolean("status");
-                user = new UserBean(id, null, email, firstname, lastNameP, lastNameM, password, status);
+                user = new UserBean(email, firstname, lastNameP, lastNameM, password, status);
             }
             st.close();
             rs.close();
@@ -69,17 +69,17 @@ public class UserDao extends DataBaseConnection {
     public List<UserBean> readAllUsers() {
         try {
             List<UserBean> usersList = new ArrayList<UserBean>();
-            CallableStatement cs = createConnection().prepareCall("SELECT * FROM usuario");
+            CallableStatement cs = createConnection().prepareCall("SELECT * FROM user");
             cs.execute();
             ResultSet rs = cs.getResultSet();
             while(rs.next()) {
                 int id = rs.getInt("id");
-                String email = rs.getString("correo_institucional");
-                String firstname = rs.getString("nombre");
-                String lastNameP = rs.getString("apellido_paterno");
-                String lastNameM = rs.getString("apellido_materno");
+                String email = rs.getString("email");
+                String firstname = rs.getString("firstname");
+                String lastNameP = rs.getString("lastnamep");
+                String lastNameM = rs.getString("lastnamem");
                 String password = rs.getString("password");
-                boolean status = rs.getBoolean("estado");
+                boolean status = rs.getBoolean("status");
                 usersList.add(new UserBean(id,email,firstname,lastNameP,lastNameM,password,status));
             }
             cs.close();
@@ -95,14 +95,13 @@ public class UserDao extends DataBaseConnection {
 
     public void updateUser(UserBean user) throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("UPDATE usuario SET rol=?,correo_institucional=?,nombre=?,apellido_paterno=?,apellido_materno=?,password=? WHERE id=?");
-            cs.setString(1,user.getRole());
-            cs.setString(2, user.getEmail());
-            cs.setString(3,user.getFirstName());
-            cs.setString(4,user.getLastNameP());
-            cs.setString(5,user.getLastNameM());
-            cs.setString(6, user.getPassword());
-            cs.setInt(7,user.getId());
+            CallableStatement cs = createConnection().prepareCall("UPDATE user SET email=?,firtsname=?,lastnamep=?,lastnamem=?,password=? WHERE id=?");
+            cs.setString(1, user.getEmail());
+            cs.setString(2,user.getFirstName());
+            cs.setString(3,user.getLastNameP());
+            cs.setString(4,user.getLastNameM());
+            cs.setString(5, user.getPassword());
+            cs.setInt(6,user.getId());
             cs.execute();
             cs.close();
 
@@ -112,11 +111,11 @@ public class UserDao extends DataBaseConnection {
         }
     }
 
-    public int deleteUser(String id) throws SQLException {
+    public int deleteUser(int id) throws SQLException {
         try{
             CallableStatement cs = createConnection().prepareCall("UPDATE user SET status=? WHERE id=?");
             cs.setBoolean(1,false);
-            cs.setString(2,id);
+            cs.setInt(2,id);
             cs.execute();
             cs.close();
         } catch (Exception e) {
@@ -126,11 +125,11 @@ public class UserDao extends DataBaseConnection {
         return 0;
     }
 
-    public int revertDeleteUser(String id) throws SQLException {
+    public int revertDeleteUser(int id) throws SQLException {
         try{
             CallableStatement cs = createConnection().prepareCall("UPDATE user SET status=? WHERE id=?");
             cs.setBoolean(1,true);
-            cs.setString(2,id);
+            cs.setInt(2,id);
             cs.execute();
             cs.close();
         } catch (Exception e) {
