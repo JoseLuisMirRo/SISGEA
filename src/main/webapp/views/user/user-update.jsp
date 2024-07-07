@@ -94,13 +94,22 @@
                         <label for="updateConfirmPassword" class="form-label">Confirmar contraseña:</label>
                         <input id="updateConfirmPassword" type="password" name="confirmPassword" class="form-control" required/>
                     </div>
-                    <div class="form-group">
-                        <label for="updateRole" class="form-label">Tipo de usuario:</label>
-                        <select id="updateRole" name="role" class="form-select">
-                            <option value="Administrador">Administrador</option>
-                            <option value="Docente">Docente</option>
-                            <option value="Estudiante">Estudiante</option>
-                        </select>
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label form-label">Tipo de usuario:</label>
+                        <div class="col-sm-8">
+                            <label>
+                                <input type="checkbox" name="updateRoles[]" value='1'> Administrador
+                            </label>
+                            <br>
+                            <label>
+                                <input type="checkbox" name="updateRoles[]" value='2'> Docente
+                            </label>
+                            <br>
+                            <label>
+                                <input type="checkbox" name="updateRoles[]" value='3'> Estudiante
+                            </label>
+                            <br>
+                        </div>
                     </div>
                     <input type="text" name="action" value="update" hidden/> <!--VALOR PARA INDICAR AL SERVLET QUE ES UN ACCION DE UPDATE-->
                 </form>
@@ -114,6 +123,26 @@
 </div>
 
 <script>
+    //LIMITAMOS SELECCION DE CHECKBOXES
+    function limitCheckboxes(min, max) {
+        const checkboxes = document.querySelectorAll('input[name="roles"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const checkedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked);
+                if (checkedCheckboxes.length > max) {
+                    this.checked = false;
+                } else if (checkedCheckboxes.length < min) {
+                    checkboxes.forEach(cb => cb.disabled = false);
+                }
+            });
+        });
+    }
+
+    window.onload = function() {
+        limitCheckboxes(1, 2); // Permitir de 1 a 2 opciones
+    }
+
+
     document.getElementById("submitButtonUpdate").addEventListener("click",function () {
         const form= document.getElementById("updateForm");
         const {updateName,updateLastNameP,updateLastNameM,updateEmail,updatePassword,updateConfirmPassword,updateRole}=form.elements;
