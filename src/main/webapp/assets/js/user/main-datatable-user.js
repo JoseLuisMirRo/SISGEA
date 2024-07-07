@@ -55,6 +55,7 @@ const listUsers=async()=>{
                     </td>
                 <td>
                     <button class="btn btn-primary btn-sm edit-btn" data-id="${user.id}" 
+                    data-id="${user.id}"
                     data-email="${user.email}"
                     data-firstname="${user.firstName}" //CUIDADO: NO USAR MAYUSCULAS EN DATA
                     data-lastnamep="${user.lastNameP}"

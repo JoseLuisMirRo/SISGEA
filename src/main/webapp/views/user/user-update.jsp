@@ -145,9 +145,9 @@
 
     document.getElementById("submitButtonUpdate").addEventListener("click",function () {
         const form= document.getElementById("updateForm");
-        const {updateName,updateLastNameP,updateLastNameM,updateEmail,updatePassword,updateConfirmPassword,updateRole}=form.elements;
+        const {updateName,updateLastNameP,updateLastNameM,updateEmail,updatePassword,updateConfirmPassword}=form.elements;
 
-        if(updateName.value && updateLastNameP.value && updateLastNameM.value && updateEmail.value && updatePassword.value && updateConfirmPassword.value && updateRole.value) {
+        if(updateName.value && updateLastNameP.value && updateLastNameM.value && updateEmail.value && updatePassword.value && updateConfirmPassword.value) {
             if (updateEmail.value.substring(updateEmail.value.lastIndexOf("@") + 1) === "utez.edu.mx") {
                 if (updatePassword.value === updateConfirmPassword.value) {
                     form.submit();

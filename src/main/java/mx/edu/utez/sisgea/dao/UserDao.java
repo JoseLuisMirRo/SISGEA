@@ -94,7 +94,7 @@ public class UserDao extends DataBaseConnection {
 
     public void updateUser(UserBean user) throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("UPDATE user SET email=?,firtsname=?,lastnamep=?,lastnamem=?,password=? WHERE id=?");
+            CallableStatement cs = createConnection().prepareCall("UPDATE user SET email=?,firstname=?,lastnamep=?,lastnamem=?,password=? WHERE id=?");
             cs.setString(1, user.getEmail());
             cs.setString(2,user.getFirstName());
             cs.setString(3,user.getLastNameP());

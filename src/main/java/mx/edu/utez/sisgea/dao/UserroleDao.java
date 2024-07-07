@@ -36,6 +36,16 @@ public class UserroleDao extends DataBaseConnection {
             return null;
         }
     }
+    public void deleteUserRoles(UserroleBean userrole) {
+        try{
+            CallableStatement cs = createConnection().prepareCall("DELETE FROM userrole WHERE user_id=? AND role_id=?");
+            cs.setInt(1,userrole.getUser_id());
+            cs.setInt(2,userrole.getRole_id());
+            cs.execute();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
 
 

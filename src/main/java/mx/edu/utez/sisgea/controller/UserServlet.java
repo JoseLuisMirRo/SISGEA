@@ -8,6 +8,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import mx.edu.utez.sisgea.dao.UserDao;
 import mx.edu.utez.sisgea.dao.UserroleDao;
@@ -67,9 +70,31 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                         userBean.setLastNameM(req.getParameter("lastNameM"));
                         userBean.setEmail(req.getParameter("email"));
                         userBean.setPassword(req.getParameter("password"));
-
-
                         userDao.updateUser(userBean);
+
+                        //SOPORTE MULTIROL
+                        String[] updateRolesIds = req.getParameterValues("updateRoles[]");
+                        List<Integer> currentRolesIds = userRoleDao.getUserRoles(userBean.getId());
+
+                        List<Integer> updateRolesIdsList = Arrays.stream(updateRolesIds).map(Integer::parseInt).collect(Collectors.toList());
+
+                        if(!(updateRolesIdsList.equals(currentRolesIds))){ //COMPARO SI LAS LISTAS DE ROLES NO SON IGUALES
+                            if(updateRolesIdsList.size()>currentRolesIds.size()){ //EN CASO DE QUE SE AGREGUE UN ROL
+                                for(Integer ur : updateRolesIdsList){ //RECORRO LA LISTA DE IDS ACTUALIZADOS
+                                    if(!currentRolesIds.contains(ur)){ //BUSCO LOS IDS QUE NO ESTAN EN LA LISTA SIN ACTUALIZAR
+                                        userRoleDao.insertUserRole(new UserroleBean(userBean.getId(),ur)); //ASIGNO EL ID DE ROL NUEVO
+                                    }
+                                }
+                            }
+                            else{
+                                for(Integer cr : currentRolesIds){ //EN CASO DE QUE SE ELIMINE UN ROL RECORRO LA LISTA DE IDS ANTIGUOS
+                                    if(!updateRolesIdsList.contains(cr)){ //BUSCO LOS IDS QUE NO ESTÉN EN LA LISTA ACTUALIZADA
+                                        userRoleDao.deleteUserRoles(new UserroleBean(userBean.getId(),cr)); //ELIMINO ESOS IDS
+                                    }
+                                }
+                            }
+                        }
+
                         resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=updateOk");
 
                     }catch(Exception e) {
