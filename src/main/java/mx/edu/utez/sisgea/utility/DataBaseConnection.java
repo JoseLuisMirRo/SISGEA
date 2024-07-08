@@ -20,7 +20,8 @@ public class DataBaseConnection {
 
         System.setProperty(driver,"");
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            //Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
         }catch(Exception e){
             System.out.println(e);
         }
