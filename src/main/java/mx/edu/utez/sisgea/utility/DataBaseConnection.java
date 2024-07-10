@@ -14,13 +14,14 @@ public class DataBaseConnection {
         String driver = "com.mysql.jdbc.Driver";
 
         //Conexion con LocalHost
-        String url = "jdbc:mysql://localhost:3306/sisgea";
+        String url = "jdbc:mysql://localhost:3306/sisgea_dev";
         String user = "root";
         String password = "root";
 
         System.setProperty(driver,"");
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            //Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
         }catch(Exception e){
             System.out.println(e);
         }

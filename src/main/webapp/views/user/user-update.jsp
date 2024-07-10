@@ -94,13 +94,22 @@
                         <label for="updateConfirmPassword" class="form-label">Confirmar contraseña:</label>
                         <input id="updateConfirmPassword" type="password" name="confirmPassword" class="form-control" required/>
                     </div>
-                    <div class="form-group">
-                        <label for="updateRole" class="form-label">Tipo de usuario:</label>
-                        <select id="updateRole" name="role" class="form-select">
-                            <option value="Administrador">Administrador</option>
-                            <option value="Docente">Docente</option>
-                            <option value="Estudiante">Estudiante</option>
-                        </select>
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label form-label">Tipo de usuario:</label>
+                        <div class="col-sm-8">
+                            <label>
+                                <input type="checkbox" name="updateRoles[]" value='1'> Administrador
+                            </label>
+                            <br>
+                            <label>
+                                <input type="checkbox" name="updateRoles[]" value='2'> Docente
+                            </label>
+                            <br>
+                            <label>
+                                <input type="checkbox" name="updateRoles[]" value='3'> Estudiante
+                            </label>
+                            <br>
+                        </div>
                     </div>
                     <input type="text" name="action" value="update" hidden/> <!--VALOR PARA INDICAR AL SERVLET QUE ES UN ACCION DE UPDATE-->
                 </form>
@@ -116,12 +125,30 @@
 <script>
     document.getElementById("submitButtonUpdate").addEventListener("click",function () {
         const form= document.getElementById("updateForm");
-        const {updateName,updateLastNameP,updateLastNameM,updateEmail,updatePassword,updateConfirmPassword,updateRole}=form.elements;
+        const {updateName,updateLastNameP,updateLastNameM,updateEmail,updatePassword,updateConfirmPassword}=form.elements;
+        const roles = form.querySelectorAll('input[name="updateRoles[]"]');
+        let rolesSelected = false;
+        for (let role of roles){
+            if (role.checked){
+                rolesSelected=true;
+                break;
+            }
+        }
 
-        if(updateName.value && updateLastNameP.value && updateLastNameM.value && updateEmail.value && updatePassword.value && updateConfirmPassword.value && updateRole.value) {
+        if(updateName.value && updateLastNameP.value && updateLastNameM.value && updateEmail.value && updatePassword.value && updateConfirmPassword.value) {
             if (updateEmail.value.substring(updateEmail.value.lastIndexOf("@") + 1) === "utez.edu.mx") {
                 if (updatePassword.value === updateConfirmPassword.value) {
-                    form.submit();
+                    if(rolesSelected){
+                        form.submit();
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Debes seleccionar al menos un rol",
+                            confirmButtonText: "Revisar",
+                            confirmButtonColor: "#dc3545",
+                        });
+                    }
                 }
                 else {
                     Swal.fire({

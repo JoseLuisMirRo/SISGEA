@@ -38,9 +38,11 @@ const listUsers=async()=>{
 
         let content= ``;
         users.forEach((user,index) => {
+            let rolesNames = user.roles.map(role => role.name).join(', ');
+            let rolesIds = user.roles.map(role => role.id).join(',');
             content+=`
             <tr>
-                <td>${user.role}</td>
+                <td>${rolesNames}</td>
                 <td>${user.email}</td>
                 <td>${user.firstName}</td>
                 <td>${user.lastNameP}</td>
@@ -52,17 +54,18 @@ const listUsers=async()=>{
                     </i>
                     </td>
                 <td>
-                    <button class="btn btn-primary btn-sm edit-btn" data-id="${user.ID}" 
-                    data-role="${user.role}"
+                    <button class="btn btn-primary btn-sm edit-btn" data-id="${user.id}" 
+                    data-id="${user.id}"
                     data-email="${user.email}"
                     data-firstname="${user.firstName}" //CUIDADO: NO USAR MAYUSCULAS EN DATA
                     data-lastnamep="${user.lastNameP}"
                     data-lastnamem="${user.lastNameM}"
                     data-password="${user.password}"
+                    data-roles-ids="${rolesIds}"
                     ><i class="bi bi-pencil-square"></i></button>
                     
                     <button class="${user.status ? 'btn btn-danger btn-sm delete-btn' : 'btn btn-success btn-sm enable-btn'}"
-                    data-id="${user.ID}"
+                    data-id="${user.id}"
                     data-status="${user.status}"
                     ><i class="${user.status ? 'bi bi-trash3-fill' : 'bi bi-check-square-fill'}"></i></button>
                 </td>
@@ -88,7 +91,14 @@ $(document).ready(function() {
         const lastNameM = $(this).data('lastnamem');
         const email = $(this).data('email');
         const password = $(this).data('password');
-        const role = $(this).data('role');
+        let roleIds = $(this).data('roles-ids');
+
+        if(typeof roleIds === 'string'){ //Si roleIds es una cadena, la dividimos por coma y la metemos en un arreglo
+            roleIds = roleIds.split(',');
+        }
+        else {
+            roleIds = [roleIds]; //Si no es cadena, directamente la convertimos en un arreglo
+        }
 
         $('#updateUserId').val(id);
         $('#updateName').val(firstName);
@@ -96,7 +106,12 @@ $(document).ready(function() {
         $('#updateLastNameM').val(lastNameM);
         $('#updateEmail').val(email);
         $('#updatePassword').val(password);
-        $('#updateRole').val(role);
+
+        $('[name="updateRoles[]"]').prop("checked",false);
+        roleIds.forEach(roleId => {
+            $(`[name="updateRoles[]"][value="${roleId}"]`).prop('checked', true);
+        });
+
         $('#updateUserModal').modal('show');
     });
 
