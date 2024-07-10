@@ -51,7 +51,7 @@
             confirmButtonColor: "#dc3545",
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "<%=request.getContextPath()%>/views/mainAdministrador.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+                window.location.href = "userMan.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
             }
         });
     }
@@ -63,7 +63,7 @@
             confirmButtonColor: "#208c7d",
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "<%=request.getContextPath()%>/views/mainAdministrador.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+                window.location.href = "userMan.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
             }
         });
     }
@@ -76,7 +76,7 @@
             confirmButtonColor: "#dc3545",
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "<%=request.getContextPath()%>/views/mainAdministrador.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+                window.location.href = "userMan.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
             }
         });
     }
@@ -88,7 +88,7 @@
             confirmButtonColor: "#208c7d",
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "<%=request.getContextPath()%>/views/mainAdministrador.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+                window.location.href = "userMan.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
             }
         });
     }
@@ -101,7 +101,7 @@
             confirmButtonColor: "#dc3545",
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "<%=request.getContextPath()%>/views/mainAdministrador.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+                window.location.href = "userMan.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
             }
         });
     }
@@ -113,7 +113,7 @@
             confirmButtonColor: "#208c7d",
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "<%=request.getContextPath()%>/views/mainAdministrador.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+                window.location.href = "userMan.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
             }
         });
     }
@@ -126,7 +126,7 @@
             confirmButtonColor: "#dc3545",
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "<%=request.getContextPath()%>/views/mainAdministrador.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+                window.location.href = "userMan.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
             }
         });
     }
@@ -138,7 +138,7 @@
             confirmButtonColor: "#208c7d",
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "<%=request.getContextPath()%>/views/mainAdministrador.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+                window.location.href = "userMan.jsp"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
             }
         });
     }

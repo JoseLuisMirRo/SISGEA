@@ -75,7 +75,7 @@ public class LoginServlet extends HttpServlet {
                             user.setRole(roleBeansList.get(0)); //LE PASO EL UNICO ROL EN LA POSICION CERO
                             HttpSession activeSession = req.getSession();
                             activeSession.setAttribute("activeUser", user);
-                            req.getRequestDispatcher("/views/" + routes[j] + ".jsp").forward(req, resp);
+                            req.getRequestDispatcher("/views/index.jsp").forward(req, resp);
                         }
                     }
                 }

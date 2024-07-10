@@ -38,7 +38,7 @@ public class RoleServlet extends HttpServlet {
 
         for (int i = 0; i < roles.length; i++) {
             if (roles[i].equals(role.getId())) {
-                req.getRequestDispatcher("/views/" + routes[i] + ".jsp").forward(req, resp);
+                req.getRequestDispatcher("/views/index.jsp").forward(req, resp);
             }
         }
     }
