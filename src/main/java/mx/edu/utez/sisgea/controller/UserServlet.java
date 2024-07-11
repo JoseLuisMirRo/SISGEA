@@ -54,11 +54,11 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                                 userRoleDao.insertUserRole(userrole);
                             }
                         }
-                        resp.sendRedirect(req.getContextPath() + "/views/userMan.jsp?status=registerOk");
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=registerOk");
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/views/userMan.jsp?status=registerError");
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=registerError");
                     }
                     break;
 
@@ -95,11 +95,11 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                             }
                         }
 
-                        resp.sendRedirect(req.getContextPath() + "/views/userMan.jsp?status=updateOk");
+                        resp.sendRedirect(req.getContextPath() + "/views/user//userMan.jsp?status=updateOk");
 
                     }catch(Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/views/userMan.jsp?status=updateError");
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=updateError");
                     }
                     break;
 
@@ -107,10 +107,10 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                     try{
                         id=(Integer.parseInt(req.getParameter("deleteUserId")));
                         userDao.deleteUser(id);
-                        resp.sendRedirect(req.getContextPath() + "/views/userMan.jsp?status=deleteOk");
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=deleteOk");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/views/userMan.jsp?status=deleteError");
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=deleteError");
                     }
                     break;
 
@@ -118,10 +118,10 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                     try{
                         id=(Integer.parseInt(req.getParameter("revertDeleteUserId")));
                         userDao.revertDeleteUser(id);
-                        resp.sendRedirect(req.getContextPath() + "/views/userMan.jsp?status=revertDeleteOk");
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=revertDeleteOk");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/views/userMan.jsp?status=revertDeleteError");
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=revertDeleteError");
                         //req.setAttribute("usuarios", lista);
                         //req.getRequestDispatcher("jsp").forward(req, resp);
                     }
@@ -133,7 +133,7 @@ import mx.edu.utez.sisgea.model.UserroleBean;
 
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            RequestDispatcher rd = req.getRequestDispatcher("/views/userMan.jsp");
+            RequestDispatcher rd = req.getRequestDispatcher("/views/user/userMan.jsp");
             rd.forward(req, resp);
         }
     }
