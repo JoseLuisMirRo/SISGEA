@@ -7,14 +7,14 @@ public class ScheduleBean {
     private int class_id;
     private int quarter_id;
     private int room_id;
-    private int day;
+    private Day day;
     private Time startTime;
     private Time endTime;
 
     public ScheduleBean() {
     }
 
-    public ScheduleBean(int id, int class_id, int quarter_id, int room_id, int day, Time startTime, Time endTime) {
+    public ScheduleBean(int id, int class_id, int quarter_id, int room_id, Day day, Time startTime, Time endTime) {
         this.id = id;
         this.class_id = class_id;
         this.quarter_id = quarter_id;
@@ -56,11 +56,11 @@ public class ScheduleBean {
         this.room_id = room_id;
     }
 
-    public int getDay() {
+    public Day getDay() {
         return day;
     }
 
-    public void setDay(int day) {
+    public void setDay(Day day) {
         this.day = day;
     }
 
