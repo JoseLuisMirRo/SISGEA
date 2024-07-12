@@ -1,5 +1,6 @@
 package mx.edu.utez.sisgea.controller;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -25,13 +26,8 @@ public class LoginServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
 
         PrintWriter out = resp.getWriter();
-
-        //Rutas del sistema
-        String[] routes = {"mainAdministrador", "mainDocente", "mainAlumno"};
         //Roles del sistema
         Integer[] roles = {1, 2, 3};
-
-
 
         String email = req.getParameter("inputEmail");
         String password = req.getParameter("inputPassword");
@@ -41,11 +37,11 @@ public class LoginServlet extends HttpServlet {
 
         if (email == null || email.isEmpty()) {
             req.setAttribute("status", "invalidEmail");
-            req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+            req.getRequestDispatcher("/views/login/login.jsp").forward(req, resp);
         }
         if (password == null || password.isEmpty()) {
             req.setAttribute("status", "invalidPassword");
-            req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+            req.getRequestDispatcher("/views/login/login.jsp").forward(req, resp);
         }
 
         try {
@@ -65,8 +61,8 @@ public class LoginServlet extends HttpServlet {
                 if(userRoles.size()>1){ //Si un usuario tiene mas de un rol
                     req.setAttribute("userRoles",roleBeansList); //ENVIO CON LA PETICION LA LISTA DE roleBeans para el usuario
                     HttpSession activeSession = req.getSession();
-                    activeSession.setAttribute("user",user); //ENVIO EL USUARIO
-                    req.getRequestDispatcher("/views/user/user-multirole.jsp").forward(req,resp);
+                    activeSession.setAttribute("activeUser",user); //ENVIO EL USUARIO
+                    req.getRequestDispatcher("/views/login/login-multirole.jsp").forward(req,resp);
                     Integer result = (Integer) req.getAttribute("result");
                 }
                 else { //Si solo tiene un rol
@@ -81,19 +77,25 @@ public class LoginServlet extends HttpServlet {
                 }
             } else {
                 req.setAttribute("status", "failed");
-                req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+                req.getRequestDispatcher("/views/login/login.jsp").forward(req, resp);
             }
         } catch (Exception e) {
             if (e.getMessage().equals("deshabilitado")) {
                 req.setAttribute("status", "unauthorized");
-                req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+                req.getRequestDispatcher("/views/login/login.jsp").forward(req, resp);
             } else {
                 System.out.println("Error al iniciar sesion" + e);
                 req.setAttribute("status", "serverError");
-                req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+                req.getRequestDispatcher("/views/login/login.jsp").forward(req, resp);
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        RequestDispatcher rd = req.getRequestDispatcher("/views/login/login.jsp");
+        rd.forward(req, resp);
     }
 }
 

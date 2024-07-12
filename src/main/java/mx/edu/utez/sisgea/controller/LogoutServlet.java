@@ -23,7 +23,7 @@ public class LogoutServlet extends HttpServlet {
             close.closeConnection();
             HttpSession activeSession = req.getSession();
             activeSession.removeAttribute("activeUser");
-            req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+            req.getRequestDispatcher("/views/login/login.jsp").forward(req, resp);
         } catch (Exception e){
             e.printStackTrace();
         }

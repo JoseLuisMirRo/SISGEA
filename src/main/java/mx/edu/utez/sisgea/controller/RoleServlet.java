@@ -1,5 +1,6 @@
 package mx.edu.utez.sisgea.controller;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,18 +22,13 @@ public class RoleServlet extends HttpServlet {
 
         int selectedRole=Integer.parseInt(req.getParameter("role"));
         HttpSession activeSession = req.getSession();
-        LoginBean user = (LoginBean) req.getSession().getAttribute("user");
+        LoginBean user = (LoginBean) req.getSession().getAttribute("activeUser");
         RoleDao roleDao = new RoleDao();
         System.out.println(user.getFirstName());
         RoleBean role = roleDao.getRoleById(selectedRole);
         user.setRole(role);
-        System.out.println(user.getRole().getName());
-        activeSession.removeAttribute("user");
-        System.out.println(user);
         activeSession.setAttribute("activeUser", user);
 
-        //Rutas del sistema
-        String[] routes = {"mainAdministrador", "mainDocente", "mainAlumno"};
         //Roles del sistema
         Integer[] roles = {1, 2, 3};
 
@@ -43,5 +39,9 @@ public class RoleServlet extends HttpServlet {
         }
     }
 
-
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        RequestDispatcher rd = req.getRequestDispatcher("/views/login/login-multirole.jsp");
+        rd.forward(req, resp);
+    }
 }

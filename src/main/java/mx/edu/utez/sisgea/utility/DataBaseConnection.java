@@ -1,7 +1,5 @@
 package mx.edu.utez.sisgea.utility;
 
-import com.mysql.cj.MysqlConnection;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,7 +19,7 @@ public class DataBaseConnection {
         System.setProperty(driver,"");
         try{
             //Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
         }catch(Exception e){
             System.out.println(e);
         }
