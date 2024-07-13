@@ -24,6 +24,15 @@ public class ScheduleBean {
         this.endTime = endTime;
     }
 
+    public ScheduleBean(int class_id, int quarter_id, int room_id, Day day, Time startTime, Time endTime) {
+        this.class_id = class_id;
+        this.quarter_id = quarter_id;
+        this.room_id = room_id;
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
     public int getId() {
         return id;
     }
