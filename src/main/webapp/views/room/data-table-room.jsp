@@ -34,9 +34,10 @@
             <table id="datatable_rooms" class="table table-striped" style="width: 100%;">
                 <thead> <!--Encabezado de la tabla-->
                 <tr> <!--Fila de la tabla-->
+                    <th>Nombre corto</th>
+                    <th>Tipo</th>
+                    <th>Número</th>
                     <th>Edificio</th>
-                    <th>Tipo de espacio</th>
-                    <th>Nombre</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                 </tr>

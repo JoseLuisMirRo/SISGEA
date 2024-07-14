@@ -6,7 +6,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import mx.edu.utez.sisgea.dao.BuildingDao;
 import mx.edu.utez.sisgea.dao.RoomDao;
+import mx.edu.utez.sisgea.dao.RoomtypeDao;
 import mx.edu.utez.sisgea.model.RoomBean;
 
 import java.io.IOException;
@@ -19,16 +21,17 @@ public class RoomServlet extends HttpServlet {
 
         RoomBean roomBean = new RoomBean();
         RoomDao roomDao = new RoomDao();
+        RoomtypeDao roomtypeDao = new RoomtypeDao();
+        BuildingDao buildingDao = new BuildingDao();
 
         String action = req.getParameter("action");
 
         switch(action){
             case "add":
                 try{
-                    roomBean.setRoomtype_id(Integer.parseInt(req.getParameter("roomTypeId")));
-                    roomBean.setBuilding_id(Integer.parseInt(req.getParameter("buildingId")));
-                    roomBean.setNumber(req.getParameter("number"));
-                    roomBean.setName(req.getParameter("name"));
+                    roomBean.setRoomType(roomtypeDao.getRoomtype(Integer.parseInt(req.getParameter("roomTypeId"))));
+                    roomBean.setBuilding(buildingDao.getBuilding(Integer.parseInt(req.getParameter("buildingId"))));
+                    roomBean.setNumber(Integer.parseInt(req.getParameter("number")));
                     roomBean.setStatus(true);
                     roomDao.insertRoom(roomBean);
                     resp.sendRedirect(req.getContextPath() + "/roomServlet?status=registerOk");
@@ -41,11 +44,10 @@ public class RoomServlet extends HttpServlet {
 
                 case "update":
                     try{
-                        roomBean.setRoomtype_id(Integer.parseInt(req.getParameter("updateRoomId")));
-                        roomBean.setBuilding_id(Integer.parseInt(req.getParameter("roomTypeId")));
-                        roomBean.setBuilding_id(Integer.parseInt(req.getParameter("buildingId")));
-                        roomBean.setNumber(req.getParameter("number"));
-                        roomBean.setName(req.getParameter("name"));
+                        roomBean.setId(Integer.parseInt(req.getParameter("updateRoomId")));
+                        roomBean.setRoomType(roomtypeDao.getRoomtype(Integer.parseInt(req.getParameter("roomTypeId"))));
+                        roomBean.setBuilding(buildingDao.getBuilding(Integer.parseInt(req.getParameter("buildingId"))));
+                        roomBean.setNumber(Integer.parseInt(req.getParameter("number")));
                         roomDao.updateRoom(roomBean);
                         resp.sendRedirect(req.getContextPath() + "/roomServlet?status=updateOk");
 

@@ -2,29 +2,26 @@ package mx.edu.utez.sisgea.model;
 
 public class RoomBean {
     private int id;
-    private int roomtype_id;
-    private int building_id;
-    private String number;
-    private String name;
-    private Boolean status;
+    private RoomtypeBean roomType;
+    private BuildingBean building;
+    private int number;
+    private boolean status;
 
     public RoomBean() {
     }
 
-    public RoomBean(int id, int roomtype_id, int building_id, String number, String name, Boolean status) {
+    public RoomBean(int id, RoomtypeBean roomType, BuildingBean building, int number, boolean status) {
         this.id = id;
-        this.roomtype_id = roomtype_id;
-        this.building_id = building_id;
+        this.roomType = roomType;
+        this.building = building;
         this.number = number;
-        this.name = name;
         this.status = status;
     }
 
-    public RoomBean(int roomtype_id, int building_id, String number, String name, Boolean status) {
-        this.roomtype_id = roomtype_id;
-        this.building_id = building_id;
+    public RoomBean(RoomtypeBean roomType, BuildingBean building, int number, boolean status) {
+        this.roomType = roomType;
+        this.building = building;
         this.number = number;
-        this.name = name;
         this.status = status;
     }
 
@@ -36,43 +33,35 @@ public class RoomBean {
         this.id = id;
     }
 
-    public int getRoomtype_id() {
-        return roomtype_id;
+    public RoomtypeBean getRoomType() {
+        return roomType;
     }
 
-    public void setRoomtype_id(int roomtype_id) {
-        this.roomtype_id = roomtype_id;
+    public void setRoomType(RoomtypeBean roomType) {
+        this.roomType = roomType;
     }
 
-    public int getBuilding_id() {
-        return building_id;
+    public BuildingBean getBuilding() {
+        return building;
     }
 
-    public void setBuilding_id(int building_id) {
-        this.building_id = building_id;
+    public void setBuilding(BuildingBean building) {
+        this.building = building;
     }
 
-    public String getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Boolean getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 }

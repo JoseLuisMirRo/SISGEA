@@ -14,12 +14,11 @@ import java.util.List;
 public class RoomDao extends DataBaseConnection {
     public void insertRoom(RoomBean room) throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("INSERT INTO room (roomtype_id, building_id, number, name, status) VALUES (?,?,?,?,?)");
-            cs.setInt(1,room.getRoomtype_id());
-            cs.setInt(2,room.getBuilding_id());
-            cs.setString(3,room.getNumber());
-            cs.setString(4,room.getName());
-            cs.setBoolean(5, room.getStatus());
+            CallableStatement cs = createConnection().prepareCall("INSERT INTO room (roomtype_id, building_id, number, status) VALUES (?,?,?,?)");
+            cs.setInt(1,room.getRoomType().getId());
+            cs.setInt(2,room.getBuilding().getId());
+            cs.setInt(3,room.getNumber());
+            cs.setBoolean(4, room.getStatus());
             cs.execute();
             cs.close();
         }catch(SQLException e){
@@ -29,6 +28,8 @@ public class RoomDao extends DataBaseConnection {
     }
 
     public RoomBean getRoom(int id) throws SQLException {
+        RoomtypeDao roomtypeDao = new RoomtypeDao();
+        BuildingDao buildingDao = new BuildingDao();
         RoomBean room = null;
         try{
             CallableStatement st = createConnection().prepareCall("SELECT * FROM room WHERE id=?");
@@ -39,11 +40,9 @@ public class RoomDao extends DataBaseConnection {
             while(rs.next()){
                 int roomtype_id = rs.getInt("roomtype_id");
                 int building_id = rs.getInt("building_id");
-                String number = rs.getString("number");
-                String name = rs.getString("name");
+                int number = rs.getInt("number");
                 boolean status = rs.getBoolean("status");
-                room = new RoomBean(roomtype_id, building_id, number, name, status);
-
+                room = new RoomBean(roomtypeDao.getRoomtype(roomtype_id), buildingDao.getBuilding(building_id), number,status);
             }
             st.close();
             rs.close();
@@ -55,6 +54,8 @@ public class RoomDao extends DataBaseConnection {
     }
 
     public List<RoomBean> getAllRooms() {
+        RoomtypeDao roomtypeDao = new RoomtypeDao();
+        BuildingDao buildingDao = new BuildingDao();
         try {
             List<RoomBean> roomsList = new ArrayList<RoomBean>();
             CallableStatement cs = createConnection().prepareCall("SELECT * FROM room");
@@ -65,10 +66,9 @@ public class RoomDao extends DataBaseConnection {
                 int id = rs.getInt("id");
                 int roomtype_id = rs.getInt("roomtype_id");
                 int building_id = rs.getInt("building_id");
-                String number = rs.getString("number");
-                String name = rs.getString("name");
+                int number = rs.getInt("number");
                 boolean status = rs.getBoolean("status");
-                roomsList.add(new RoomBean(id,roomtype_id, building_id, number, name, status));
+                roomsList.add(new RoomBean(id,roomtypeDao.getRoomtype(roomtype_id), buildingDao.getBuilding(building_id), number,status));
             }
             cs.close();
             rs.close();
@@ -81,13 +81,12 @@ public class RoomDao extends DataBaseConnection {
 
     public void updateRoom(RoomBean room) throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("UPDATE room SET roomtype_id=?,building_id=?,number=?,name=?,status=? WHERE id=?");
-            cs.setInt(1,room.getRoomtype_id());
-            cs.setInt(2,room.getBuilding_id());
-            cs.setString(3,room.getNumber());
-            cs.setString(4,room.getName());
-            cs.setBoolean(5,room.getStatus());
-            cs.setInt(6,room.getId());
+            CallableStatement cs = createConnection().prepareCall("UPDATE room SET roomtype_id=?,building_id=?,number=?,status=? WHERE id=?");
+            cs.setInt(1,room.getRoomType().getId());
+            cs.setInt(2,room.getBuilding().getId());
+            cs.setInt(3,room.getNumber());
+            cs.setBoolean(4,room.getStatus());
+            cs.setInt(5,room.getId());
             cs.execute();
             cs.close();
 

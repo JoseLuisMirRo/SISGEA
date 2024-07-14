@@ -6,9 +6,9 @@ const dataTableOptions={
     lengthMenu:[5,10,25],
     scrollX: true,
     columnDefs: [
-        {className: "text-center",targets:[0,1,2,3,4]},
-        {orderable: false,targets:[3,4]},
-        {serchable:false,targets:[3,4]},
+        {className: "text-center",targets:[0,1,2,3,4,5]},
+        {orderable: false,targets:[4,5]},
+        {serchable:false,targets:[4,5]},
         {width:"",targets:[]}
     ],
     pageLength:10,
@@ -40,11 +40,10 @@ const listRooms=async()=>{
         rooms.forEach((room,index) => {
             content+=`
             <tr>
-                <td>${room.id}</td>
-                <td>${room.roomtype_id}</td>
-                <td>${room.building_id}</td>
+                <td>${room.roomType.abbreviation}${room.number}${room.building.abbreviation}</td>
+                <td>${room.roomType.name}</td>
                 <td>${room.number}</td>
-                <td>${room.name}</td>
+                <td>${room.building.name}</td>
                 <td>
                     <i class="${room.status ? 'bi bi-check-circle' : 'bi bi-x-circle'}" 
                        style="color: ${room.status ? 'green' : 'red'};">
@@ -53,17 +52,15 @@ const listRooms=async()=>{
                 <td>
                     <button class="btn btn-primary btn-sm edit-btn" data-id="${room.id}" 
                     data-id="${room.id}"
-                    data-email="${room.roomtype_id}"
-                    data-firstname="${room.building_id}" //CUIDADO: NO USAR MAYUSCULAS EN DATA
-                    data-lastnamep="${room.number}"
-                    data-lastnamem="${room.name}"
-                    data-password="${room.status}"
+                    data-roomtypeid="${room.roomType.id}"
+                    data-buildingid="${room.building.id}" //CUIDADO: NO USAR MAYUSCULAS EN DATA
+                    data-number="${room.number}"
                     ><i class="bi bi-pencil-square"></i></button>
                     
                     <button class="${room.status ? 'btn btn-danger btn-sm delete-btn' : 'btn btn-success btn-sm enable-btn'}"
-                    data-id="${user.id}"
-                    data-status="${user.status}"
-                    ><i class="${user.status ? 'bi bi-trash3-fill' : 'bi bi-check-square-fill'}"></i></button>
+                    data-id="${room.id}"
+                    data-status="${room.status}"
+                    ><i class="${room.status ? 'bi bi-trash3-fill' : 'bi bi-check-square-fill'}"></i></button>
                 </td>
             </tr>`;
         });
