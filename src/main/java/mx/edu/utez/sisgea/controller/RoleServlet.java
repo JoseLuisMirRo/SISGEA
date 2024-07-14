@@ -41,12 +41,19 @@ public class RoleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getSession().getAttribute("activeUser") != null) {
-            RequestDispatcher rd = req.getRequestDispatcher("/views/login/login-multirole.jsp");
-            rd.forward(req,resp);
-        }else{
-            RequestDispatcher rd = req.getRequestDispatcher("/views/login/login.jsp");
-            rd.forward(req,resp);
+        HttpSession activeSession = req.getSession();
+        LoginBean user = (LoginBean) req.getSession().getAttribute("activeUser");
+        List<RoleBean> userRoles = (List<RoleBean>) req.getAttribute("userRoles");
+        RequestDispatcher rd;
+        if(user!=null){
+            if(userRoles!=null){
+                rd = req.getRequestDispatcher("/views/login/login-multirole.jsp");
+            }else{
+                rd = req.getRequestDispatcher("/views/layout/error403.jsp");
+            }
+        }else {
+            rd = req.getRequestDispatcher("/views/login/login.jsp");
         }
+        rd.forward(req,resp);
     }
 }

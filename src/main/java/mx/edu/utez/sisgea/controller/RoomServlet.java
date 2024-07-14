@@ -6,10 +6,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import mx.edu.utez.sisgea.dao.BuildingDao;
 import mx.edu.utez.sisgea.dao.RoomDao;
 import mx.edu.utez.sisgea.dao.RoomtypeDao;
+import mx.edu.utez.sisgea.model.LoginBean;
 import mx.edu.utez.sisgea.model.RoomBean;
+import mx.edu.utez.sisgea.model.UserBean;
 
 import java.io.IOException;
 
@@ -83,12 +86,18 @@ public class RoomServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getSession().getAttribute("activeUser") != null) {
-            RequestDispatcher rd = req.getRequestDispatcher("/views/room/roomMan.jsp");
-            rd.forward(req,resp);
-        }else{
-            RequestDispatcher rd = req.getRequestDispatcher("/views/login/login.jsp");
-            rd.forward(req,resp);
+        HttpSession activeSession = req.getSession();
+        LoginBean user = (LoginBean)activeSession.getAttribute("activeUser");
+        RequestDispatcher rd;
+        if(user!=null){
+            if(user.getRole().getId()==1){
+                rd = req.getRequestDispatcher("/views/room/roomMan.jsp");
+            }else{
+                rd = req.getRequestDispatcher("/views/layout/error403.jsp");
+            }
+        }else {
+            rd = req.getRequestDispatcher("/views/login/login.jsp");
         }
+        rd.forward(req,resp);
     }
 }
