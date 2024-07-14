@@ -133,7 +133,12 @@ import mx.edu.utez.sisgea.model.UserroleBean;
 
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            RequestDispatcher rd = req.getRequestDispatcher("/views/user/userMan.jsp");
-            rd.forward(req, resp);
+            if (req.getSession().getAttribute("activeUser") != null) {
+                RequestDispatcher rd = req.getRequestDispatcher("/views/user/userMan.jsp");
+                rd.forward(req,resp);
+            }else{
+                RequestDispatcher rd = req.getRequestDispatcher("/views/login/login.jsp");
+                rd.forward(req,resp);
+            }
         }
     }

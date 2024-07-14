@@ -49,7 +49,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
                         <% if(1==userRole){ %>
                         <li><a class="dropdown-item" href="${pageContext.request.contextPath}/userServlet">Gestionar usuarios</a></li>
-                        <li><a class="dropdown-item" href="#">Gestionar espacios</a></li>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/roomServlet">Gestionar espacios</a></li>
                         <li><a class="dropdown-item" href="#">Gestionar horarios</a></li>
                         <li><a class="dropdown-item" href="#">Gestionar reservas</a></li>
                         <li><a class="dropdown-item" href="#">Gestionar feriados</a></li>

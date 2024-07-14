@@ -83,7 +83,12 @@ public class RoomServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher rd = req.getRequestDispatcher("/views/room/roomMan.jsp");
-        rd.forward(req,resp);
+        if (req.getSession().getAttribute("activeUser") != null) {
+            RequestDispatcher rd = req.getRequestDispatcher("/views/room/roomMan.jsp");
+            rd.forward(req,resp);
+        }else{
+            RequestDispatcher rd = req.getRequestDispatcher("/views/login/login.jsp");
+            rd.forward(req,resp);
+        }
     }
 }
