@@ -20,7 +20,7 @@ public class BuildingDao extends DataBaseConnection {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
                 String abbreviation = rs.getString("abbreviation");
-                BuildingBean building = new BuildingBean();
+                BuildingBean building = new BuildingBean(id, name, abbreviation);
                 buildings.add(building);
             }
             cs.close();
@@ -50,6 +50,4 @@ public class BuildingDao extends DataBaseConnection {
         }
         return building;
     }
-
-
 }

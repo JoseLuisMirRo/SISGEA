@@ -7,29 +7,42 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import mx.edu.utez.sisgea.dao.RoomDao;
-import mx.edu.utez.sisgea.model.RoomBean;
+import mx.edu.utez.sisgea.dao.BuildingDao;
+import mx.edu.utez.sisgea.dao.RoomtypeDao;
+import mx.edu.utez.sisgea.model.BuildingBean;
+import mx.edu.utez.sisgea.model.RoomtypeBean;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@WebServlet("/data/rooms")
+@WebServlet("/select/rooms")
 public class DataRoomsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
 
-        RoomDao roomDao = new RoomDao();
+        RoomtypeDao roomType = new RoomtypeDao();
+        BuildingDao building = new BuildingDao();
 
-        List<RoomBean> roomsList = roomDao.getAllRooms();
+        List<RoomtypeBean> roomTypes = roomType.getAllRoomtypes();
+        List<BuildingBean> buildings = building.getAllBuildings();
 
+        // Crear un mapa para combinar las listas bajo claves distintas
+        Map<String, Object> combinedLists = new HashMap<>();
+        combinedLists.put("roomTypes", roomTypes);
+        combinedLists.put("buildings", buildings);
+
+        // Convertir el mapa a JSON
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonArray = gson.toJson(roomsList);
+        String combinedJson = gson.toJson(combinedLists);
 
         PrintWriter out = resp.getWriter();
-        out.print(jsonArray);
+        out.print(combinedJson);
         out.flush();
     }
+
 }

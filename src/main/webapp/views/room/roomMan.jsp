@@ -23,5 +23,15 @@
 <body>
 <jsp:include page="/views/room/data-table-room.jsp"></jsp:include>
 
+<!--MODAL AGREGAR ESPACIO-->
+<jsp:include page="/views/room/room-add.jsp"></jsp:include>
+
+<!--STATUS DE LA PAGINA-->
+<%
+    String status = request.getParameter("status");
+%>
+<input type="hidden" id="status" value="<%=status%>">
+<script src="${pageContext.request.contextPath}/assets/js/room/roomMan.js"> </script>
+
 </body>
 </html>

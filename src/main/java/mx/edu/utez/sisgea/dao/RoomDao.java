@@ -14,7 +14,7 @@ import java.util.List;
 public class RoomDao extends DataBaseConnection {
     public void insertRoom(RoomBean room) throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("INSERT INTO room (roomtype_id, building_id, number, status) VALUES (?,?,?,?)");
+            CallableStatement cs = createConnection().prepareCall("call insert_room(?,?,?,?)"); //Procedimiento almacenado verifica si el salon esta duplicado para el edificio y tipo de espacio
             cs.setInt(1,room.getRoomType().getId());
             cs.setInt(2,room.getBuilding().getId());
             cs.setInt(3,room.getNumber());
