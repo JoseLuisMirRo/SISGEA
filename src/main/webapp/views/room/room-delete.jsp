@@ -1,21 +1,21 @@
 <%--
   Created by IntelliJ IDEA.
   User: JLuis
-  Date: 24/06/2024
-  Time: 08:22 p. m.
+  Date: 15/07/2024
+  Time: 03:32 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserTitle" aria-hidden="true">
+<div class="modal fade" id="deleteRoomModal" aria-labelledby="deleteRoomTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="deleteUserTitle">Eliminar usuario</h1>
+                <h1 class="modal-title fs-5" id="deleteRoomTitle">Eliminar espacio</h1>
             </div>
             <div class="modal-body">
-                <h3>¿Desea eliminar usuario?</h3>
-                <form id="deleteForm" action="<%=request.getContextPath()%>/userServlet" method="post" style="display:none">
-                    <input id="deleteUserId" name="deleteUserId" type="text"/>
+                <h3>¿Desea eliminar espacio?</h3>
+                <form id="deleteForm" action="<%=request.getContextPath()%>/roomServlet" method="post" style="display:none">
+                    <input id="deleteRoomId" name="deleteRoomId" type="text"/>
                     <input type="text" name="action" value="delete"/>
                 </form>
             </div>
@@ -34,16 +34,16 @@
 </script>
 
 <%--REVERIR DELETE--%>
-<div class="modal fade" id="revertDeleteUserModal" tabindex="-1" aria-labelledby="revertDeleteUserTitle" aria-hidden="true">
+<div class="modal fade" id="revertDeleteRoomModal" aria-labelledby="revertDeleteRoomTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="revertDeleteUserTitle">Actualizar usuario</h1>
+                <h1 class="modal-title fs-5" id="revertDeleteRoomTitle">Reactivar espacio</h1>
             </div>
             <div class="modal-body">
-                <h3>¿Desea reactivar usuario?</h3>
-                <form id="revertDeleteForm" action="<%=request.getContextPath()%>/userServlet" method="post" style="display:none">
-                    <input id="revertDeleteUserId" name="revertDeleteUserId" type="text"/>
+                <h3>¿Desea reactivar espacio?</h3>
+                <form id="revertDeleteForm" action="<%=request.getContextPath()%>/roomServlet" method="post" style="display:none">
+                    <input id="revertDeleteRoomId" name="revertDeleteRoomId" type="text"/>
                     <input type="text" name="action" value="revertDelete"/>
                 </form>
             </div>

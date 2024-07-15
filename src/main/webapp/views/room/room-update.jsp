@@ -47,6 +47,13 @@
             const roomTypesElement = document.getElementById("updateRoomType");
             const buildingsElement = document.getElementById("updateBuilding");
 
+            while (roomTypesElement.firstChild) {
+                roomTypesElement.removeChild(roomTypesElement.firstChild);
+            }
+            while (buildingsElement.firstChild) {
+                buildingsElement.removeChild(buildingsElement.firstChild);
+            }
+
             data.roomTypes.forEach((roomType) => {
                 const option = document.createElement("option");
                 option.value = roomType.id;

@@ -91,18 +91,18 @@ $(document).ready(function() {
         $('#updateRoomModal').modal('show');
     });
 
-    $('#datatable_users').on('', '.delete-btn', function () {
+    $('#datatable_rooms').on('click', '.delete-btn', function () {
         const id = $(this).data('id');
         const status = $(this).data('status');
-        $('#deleteUserId').val(id);
-        $('#deleteUserModal').modal('show');
+        $('#deleteRoomId').val(id);
+        $('#deleteRoomModal').modal('show');
     });
 
-    $('#datatable_users').on('click', '.enable-btn', function () {
+    $('#datatable_rooms').on('click', '.enable-btn', function () {
         const id = $(this).data('id');
         const status = $(this).data('status');
-        $('#revertDeleteUserId').val(id);
-        $('#revertDeleteUserModal').modal('show');
+        $('#revertDeleteRoomId').val(id);
+        $('#revertDeleteRoomModal').modal('show');
     });
 
 

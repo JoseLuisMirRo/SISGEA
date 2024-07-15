@@ -29,6 +29,9 @@
 <!--MODAL ACTUALIZAR ESPACIO-->
 <jsp:include page="/views/room/room-update.jsp"></jsp:include>
 
+<!--MODAL ELIMINAR ESPACIO-->
+<jsp:include page="/views/room/room-delete.jsp"></jsp:include>
+
 <!--STATUS DE LA PAGINA-->
 <%
     String status = request.getParameter("status");
