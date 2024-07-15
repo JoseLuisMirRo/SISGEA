@@ -26,6 +26,9 @@
 <!--MODAL AGREGAR ESPACIO-->
 <jsp:include page="/views/room/room-add.jsp"></jsp:include>
 
+<!--MODAL ACTUALIZAR ESPACIO-->
+<jsp:include page="/views/room/room-update.jsp"></jsp:include>
+
 <!--STATUS DE LA PAGINA-->
 <%
     String status = request.getParameter("status");

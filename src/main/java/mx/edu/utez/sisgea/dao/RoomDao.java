@@ -81,12 +81,11 @@ public class RoomDao extends DataBaseConnection {
 
     public void updateRoom(RoomBean room) throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("UPDATE room SET roomtype_id=?,building_id=?,number=?,status=? WHERE id=?");
+            CallableStatement cs = createConnection().prepareCall("call update_room(?,?,?,?)");
             cs.setInt(1,room.getRoomType().getId());
             cs.setInt(2,room.getBuilding().getId());
             cs.setInt(3,room.getNumber());
-            cs.setBoolean(4,room.getStatus());
-            cs.setInt(5,room.getId());
+            cs.setInt(4,room.getId());
             cs.execute();
             cs.close();
 

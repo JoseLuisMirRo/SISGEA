@@ -48,9 +48,9 @@ public class RoomServlet extends HttpServlet {
                 case "update":
                     try{
                         roomBean.setId(Integer.parseInt(req.getParameter("updateRoomId")));
-                        roomBean.setRoomType(roomtypeDao.getRoomtype(Integer.parseInt(req.getParameter("roomTypeId"))));
-                        roomBean.setBuilding(buildingDao.getBuilding(Integer.parseInt(req.getParameter("buildingId"))));
-                        roomBean.setNumber(Integer.parseInt(req.getParameter("number")));
+                        roomBean.setRoomType(roomtypeDao.getRoomtype(Integer.parseInt(req.getParameter("updateRoomTypeId"))));
+                        roomBean.setBuilding(buildingDao.getBuilding(Integer.parseInt(req.getParameter("updateBuildingId"))));
+                        roomBean.setNumber(Integer.parseInt(req.getParameter("updateNumber")));
                         roomDao.updateRoom(roomBean);
                         resp.sendRedirect(req.getContextPath() + "/roomServlet?status=updateOk");
 

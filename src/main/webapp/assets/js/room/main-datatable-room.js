@@ -50,7 +50,7 @@ const listRooms=async()=>{
                     </i>
                     </td>
                 <td>
-                    <button class="btn btn-primary btn-sm edit-btn" data-id="${room.id}" 
+                    <button class="btn btn-primary btn-sm edit-btn" 
                     data-id="${room.id}"
                     data-roomtypeid="${room.roomType.id}"
                     data-buildingid="${room.building.id}" //CUIDADO: NO USAR MAYUSCULAS EN DATA
@@ -77,38 +77,21 @@ window.addEventListener('load',async()=>{
 
 //UTILIZANDO JQUERY OBTENEMOS EL DATOS DEL USUARIO CUANDO SE PULSA EL BOTÓN DE EDITAR, PARA DESPUES ENVIARLO AL MODAL. (se podría obtener solo id y lo demás con un select).
 $(document).ready(function() {
-    $('#datatable_users').on('click', '.edit-btn', function () {
+    $('#datatable_rooms').on('click', '.edit-btn', function () {
         const id = $(this).data('id');
-        const firstName = $(this).data('firstname');
-        const lastNameP = $(this).data('lastnamep');
-        const lastNameM = $(this).data('lastnamem');
-        const email = $(this).data('email');
-        const password = $(this).data('password');
-        let roleIds = $(this).data('roles-ids');
+        const roomTypeId = $(this).data('roomtypeid');
+        const buildingId = $(this).data('buildingid');
+        const number = $(this).data('number');
 
-        if(typeof roleIds === 'string'){ //Si roleIds es una cadena, la dividimos por coma y la metemos en un arreglo
-            roleIds = roleIds.split(',');
-        }
-        else {
-            roleIds = [roleIds]; //Si no es cadena, directamente la convertimos en un arreglo
-        }
+        $('#updateRoomModal').attr('data-id', id);
+        $('#updateRoomModal').attr('data-roomtypeid', roomTypeId);
+        $('#updateRoomModal').attr('data-buildingid', buildingId);
+        $('#updateRoomModal').attr('data-number', number);
 
-        $('#updateUserId').val(id);
-        $('#updateName').val(firstName);
-        $('#updateLastNameP').val(lastNameP);
-        $('#updateLastNameM').val(lastNameM);
-        $('#updateEmail').val(email);
-        $('#updatePassword').val(password);
-
-        $('[name="updateRoles[]"]').prop("checked",false);
-        roleIds.forEach(roleId => {
-            $(`[name="updateRoles[]"][value="${roleId}"]`).prop('checked', true);
-        });
-
-        $('#updateUserModal').modal('show');
+        $('#updateRoomModal').modal('show');
     });
 
-    $('#datatable_users').on('click', '.delete-btn', function () {
+    $('#datatable_users').on('', '.delete-btn', function () {
         const id = $(this).data('id');
         const status = $(this).data('status');
         $('#deleteUserId').val(id);

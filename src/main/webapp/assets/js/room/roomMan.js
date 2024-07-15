@@ -31,7 +31,7 @@ else if (status === "updateError"){
     Swal.fire({
         icon: "error",
         title: "Error, no se actualizó el espacio",
-        text: "Vuelva a intentarlo",
+        text: "Verifique si los nuevos datos no corresponden a otro registro y vuelva a intentarlo",
         confirmButtonText: "Reintentar",
         confirmButtonColor: "#dc3545",
     }).then((result) => {
