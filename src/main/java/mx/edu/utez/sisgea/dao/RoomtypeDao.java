@@ -38,7 +38,7 @@ public class RoomtypeDao extends DataBaseConnection {
             cs.setInt(1, id);
             ResultSet rs = cs.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
                 int idE = rs.getInt("id");
                 String name = rs.getString("name");
                 String abbreviation = rs.getString("abbreviation");

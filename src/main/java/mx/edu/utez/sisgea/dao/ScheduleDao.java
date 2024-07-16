@@ -11,17 +11,15 @@ import java.util.List;
 public class ScheduleDao extends DataBaseConnection {
     public void insertSchedule(ScheduleBean sch)throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("{INSERT INTO schedule (class_id, quarter_id, room_id, day, starttime,endtime) VALUES (?,?,?,?,?,?,?)}");
-            cs.setInt(1, sch.getClass_id());
-            cs.setInt(2, sch.getQuarter_id());
-            cs.setInt(3, sch.getRoom_id());
+            CallableStatement cs = createConnection().prepareCall("INSERT INTO schedule (class_id, quarter_id, room_id, day, starttime,endtime) VALUES (?,?,?,?,?,?)");
+            cs.setInt(1, sch.getClasse().getId());
+            cs.setInt(2, sch.getQuarter().getId());
+            cs.setInt(3, sch.getRoom().getId());
             cs.setString(4,sch.getDay().name());
             cs.setTime(5, sch.getStartTime());
             cs.setTime(6, sch.getEndTime());
             cs.execute();
             cs.close();
-
-
         }catch (Exception e) {
             e.printStackTrace();
             throw new SQLException(e.getMessage());
@@ -29,6 +27,9 @@ public class ScheduleDao extends DataBaseConnection {
     }
 
     public ScheduleBean getSchedule(int id) throws SQLException {
+        ClassDao classDao = new ClassDao();
+        QuarterDao quarterDao = new QuarterDao();
+        RoomDao roomDao = new RoomDao();
         ScheduleBean sch = null;
         try {
             PreparedStatement st = createConnection().prepareCall("SELECT * FROM schedule WHERE id=?");
@@ -37,13 +38,14 @@ public class ScheduleDao extends DataBaseConnection {
             ResultSet rs = st.getResultSet();
 
             while(rs.next()){
+                int idE = rs.getInt("id");
                 int class_id = rs.getInt("class_id");
                 int quarter_id = rs.getInt("quarter_id");
                 int room_id = rs.getInt("room_id");
                 Day day = Day.valueOf(rs.getString("day"));
                 Time starttime = rs.getTime("starttime");
                 Time endtime = rs.getTime("endtime");
-                sch = new ScheduleBean(class_id,quarter_id,room_id,day,starttime,endtime);
+                sch = new ScheduleBean(idE,classDao.getClass(class_id),quarterDao.getQuarter(quarter_id),roomDao.getRoom(room_id),day,starttime,endtime);
             }
             st.close();
             rs.close();
@@ -54,19 +56,23 @@ public class ScheduleDao extends DataBaseConnection {
     }
 
     public List<ScheduleBean> getAllSchedules() {
+        ClassDao classDao = new ClassDao();
+        QuarterDao quarterDao = new QuarterDao();
+        RoomDao roomDao = new RoomDao();
         List<ScheduleBean> schList = new ArrayList<ScheduleBean>();
         try{
             CallableStatement cs = createConnection().prepareCall("SELECT * FROM schedule");
             cs.execute();
             ResultSet rs = cs.getResultSet();
             while(rs.next()){
+                int id=rs.getInt("id");
                 int class_id = rs.getInt("class_id");
                 int quarter_id = rs.getInt("quarter_id");
                 int room_id = rs.getInt("room_id");
                 Day day = Day.valueOf(rs.getString("day"));
                 Time starttime = rs.getTime("starttime");
                 Time endtime = rs.getTime("endtime");
-                schList.add(new ScheduleBean(class_id,quarter_id,room_id,day,starttime,endtime));
+                schList.add(new ScheduleBean(id,classDao.getClass(class_id),quarterDao.getQuarter(quarter_id),roomDao.getRoom(room_id),day,starttime,endtime));
             }
             cs.close();
             rs.close();
@@ -80,9 +86,9 @@ public class ScheduleDao extends DataBaseConnection {
     public void updateUser(ScheduleBean sch)throws SQLException {
         try{
             CallableStatement cs = createConnection().prepareCall("UPDATE schedule SET class_id=?, quarter_id=?, room_id=?, day=?, starttime=?, endtime=? WHERE id=?");
-            cs.setInt(1, sch.getClass_id());
-            cs.setInt(2, sch.getQuarter_id());
-            cs.setInt(3, sch.getRoom_id());
+            cs.setInt(1, sch.getClasse().getId());
+            cs.setInt(2, sch.getQuarter().getId());
+            cs.setInt(3, sch.getRoom().getId());
             cs.setString(4, sch.getDay().name());
             cs.setTime(5, sch.getStartTime());
             cs.setTime(6, sch.getEndTime());

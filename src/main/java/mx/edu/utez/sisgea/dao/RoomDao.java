@@ -37,7 +37,7 @@ public class RoomDao extends DataBaseConnection {
             st.execute();
             ResultSet rs = st.getResultSet();
 
-            while(rs.next()){
+            if (rs.next()){
                 int roomtype_id = rs.getInt("roomtype_id");
                 int building_id = rs.getInt("building_id");
                 int number = rs.getInt("number");
