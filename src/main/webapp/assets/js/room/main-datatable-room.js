@@ -8,7 +8,7 @@ const dataTableOptions={
     columnDefs: [
         {className: "text-center",targets:[0,1,2,3,4,5]},
         {orderable: false,targets:[4,5]},
-        {serchable:false,targets:[4,5]},
+        {searchable:false,targets:[4,5]},
         {width:"",targets:[]}
     ],
     pageLength:10,

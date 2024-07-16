@@ -1,16 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: JLuis
-  Date: 13/07/2024
-  Time: 04:04 PM
+  Date: 15/07/2024
+  Time: 09:58 PM
   To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+--%><%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de espacios</title>
+    <title>Gestión de horarios</title>
     <link href="${pageContext.request.contextPath}/assets/css/styles-admin-profile.css" rel="stylesheet">
     <!--Bootstrap CSS-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -23,26 +22,26 @@
 <body>
 <div class="container my-6"> <!--Contenedor de una tabla con margen de 6 unidades-->
     <div>
-        <h2 style="color: black">Gestión de espacios</h2>
+        <h2 style="color: black">Gestión de horarios</h2>
     </div>
     <div class="text-end">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#roomRegisterModal" id="roomRegisterButton">
-            <i class="bi bi-plus-lg"></i> Agregar Espacio </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#scheduleRegisterModal" id="scheduleRegisterButton">
+            <i class="bi bi-plus-lg"></i> Agregar horario </button>
     </div>
     <div class="row"> <!--Fila de la tabla-->
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"> <!--Columna de la tabla que va a ser de 12 en todos los tamaños de pantallas-->
-            <table id="datatable_rooms" class="table table-striped" style="width: 100%;">
+            <table id="datatable_schedules" class="table table-striped" style="width: 100%;">
                 <thead> <!--Encabezado de la tabla-->
                 <tr> <!--Fila de la tabla-->
-                    <th>Nombre corto</th>
-                    <th>Tipo</th>
-                    <th>Número</th>
-                    <th>Edificio</th>
-                    <th>Estado</th>
+                    <th>Clase</th>
+                    <th>Espacio</th>
+                    <th>Dia</th>
+                    <th>Hora de inicio</th>
+                    <th>Hora de fin</th>
                     <th>Opciones</th>
                 </tr>
                 </thead>
-                <tbody id="tableBody_rooms"></tbody> <!--Cuerpo de la tabla-->
+                <tbody id="tableBody_schedules"></tbody> <!--Cuerpo de la tabla-->
             </table>
         </div>
     </div>
@@ -60,7 +59,6 @@
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
 
 <!--JS Custom-->
-<script src="${pageContext.request.contextPath}/assets/js/room/main-datatable-room.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/schedule/main-datatable-schedule.js"></script>
 </body>
 </html>
-
