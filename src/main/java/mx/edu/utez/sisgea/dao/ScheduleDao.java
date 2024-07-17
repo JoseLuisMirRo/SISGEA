@@ -11,7 +11,7 @@ import java.util.List;
 public class ScheduleDao extends DataBaseConnection {
     public void insertSchedule(ScheduleBean sch)throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("INSERT INTO schedule (class_id, quarter_id, room_id, day, starttime,endtime) VALUES (?,?,?,?,?,?)");
+            CallableStatement cs = createConnection().prepareCall("call insert_schedule(?,?,?,?,?,?)");
             cs.setInt(1, sch.getClasse().getId());
             cs.setInt(2, sch.getQuarter().getId());
             cs.setInt(3, sch.getRoom().getId());

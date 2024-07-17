@@ -16,6 +16,8 @@ import mx.edu.utez.sisgea.model.LoginBean;
 import mx.edu.utez.sisgea.model.ScheduleBean;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.sql.Time;
 
@@ -36,21 +38,33 @@ public class ScheduleServlet extends HttpServlet {
         String action = req.getParameter("action");
 
         switch(action){
-            case "add": //FALTAN MAS VALIDADCIONES EN TIME, COMO QUE LA HORA FINAL NO SEA ANTES DE LA HORA INICIO. 
+            case "add": //VALIDACIONES DE TRASLAPES Y REPETICIONES EN PROCEDIMIENTO ALMACENADO
                 try{
-                    scheduleBean.setClasse(classDao.getClass(Integer.parseInt(req.getParameter("classId"))));
-                    scheduleBean.setQuarter(quarterDao.getQuarter(Integer.parseInt(req.getParameter("quarterId"))));
-                    scheduleBean.setRoom(roomDao.getRoom(Integer.parseInt(req.getParameter("roomId"))));
-                    scheduleBean.setDay(Day.numbToDay(Integer.parseInt(req.getParameter("dayId"))));
-                    scheduleBean.setStartTime(Time.valueOf(req.getParameter("starttime")));
-                    scheduleBean.setEndTime(Time.valueOf(req.getParameter("endtime")));
+                    int classId = Integer.parseInt(req.getParameter("classId"));
+                    int quarterId = Integer.parseInt(req.getParameter("quarterId"));
+                    int roomId = Integer.parseInt(req.getParameter("roomId"));
+                    int dayId = Integer.parseInt(req.getParameter("dayId"));
+                    Time startTime = Time.valueOf(req.getParameter("starttime"));
+                    Time endTime = Time.valueOf(req.getParameter("endtime"));
+
+                    //VALIDAMOS HORA FINAL>HORA INICIO - EN SERVLET POR QUE TAMBIEN IRÁ CLIENT-SIDE Y SI VA CLIENT SIDE
+                    //NO ES NECESARIO VALIDAR EN PROCEDIMIENTO ALMACENADO
+                    if (endTime.before(startTime)){
+                        throw new IllegalArgumentException("startAfterEnd");
+                    }
+
+                    scheduleBean.setClasse(classDao.getClass(classId));
+                    scheduleBean.setQuarter(quarterDao.getQuarter(quarterId));
+                    scheduleBean.setRoom(roomDao.getRoom(roomId));
+                    scheduleBean.setDay(Day.numbToDay(dayId));
+                    scheduleBean.setStartTime(startTime);
+                    scheduleBean.setEndTime(endTime);
                     scheduleDao.insertSchedule(scheduleBean);
                     resp.sendRedirect(req.getContextPath() + "/scheduleServlet?status=registerOk");
-
                 }catch (Exception e){
                     e.printStackTrace();
-                    resp.sendRedirect(req.getContextPath() + "/scheduleServlet?status=registerError");
-                    System.out.println(scheduleBean.getRoom().getId());
+                    String errorMessage = e.getMessage();
+                    resp.sendRedirect(req.getContextPath() + "/scheduleServlet?status=registerError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
                 }
                 break;
 
