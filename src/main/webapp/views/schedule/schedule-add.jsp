@@ -106,15 +106,26 @@
     document.getElementById("submitButtonAdd").addEventListener("click", () => {
         const form = document.getElementById("registerScheduleForm");
         const {quarter, classe, room, day, starttime, endtime} = form.elements;
+
+        if(starttime.value.split(":").length === 2){
+            starttime.value += ":00";
+        }
+
+        if(endtime.value.split(":").length === 2){
+            endtime.value += ":00";
+        }
+
+
+
         //ENTRE SEMANA
-        const initialStartTime = "07:00";
-        const finalStartTime = "20:00";
-        const initialEndTime = "08:00"
-        const finalEndTime = "21:00";
+        const initialStartTime = "07:00:00";
+        const finalStartTime = "20:00:00";
+        const initialEndTime = "08:00:00"
+        const finalEndTime = "21:00:00";
 
         //FIN DE SEMANA
-        const wfinalStartTime = "15:00";
-        const wfinalEndTime = "16:00";
+        const wfinalStartTime = "15:00:00";
+        const wfinalEndTime = "16:00:00";
 
         if (quarter.value && classe.value && room.value && day.value && starttime.value && endtime.value) {
             if (day.value != 6) {
@@ -125,7 +136,7 @@
                         Swal.fire({
                             icon: "error",
                             title: "Error",
-                            text: "Ingresa un tiempo final válido (Entre las 08:00 y 21:00 hrs según el horario de la UTEZ",
+                            text: "Ingresa un tiempo final válido \n(Entre las 08:00 y 21:00 hrs según el horario de la UTEZ)",
                             confirmButtonText: "Revisar",
                             confirmButtonColor: "#dc3545",
                         });
@@ -134,7 +145,7 @@
                     Swal.fire({
                         icon: "error",
                         title: "Error",
-                        text: "Ingresa un tiempo inicial válido (Entre las 07:00 y 20:00 hrs según el horario de la UTEZ",
+                        text: "Ingresa un tiempo inicial válido \n(Entre las 07:00 y 20:00 hrs según el horario de la UTEZ)",
                         confirmButtonText: "Revisar",
                         confirmButtonColor: "#dc3545",
                     });
@@ -147,7 +158,7 @@
                         Swal.fire({
                             icon: "error",
                             title: "Error",
-                            text: "Ingresa un tiempo final válido (Entre las 08:00 y 16:00 hrs según el horario de la UTEZ",
+                            text: "Ingresa un tiempo final válido \n(Entre las 08:00 y 16:00 hrs según el horario de la UTEZ)",
                             confirmButtonText: "Revisar",
                             confirmButtonColor: "#dc3545",
                         });
@@ -156,7 +167,7 @@
                     Swal.fire({
                         icon: "error",
                         title: "Error",
-                        text: "Ingresa un tiempo inicial válido (Entre las 07:00 y 15:00 hrs según el horario de la UTEZ",
+                        text: "Ingresa un tiempo inicial válido \n(Entre las 07:00 y 15:00 hrs según el horario de la UTEZ)",
                         confirmButtonText: "Revisar",
                         confirmButtonColor: "#dc3545",
                     });

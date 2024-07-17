@@ -83,7 +83,7 @@ public class ScheduleDao extends DataBaseConnection {
         return List.of();
     }
 
-    public void updateUser(ScheduleBean sch)throws SQLException {
+    public void updateSchedule(ScheduleBean sch)throws SQLException {
         try{
             CallableStatement cs = createConnection().prepareCall("UPDATE schedule SET class_id=?, quarter_id=?, room_id=?, day=?, starttime=?, endtime=? WHERE id=?");
             cs.setInt(1, sch.getClasse().getId());

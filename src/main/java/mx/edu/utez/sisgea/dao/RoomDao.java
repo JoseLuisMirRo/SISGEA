@@ -38,11 +38,12 @@ public class RoomDao extends DataBaseConnection {
             ResultSet rs = st.getResultSet();
 
             if (rs.next()){
+                int idE = rs.getInt("id");
                 int roomtype_id = rs.getInt("roomtype_id");
                 int building_id = rs.getInt("building_id");
                 int number = rs.getInt("number");
                 boolean status = rs.getBoolean("status");
-                room = new RoomBean(roomtypeDao.getRoomtype(roomtype_id), buildingDao.getBuilding(building_id), number,status);
+                room = new RoomBean(idE,roomtypeDao.getRoomtype(roomtype_id), buildingDao.getBuilding(building_id), number,status);
             }
             st.close();
             rs.close();
