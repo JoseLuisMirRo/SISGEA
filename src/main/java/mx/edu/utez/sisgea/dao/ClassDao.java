@@ -50,16 +50,16 @@ public class ClassDao extends DataBaseConnection {
         return classe;
     }
 
-    public List<ClassBean> getAllClasses(int programId) {
+    public List<ClassBean> getAllClasses() {
         ProgramDao programDao = new ProgramDao();
         try{
             List<ClassBean> classesList = new ArrayList<ClassBean>();
-            PreparedStatement ps = createConnection().prepareCall("SELECT * FROM class WHERE program_id = ?");
-            ps.setInt(1, programId);
+            PreparedStatement ps = createConnection().prepareCall("SELECT * FROM class");
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 int id=rs.getInt("id");
                 String name=rs.getString("name");
+                int programId=rs.getInt("program_id");
                 boolean status = rs.getBoolean("status");
                 classesList.add(new ClassBean(id,name,programDao.getProgram(programId),status));
             }

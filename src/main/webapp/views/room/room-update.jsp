@@ -18,11 +18,11 @@
                 <form id="updateRoomForm" action="<%=request.getContextPath()%>/roomServlet" method="post">
                     <input id="updateRoomId" type="hidden" name="updateRoomId" class="form-control" />
                     <label for="updateBuilding">Edificio:</label>
-                    <select id="updateBuilding" name="updateBuildingId"></select>
-                    <br><br>
+                    <select class="form-select" id="updateBuilding" name="updateBuildingId"></select>
+                    <br><
                     <label for="updateRoomType">Tipo de espacio:</label>
-                    <select id="updateRoomType" name="updateRoomTypeId"></select>
-                    <br><br>
+                    <select class="form-select" id="updateRoomType" name="updateRoomTypeId"></select>
+                    <br>
                     <label for="updateNumber">Número:</label>
                     <input type="number" name="updateNumber" min="0" id="updateNumber" placeholder="Numero de espacio"/>
                     <input type="text" name="action" value="update" hidden/>

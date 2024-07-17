@@ -45,7 +45,7 @@ public class QuarterDao extends DataBaseConnection {
         return quarter;
     }
 
-    public List<QuarterBean> getAllQuarters() throws SQLException {
+    public List<QuarterBean> getAllQuarters() {
         List<QuarterBean> quarters = new ArrayList<QuarterBean>();
         try {
             PreparedStatement ps = createConnection().prepareStatement("select * from quarter");
@@ -56,7 +56,7 @@ public class QuarterDao extends DataBaseConnection {
                 String name = rs.getString("name");
                 Date startDate = rs.getDate("startdate");
                 Date endDate = rs.getDate("enddate");
-                quarters.add(new QuarterBean(id, name, startDate, endDate));
+                quarters.add(new QuarterBean(id,name,startDate,endDate));
             }
             ps.close();
             rs.close();

@@ -17,11 +17,11 @@
             <div class="modal-body">
                 <form id ="registerRoomForm" action="<%=request.getContextPath()%>/roomServlet" method="post">
                     <label for="building">Edificio:</label>
-                    <select id="building" name="buildingId"></select>
-                    <br><br>
+                    <select class="form-select" id="building" name="buildingId"></select>
+                    <br>
                     <label for="roomType">Tipo de espacio:</label>
-                    <select id="roomType" name="roomTypeId"></select>
-                    <br><br>
+                    <select class="form-select" id="roomType" name="roomTypeId"></select>
+                    <br>
                     <label for="number">Número:</label>
                     <input type="number" name="number" min="0" id="number" placeholder="Numero de espacio"/>
                     <input type="text" name="action" value="add" hidden/>
@@ -46,10 +46,10 @@
             const roomTypesElement = document.getElementById("roomType");
             const buildingsElement = document.getElementById("building");
 
-            while (roomTypesElement.firstChild) {
+            while(roomTypesElement.firstChild){
                 roomTypesElement.removeChild(roomTypesElement.firstChild);
             }
-            while (buildingsElement.firstChild) {
+            while(buildingsElement.firstChild){
                 buildingsElement.removeChild(buildingsElement.firstChild);
             }
 
