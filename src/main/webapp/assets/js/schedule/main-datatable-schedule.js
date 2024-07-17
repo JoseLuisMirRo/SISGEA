@@ -38,13 +38,15 @@ const listSchedules=async()=>{
 
         let content= ``;
         schedules.forEach((sch,index) => {
+            const startTime = deleteSeconds(sch.startTime);
+            const endTime = deleteSeconds(sch.endTime);
             content+=`
             <tr>
                 <td>${sch.classe.name}</td>
-                <td>${sch.room.roomType.abbreviation}${sch.room.number}${sch.room.building.abbreviation}</td>
+                <td>${sch.room.roomType.abbreviation}${sch.room.number} - ${sch.room.building.name}</td>
                 <td>${sch.day}</td>
-                <td>${sch.startTime}</td>
-                <td>${sch.endTime}</td>
+                <td>${startTime}</td>
+                <td>${endTime}</td>
                 <td>
                     <button class="btn btn-primary btn-sm edit-btn" 
                     data-id="${sch.id}"
@@ -71,4 +73,13 @@ const listSchedules=async()=>{
 window.addEventListener('load',async()=>{
     await initDataTable();
 });
+
+function deleteSeconds(timeString) {
+    const parts = timeString.split(' '); //DIVIDIMOS POR ESPACIOS PARA SEPARAR AM Y PM
+    const time = parts[0] //OBTENEMOS LA PARTE SOLO CON LA HORA
+    const period = parts[1] //OBTENEMOS LA PARTE SOLO CON AM Y PM
+
+    const [hour, minute] = time.split(':'); //DIVIDIMOS HORAS Y MINUTOS - SEGUNDOS SE DESPRECIAN
+    return `${hour}:${minute} ${period}`;
+}
 

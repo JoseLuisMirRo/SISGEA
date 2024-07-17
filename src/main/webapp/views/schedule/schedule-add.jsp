@@ -97,7 +97,7 @@
             rooms.forEach((room) => {
                 const option = document.createElement("option");
                 option.value = room.id;
-                option.textContent = `\${room.roomType.name} \${room.number} \${room.building.name}`;
+                option.textContent = `\${room.roomType.name} \${room.number} - \${room.building.name}`;
                 roomsElement.appendChild(option);
             });
         });
