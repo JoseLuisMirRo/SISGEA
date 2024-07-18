@@ -39,7 +39,7 @@
                     <br><br>
                     <label for="updateEndtime">Hora de fin:</label>
                     <input type="time" name="updateEndtime" id="updateEndtime" min="08:00" max="21:00"/>
-                    <input type="text" name="action" value="add" hidden/>
+                    <input type="text" name="action" value="update" hidden/>
                 </form>
             </div>
             <div class="modal-footer">
@@ -119,6 +119,87 @@
             document.getElementById('updateEndtime').value = endtime24;
 
         });
+    });
+
+    document.getElementById("submitButtonUpdate").addEventListener("click", () =>{
+        const form = document.getElementById("updateScheduleForm");
+        const {updateQuarter, updateClass, updateRoom, updateDay, updateStarttime, updateEndtime} = form.elements;
+
+        if(updateStarttime.value.split(":").length === 2){
+            updateStarttime.value += ":00";
+        }
+
+        if(updateEndtime.value.split(":").length === 2){
+            updateEndtime.value += ":00";
+        }
+
+
+
+        //ENTRE SEMANA
+        const initialStartTime = "07:00:00";
+        const finalStartTime = "20:00:00";
+        const initialEndTime = "08:00:00"
+        const finalEndTime = "21:00:00";
+
+        //FIN DE SEMANA
+        const wfinalStartTime = "15:00:00";
+        const wfinalEndTime = "16:00:00";
+
+        if (updateQuarter.value && updateClass.value && updateRoom.value && updateDay.value && updateStarttime.value && updateEndtime.value) {
+            if (updateDay.value != 6) {
+                if (updateStarttime.value >= initialStartTime && updateStarttime.value <= finalStartTime) {
+                    if (updateEndtime.value >= initialEndTime && updateEndtime.value <= finalEndTime) {
+                        form.submit();
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Ingresa un tiempo final válido \n(Entre las 08:00 y 21:00 hrs según el horario de la UTEZ)",
+                            confirmButtonText: "Revisar",
+                            confirmButtonColor: "#dc3545",
+                        });
+                    }
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Ingresa un tiempo inicial válido \n(Entre las 07:00 y 20:00 hrs según el horario de la UTEZ)",
+                        confirmButtonText: "Revisar",
+                        confirmButtonColor: "#dc3545",
+                    });
+                }
+            } else {
+                if (updateStarttime.value >= initialStartTime && updateStarttime.value <= wfinalStartTime) {
+                    if (updateEndtime.value >= initialEndTime && updateEndtime.value <= wfinalEndTime) {
+                        form.submit();
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Ingresa un tiempo final válido \n(Entre las 08:00 y 16:00 hrs según el horario de la UTEZ)",
+                            confirmButtonText: "Revisar",
+                            confirmButtonColor: "#dc3545",
+                        });
+                    }
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Ingresa un tiempo inicial válido \n(Entre las 07:00 y 15:00 hrs según el horario de la UTEZ)",
+                        confirmButtonText: "Revisar",
+                        confirmButtonColor: "#dc3545",
+                    });
+                }
+            }
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Completa todos los campos",
+                confirmButtonText: "Revisar",
+                confirmButtonColor: "#dc3545",
+            });
+        }
     });
 
     const hourTo24 = (hour12) => {

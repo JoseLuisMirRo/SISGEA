@@ -70,19 +70,34 @@ public class ScheduleServlet extends HttpServlet {
 
                 case "update":
                     try{
-                        scheduleBean.setId(Integer.parseInt(req.getParameter("updateScheduleId")));
-                        scheduleBean.setClasse(classDao.getClass(Integer.parseInt(req.getParameter("classId"))));
-                        scheduleBean.setQuarter(quarterDao.getQuarter(Integer.parseInt(req.getParameter("quarterId"))));
-                        scheduleBean.setRoom(roomDao.getRoom(Integer.parseInt(req.getParameter("roomId"))));
-                        scheduleBean.setDay(Day.numbToDay(Integer.parseInt(req.getParameter("dayId"))));
-                        scheduleBean.setStartTime(Time.valueOf(req.getParameter("starttime")));
-                        scheduleBean.setEndTime(Time.valueOf(req.getParameter("endtime")));
+                        int updateScheduleId = Integer.parseInt(req.getParameter("updateScheduleId"));
+                        int classId = Integer.parseInt(req.getParameter("updateClassId"));
+                        int quarterId = Integer.parseInt(req.getParameter("updateQuarterId"));
+                        int roomId = Integer.parseInt(req.getParameter("updateRoomId"));
+                        int dayId = Integer.parseInt(req.getParameter("updateDayId"));
+                        Time startTime = Time.valueOf(req.getParameter("updateStarttime"));
+                        Time endTime = Time.valueOf(req.getParameter("updateEndtime"));
+
+                        //VALIDAMOS HORA FINAL>HORA INICIO - EN SERVLET POR QUE TAMBIEN IRÁ CLIENT-SIDE Y SI VA CLIENT SIDE
+                        //NO ES NECESARIO VALIDAR EN PROCEDIMIENTO ALMACENADO
+                        if (endTime.before(startTime)){
+                            throw new IllegalArgumentException("startAfterEnd");
+                        }
+
+                        scheduleBean.setId(updateScheduleId);
+                        scheduleBean.setClasse(classDao.getClass(classId));
+                        scheduleBean.setQuarter(quarterDao.getQuarter(quarterId));
+                        scheduleBean.setRoom(roomDao.getRoom(roomId));
+                        scheduleBean.setDay(Day.numbToDay(dayId));
+                        scheduleBean.setStartTime(startTime);
+                        scheduleBean.setEndTime(endTime);
                         scheduleDao.updateSchedule(scheduleBean);
                         resp.sendRedirect(req.getContextPath() + "/scheduleServlet?status=updateOk");
 
                     }catch (Exception e){
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/scheduleServlet?status=updateError");
+                        String errorMessage = e.getMessage();
+                        resp.sendRedirect(req.getContextPath() + "/scheduleServlet?status=updateError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
                     }
                     break;
 
