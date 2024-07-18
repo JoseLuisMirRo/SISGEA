@@ -1,12 +1,22 @@
 package mx.edu.utez.sisgea.model;
 
 public enum Day {
-    Lunes,
-    Martes,
-    Miercoles,
-    Jueves,
-    Viernes,
-    Sabado;
+    Lunes(1),
+    Martes(2),
+    Miercoles(3),
+    Jueves(4),
+    Viernes(5),
+    Sabado(6);
+
+    private final int dayNumber;
+
+    Day(int dayNumber) {
+        this.dayNumber = dayNumber;
+    }
+
+    public int getDayNumber() {
+        return dayNumber;
+    }
 
     public static Day numbToDay(int n) {
         switch (n) {
@@ -19,4 +29,5 @@ public enum Day {
             default: return null;
         }
     }
+
 }

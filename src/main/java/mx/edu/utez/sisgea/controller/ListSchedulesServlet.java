@@ -1,17 +1,18 @@
 package mx.edu.utez.sisgea.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import mx.edu.utez.sisgea.dao.ScheduleDao;
+import mx.edu.utez.sisgea.model.Day;
 import mx.edu.utez.sisgea.model.ScheduleBean;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.util.List;
 
 @WebServlet("/data/schedules")
@@ -23,8 +24,18 @@ public class ListSchedulesServlet extends HttpServlet {
 
         ScheduleDao schDao = new ScheduleDao();
         List<ScheduleBean> schList = schDao.getAllSchedules();
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        //Serializacion del JSON
+        Gson gson = new GsonBuilder().registerTypeAdapter(Day.class, new JsonSerializer<Day>() {
+                    @Override
+                    public JsonElement serialize(Day day, Type type, JsonSerializationContext jsonSerializationContext) {
+                        JsonObject jsonDay = new JsonObject();
+                        jsonDay.addProperty("id", day.getDayNumber()); // Obtener el número del día
+                        jsonDay.addProperty("name", day.name()); // Obtener el nombre del día
+                        return jsonDay;
+                    }
+                })
+                .setPrettyPrinting()
+                .create();
 
         String jsonArray = gson.toJson(schList);
 

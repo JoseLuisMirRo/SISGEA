@@ -27,7 +27,7 @@
 <jsp:include page="/views/schedule/schedule-add.jsp"></jsp:include>
 
 <!--MODAL ACTUALIZAR HORARIO-->
-
+<jsp:include page="/views/schedule/schedule-update.jsp"></jsp:include>
 
 <!--MODAL ELIMINAR HORARIO-->
 

@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<body>
 <!-- Modal -->
 <div class="modal fade" id="updateRoomModal" tabindex="-1" aria-labelledby="updateRoomTitle" aria-hidden="true">
     <div class="modal-dialog">

@@ -75,7 +75,7 @@ window.addEventListener('load',async()=>{
     await initDataTable();
 });
 
-//UTILIZANDO JQUERY OBTENEMOS EL DATOS DEL USUARIO CUANDO SE PULSA EL BOTÓN DE EDITAR, PARA DESPUES ENVIARLO AL MODAL. (se podría obtener solo id y lo demás con un select).
+//UTILIZANDO JQUERY OBTENEMOS DATOS DEL USUARIO CUANDO SE PULSA EL BOTÓN DE EDITAR, PARA DESPUES ENVIARLO AL MODAL. (se podría obtener solo id y lo demás con un select).
 $(document).ready(function() {
     $('#datatable_rooms').on('click', '.edit-btn', function () {
         const id = $(this).data('id');
