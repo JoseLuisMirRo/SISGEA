@@ -105,4 +105,10 @@ $(document).ready(function(){
 
         $('#scheduleUpdateModal').modal('show');
     });
+
+    $('#datatable_schedules').on('click', '.delete-btn', function () {
+        const id = $(this).data('id');
+        $('#deleteScheduleId').val(id);
+        $('#deleteScheduleModal').modal('show');
+    });
 });

@@ -94,7 +94,17 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher rd = req.getRequestDispatcher("/views/login/login.jsp");
+        HttpSession activeSession = req.getSession();
+        LoginBean user = (LoginBean) activeSession.getAttribute("activeUser");
+        RequestDispatcher rd;
+
+        if(user==null){
+            rd = req.getRequestDispatcher("/views/login/login.jsp");
+        }else if (user.getRole()==null){
+            rd = req.getRequestDispatcher("/views/login/login-multirole.jsp");
+        }else {
+            rd = req.getRequestDispatcher("/views/index.jsp");
+        }
         rd.forward(req, resp);
     }
 }

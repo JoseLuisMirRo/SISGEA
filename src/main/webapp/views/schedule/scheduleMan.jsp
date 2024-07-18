@@ -30,7 +30,7 @@
 <jsp:include page="/views/schedule/schedule-update.jsp"></jsp:include>
 
 <!--MODAL ELIMINAR HORARIO-->
-
+<jsp:include page="/views/schedule/schedule-delete.jsp"></jsp:include>
 
 <!--STATUS DE LA PAGINA-->
 <%
