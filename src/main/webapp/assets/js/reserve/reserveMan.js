@@ -6,7 +6,7 @@ if (status === "registerError") {
     if (errorMessage==="repeated"){
         textShow = "Existe un registro con los mismso datos"
     }else if (errorMessage==="conflict"){
-        textShow = "Horario de clase traslapa con otra clase"
+        textShow = "Horario de reserva traslapa con otra reserva"
     }else if (errorMessage==="startAfterEnd"){
         textShow = "Hora de inicio no puede ir antes de hora final"
     }else {
@@ -14,14 +14,14 @@ if (status === "registerError") {
     }
     Swal.fire({
         icon: "error",
-        title: "Error, no se registró el horario",
+        title: "Error, no se registró la reserva",
         text: textShow,
         confirmButtonText: "Reintentar",
         confirmButtonColor: "#dc3545",
     }).then((result) => {
         if (result.isConfirmed) {
             const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/scheduleServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+            window.location.href = contextPath + "/reserveServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
         }
     });
 }
@@ -34,7 +34,7 @@ else if (status === "registerOk") {
     }).then((result) => {
         if (result.isConfirmed) {
             const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/scheduleServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+            window.location.href = contextPath + "/reserveServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
         }
     });
 }
@@ -45,7 +45,7 @@ else if (status === "updateError"){
     if (errorMessage==="repeated"){
         textShow = "Existe un registro con los mismso datos"
     }else if (errorMessage==="conflict"){
-        textShow = "Horario de clase traslapa con otra clase"
+        textShow = "Horario de reserva traslapa con otra reserva"
     }else if (errorMessage==="startAfterEnd"){
         textShow = "Hora de inicio no puede ir antes de hora final"
     }else {
@@ -53,14 +53,14 @@ else if (status === "updateError"){
     }
     Swal.fire({
         icon: "error",
-        title: "Error, no se actualizó el horario",
+        title: "Error, no se actualizó la reserva",
         text: textShow,
         confirmButtonText: "Reintentar",
         confirmButtonColor: "#dc3545",
     }).then((result) => {
         if (result.isConfirmed) {
             const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/scheduleServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+            window.location.href = contextPath + "/reserveServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
         }
     });
 }
@@ -73,34 +73,7 @@ else if (status === "updateOk"){
     }).then((result) => {
         if (result.isConfirmed) {
             const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/scheduleServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
-    });
-}
-else if (status === "deleteError"){
-    Swal.fire({
-        icon: "error",
-        title: "Error, no se eliminó el horario",
-        text: "Vuelva a intentarlo",
-        confirmButtonText: "Reintentar",
-        confirmButtonColor: "#dc3545",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/scheduleServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
-    });
-}
-else if (status === "deleteOk"){
-    Swal.fire({
-        icon: "success",
-        title: "Horario eliminado con éxito",
-        confirmButtonText: "Ok",
-        confirmButtonColor: "#208c7d",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/scheduleServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+            window.location.href = contextPath + "/reserveServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
         }
     });
 }

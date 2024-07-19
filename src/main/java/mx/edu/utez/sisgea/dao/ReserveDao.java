@@ -12,7 +12,7 @@ import java.util.List;
 public class ReserveDao extends DataBaseConnection {
     public void insertReserve(ReserveBean reserve) throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("INSERT INTO reserve (user_id, room_id, description, date, starttime, endtime,status) VALUES (?,?,?,?,?,?)");
+            CallableStatement cs = createConnection().prepareCall("call insert_reserve(?,?,?,?,?,?,?)");
             cs.setInt(1, reserve.getUser().getId());
             cs.setInt(2,reserve.getRoom().getId());
             cs.setString(3,reserve.getDescription());
@@ -103,11 +103,11 @@ public class ReserveDao extends DataBaseConnection {
         }
     }
 
-    public void updateStatus(ReserveBean reserve) throws SQLException {
+    public void updateStatus(int id, Status status) throws SQLException {
         try{
             PreparedStatement ps = createConnection().prepareCall("UPDATE reserve SET status=? WHERE id=?");
-            ps.setString(1, reserve.getStatus().name());
-            ps.setInt(2, reserve.getId());
+            ps.setString(1, status.name());
+            ps.setInt(2, id);
             ps.execute();
             ps.close();
         }catch (SQLException e){

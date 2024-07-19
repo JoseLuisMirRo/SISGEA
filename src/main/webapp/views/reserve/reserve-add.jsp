@@ -1,45 +1,33 @@
 <%--
   Created by IntelliJ IDEA.
   User: JLuis
-  Date: 16/07/2024
-  Time: 01:34 PM
+  Date: 18/07/2024
+  Time: 21:16
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<!-- Modal -->
-<div class="modal fade" id="scheduleRegisterModal" tabindex="-1" aria-labelledby="schRegisterTitle" aria-hidden="true">
+<div class="modal fade" id="reserveRegisterModal" tabindex="-1" aria-labelledby="reserveRegisterTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="schRegisterTitle">Registrar nuevo horario</h1>
+                <h1 class="modal-title fs-5" id="reserveRegisterTitle">Registrar nuevo horario</h1>
             </div>
             <div class="modal-body">
-                <form id ="registerScheduleForm" action="<%=request.getContextPath()%>/scheduleServlet" method="post">
-                    <label for="quarter">Cuatrimestre:</label>
-                    <select class="form-select" id="quarter" name="quarterId"></select>
-                    <br>
-                    <label for="classe">Clase:</label>
-                    <select class="form-select" id="classe" name="classId"></select>
-                    <br>
+                <form id ="registerReserveForm" action="<%=request.getContextPath()%>/reserveServlet" method="post">
                     <label for="room">Espacio:</label>
                     <select class="form-select" id="room" name="roomId"></select>
                     <br>
-                    <label for="day">Día:</label>
-                    <select class="form-select" id="day" name="dayId">
-                        <option value="1">Lunes</option>
-                        <option value="2">Martes</option>
-                        <option value="3">Miércoles</option>
-                        <option value="4">Jueves</option>
-                        <option value="5">Viernes</option>
-                        <option value="6">Sábado</option>
-                    </select>
+                    <label for="description">Descripcion:</label>
+                    <input type="text" class="form-control" name="description" id="description"/>
+                    <br>
+                    <label for="date">Fecha:</label>
+                    <input type="date" class="form-control" name="date" id="date"/>
                     <br>
                     <label for="starttime">Hora de inicio:</label>
-                    <input type="time" name="starttime" id="starttime" min="07:00" max="20:00"/>
-                    <br><br>
+                    <input type="time" class="form-control" name="starttime" id="starttime" min="07:00" max="20:00"/>
+                    <br>
                     <label for="endtime">Hora de fin:</label>
-                    <input type="time" name="endtime" id="endtime" min="08:00" max="21:00"/>
+                    <input type="time" name="endtime" class="form-control" id="endtime" min="08:00" max="21:00"/>
                     <input type="text" name="action" value="add" hidden/>
                 </form>
             </div>
@@ -50,51 +38,31 @@
         </div>
     </div>
 </div>
-
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const scheduleRegisterModal = document.getElementById('scheduleRegisterModal');
+        const reserveRegisterModal = document.getElementById('reserveRegisterModal');
 
-        scheduleRegisterModal.addEventListener('shown.bs.modal', async ()=> {
-            const [response1, response2, response3] = await Promise.all([
-                fetch('http://localhost:8080/SISGEA_war_exploded/data/quarters'),
-                fetch('http://localhost:8080/SISGEA_war_exploded/data/classes'),
-                fetch('http://localhost:8080/SISGEA_war_exploded/data/rooms')
-            ]);
+        reserveRegisterModal.addEventListener('shown.bs.modal', async ()=> {
+            const response = await fetch('http://localhost:8080/SISGEA_war_exploded/data/rooms');
+            const data = await response.json();
 
-            const quarters = await response1.json();
-            const classes = await response2.json();
-            const rooms = await response3.json();
-
-            const quartersElement = document.getElementById("quarter");
-            const classesElement = document.getElementById("classe");
             const roomsElement = document.getElementById("room");
 
-            while(quartersElement.firstChild){
-                quartersElement.removeChild(quartersElement.firstChild);
-            }
-            while(classesElement.firstChild){
-                classesElement.removeChild(classesElement.firstChild);
-            }
             while(roomsElement.firstChild){
                 roomsElement.removeChild(roomsElement.firstChild);
             }
-
-            quarters.forEach((quarter) => {
-                const option = document.createElement("option");
-                option.value = quarter.id;
-                option.textContent = quarter.name;
-                quartersElement.appendChild(option);
+            //ORDENAR OPCIONES
+            data.sort((a, b) => {
+                if (a.roomType.name > b.roomType.name) return 1;
+                if (a.roomType.name < b.roomType.name) return -1;
+                if (a.number > b.number) return 1;
+                if (a.number < b.number) return -1;
+                if (a.building.name > b.building.name) return 1;
+                if (a.building.name < b.building.name) return -1;
+                return 0;
             });
 
-            classes.forEach((classe) => {
-                const option = document.createElement("option");
-                option.value = classe.id;
-                option.textContent = classe.name;
-                classesElement.appendChild(option);
-            });
-
-            rooms.forEach((room) => {
+            data.forEach((room) => {
                 const option = document.createElement("option");
                 option.value = room.id;
                 option.textContent = `\${room.roomType.name} \${room.number} - \${room.building.name}`;
@@ -104,8 +72,8 @@
     });
 
     document.getElementById("submitButtonAdd").addEventListener("click", () => {
-        const form = document.getElementById("registerScheduleForm");
-        const {quarter, classe, room, day, starttime, endtime} = form.elements;
+        const form = document.getElementById("registerReserveForm");
+        const {roomId, description, date, starttime, endtime} = form.elements;
 
         if(starttime.value.split(":").length === 2){
             starttime.value += ":00";
@@ -125,8 +93,12 @@
         const wfinalStartTime = "15:00:00";
         const wfinalEndTime = "16:00:00";
 
-        if (quarter.value && classe.value && room.value && day.value && starttime.value && endtime.value) {
-            if (day.value != 6) {
+        //PASAR DATE A OBJETO DATE
+        const dateobjetc = new Date(date.value);
+        const day = dateobjetc.getDay();
+
+        if (roomId.value && description.value && date.value && starttime.value && endtime.value) {
+            if (day === 6) {
                 if (starttime.value >= initialStartTime && starttime.value <= finalStartTime) {
                     if (endtime.value >= initialEndTime && endtime.value <= finalEndTime) {
                         form.submit();
@@ -181,6 +153,6 @@
             });
         }
     });
-
 </script>
-</html>
+
+

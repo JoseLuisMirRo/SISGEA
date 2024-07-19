@@ -51,7 +51,7 @@
                         <li><a class="dropdown-item" href="${pageContext.request.contextPath}/userServlet">Gestionar usuarios</a></li>
                         <li><a class="dropdown-item" href="${pageContext.request.contextPath}/roomServlet">Gestionar espacios</a></li>
                         <li><a class="dropdown-item" href="${pageContext.request.contextPath}/scheduleServlet">Gestionar horarios</a></li>
-                        <li><a class="dropdown-item" href="#">Gestionar reservas</a></li>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/reserveServlet">Gestionar reservas</a></li>
                         <li><a class="dropdown-item" href="#">Gestionar feriados</a></li>
                         <% } else if (2==userRole) {%>
                         <li><a class="dropdown-item" href="#">Gestionar reservas</a></li>
