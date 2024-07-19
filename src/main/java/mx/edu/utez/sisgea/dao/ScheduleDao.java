@@ -83,6 +83,35 @@ public class ScheduleDao extends DataBaseConnection {
         return List.of();
     }
 
+    public List<ScheduleBean> getAllRoomSchedules(int roomId) {
+        ClassDao classDao = new ClassDao();
+        QuarterDao quarterDao = new QuarterDao();
+        RoomDao roomDao = new RoomDao();
+        List<ScheduleBean> schList = new ArrayList<ScheduleBean>();
+        try{
+            CallableStatement cs = createConnection().prepareCall("SELECT * FROM schedule WHERE room_id=?");
+            cs.setInt(1, roomId);
+            cs.execute();
+            ResultSet rs = cs.getResultSet();
+            while(rs.next()){
+                int id=rs.getInt("id");
+                int class_id = rs.getInt("class_id");
+                int quarter_id = rs.getInt("quarter_id");
+                int room_id = rs.getInt("room_id");
+                Day day = Day.valueOf(rs.getString("day"));
+                Time starttime = rs.getTime("starttime");
+                Time endtime = rs.getTime("endtime");
+                schList.add(new ScheduleBean(id,classDao.getClass(class_id),quarterDao.getQuarter(quarter_id),roomDao.getRoom(room_id),day,starttime,endtime));
+            }
+            cs.close();
+            rs.close();
+            return schList;
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return List.of();
+    }
+
     public void updateSchedule(ScheduleBean sch)throws SQLException {
         try{
             CallableStatement cs = createConnection().prepareCall("call update_schedule(?,?,?,?,?,?,?)");

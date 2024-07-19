@@ -25,7 +25,7 @@ public class QuarterDao extends DataBaseConnection {
         }
     }
 
-    public QuarterBean getQuarter(int id) throws SQLException {
+    public QuarterBean getQuarter(int id) {
         QuarterBean quarter = null;
         try{
             PreparedStatement ps = createConnection().prepareStatement("select * from quarter where id=?");

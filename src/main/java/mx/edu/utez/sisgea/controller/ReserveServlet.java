@@ -7,9 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import mx.edu.utez.sisgea.dao.ReserveDao;
-import mx.edu.utez.sisgea.dao.RoomDao;
-import mx.edu.utez.sisgea.dao.UserDao;
+import mx.edu.utez.sisgea.dao.*;
 import mx.edu.utez.sisgea.model.*;
 
 import java.io.IOException;
@@ -17,6 +15,9 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.DayOfWeek;
+import java.util.List;
+import java.time.LocalDate;
 
 @WebServlet("/reserveServlet")
 public class ReserveServlet extends HttpServlet {
@@ -50,6 +51,14 @@ public class ReserveServlet extends HttpServlet {
                     }
 
                     reserveBean = new ReserveBean(userDao.getUser(userId),roomDao.getRoom(roomId),description,date,startTime,endTime,status);
+
+                    ScheduleDao scheduleDao = new ScheduleDao();
+                    List<ScheduleBean> schedules = scheduleDao.getAllRoomSchedules(roomId);
+                    boolean isValid = validateOverlap(reserveBean, schedules);
+
+                    if(!isValid){
+                        throw new IllegalArgumentException("overlap");
+                    }
                     reserveDao.insertReserve(reserveBean);
                     resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=registerOk");
 
@@ -124,5 +133,23 @@ public class ReserveServlet extends HttpServlet {
             rd = req.getRequestDispatcher("/views/login/login.jsp");
         }
         rd.forward(req, resp);
+    }
+
+    //MÉTODO PARA VALIDAR QUE NO SE SOLAPEN LAS RESERVAS
+    private boolean validateOverlap(ReserveBean reserve, List<ScheduleBean> schedules) {
+        LocalDate reserveDate = reserve.getDate().toLocalDate(); //Convertimos la fecha de la reserva a LocalDate
+        DayOfWeek reserveDayOfWeek = reserveDate.getDayOfWeek(); //Obtenemos el día de la semana de la reserva
+        int dayNumber = reserveDayOfWeek.getValue(); //Obtenemos el número del día de la semana
+
+        Day reserveDay = Day.numbToDay(dayNumber); //Convertimos el número del día de la semana a un objeto de tipo Day - Esto quedó raro, podría haber usado el DayOfWeek al crear mi schedule en lugar de la clase Enum Day
+
+        for(ScheduleBean schedule : schedules) {
+            if (schedule.getDay().equals(reserveDay)) {
+                if (!reserve.getEndTime().before(schedule.getStartTime()) && !reserve.getStartTime().after(schedule.getEndTime())) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
