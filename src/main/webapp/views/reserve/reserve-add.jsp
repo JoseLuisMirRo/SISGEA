@@ -10,7 +10,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="reserveRegisterTitle">Registrar nuevo horario</h1>
+                <h1 class="modal-title fs-5" id="reserveRegisterTitle">Registrar nueva reserva</h1>
             </div>
             <div class="modal-body">
                 <form id ="registerReserveForm" action="<%=request.getContextPath()%>/reserveServlet" method="post">

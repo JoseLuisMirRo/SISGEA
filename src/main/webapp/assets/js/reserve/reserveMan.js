@@ -7,8 +7,10 @@ if (status === "registerError") {
         textShow = "Existe un registro con los mismso datos"
     }else if (errorMessage==="conflict"){
         textShow = "Horario de reserva traslapa con otra reserva"
-    }else if (errorMessage==="startAfterEnd"){
+    }else if (errorMessage==="startAfterEnd") {
         textShow = "Hora de inicio no puede ir antes de hora final"
+    }else if (errorMessage==="overlaps"){
+        textShow = "Horario de reserva traslapa con una clase"
     }else {
         textShow = "Error del sistema, por favor contacte al administrador"
     }
@@ -48,6 +50,8 @@ else if (status === "updateError"){
         textShow = "Horario de reserva traslapa con otra reserva"
     }else if (errorMessage==="startAfterEnd"){
         textShow = "Hora de inicio no puede ir antes de hora final"
+    }else if (errorMessage==="overlaps"){
+        textShow = "Horario de reserva traslapa con una clase"
     }else {
         textShow = "Error del sistema, por favor contacte al administrador"
     }

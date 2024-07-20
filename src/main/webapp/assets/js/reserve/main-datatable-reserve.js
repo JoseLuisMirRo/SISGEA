@@ -92,3 +92,30 @@ function deleteSeconds(timeS) {
     const [hour, minute] = time.split(':'); //DIVIDIMOS HORAS Y MINUTOS - SEGUNDOS SE DESPRECIAN
     return `${hour}:${minute} ${period}`;
 }
+
+$(document).ready(function () {
+    $('#datatable_reserves').on('click', '.edit-btn', function () {
+        const id = $(this).data('id');
+        const roomId = $(this).data('roomid');
+        const date = $(this).data('date');
+        const description = $(this).data('description');
+        const startTime = $(this).data('startime');
+        const endTime = $(this).data('endtime');
+
+        $('#reserveUpdateModal').attr('data-id', id);
+        $('#reserveUpdateModal').attr('data-roomid', roomId);
+        $('#reserveUpdateModal').attr('data-date', date);
+        $('#reserveUpdateModal').attr('data-description', description);
+        $('#reserveUpdateModal').attr('data-starttime', startTime);
+        $('#reserveUpdateModal').attr('data-endtime', endTime);
+
+        $('#reserveUpdateModal').modal('show');
+    });
+
+    $('#datatable_reserves').on('click', '.delete-btn', function () {
+        const id = $(this).data('id');
+        $('#idDelete').val(id);
+
+        $('#deleteModal').modal('show');
+    });
+});

@@ -87,7 +87,7 @@ public class ReserveDao extends DataBaseConnection {
 
     public void updateReserve(ReserveBean reserve) throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("UPDATE reserve SET room_id=?,description=?,date=?,starttime=?,endtime=? WHERE id=? ");
+            CallableStatement cs = createConnection().prepareCall("call update_reserve(?,?,?,?,?,?)");
             cs.setInt(1, reserve.getRoom().getId());
             cs.setString(2, reserve.getDescription());
             cs.setDate(3, reserve.getDate());

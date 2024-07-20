@@ -27,7 +27,7 @@
 <jsp:include page="/views/reserve/reserve-add.jsp"></jsp:include>
 
 <!--MODAL ACTUALIZAR RESERVA-->
-
+<jsp:include page="/views/reserve/reserve-update.jsp"></jsp:include>
 
 <!--MODAL ELIMINAR RESERVA-->
 

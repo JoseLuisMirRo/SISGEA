@@ -133,8 +133,6 @@
             updateEndtime.value += ":00";
         }
 
-
-
         //ENTRE SEMANA
         const initialStartTime = "07:00:00";
         const finalStartTime = "20:00:00";
@@ -146,7 +144,7 @@
         const wfinalEndTime = "16:00:00";
 
         if (updateQuarter.value && updateClass.value && updateRoom.value && updateDay.value && updateStarttime.value && updateEndtime.value) {
-            if (updateDay.value != 6) {
+            if (updateDay.value !== 6) {
                 if (updateStarttime.value >= initialStartTime && updateStarttime.value <= finalStartTime) {
                     if (updateEndtime.value >= initialEndTime && updateEndtime.value <= finalEndTime) {
                         form.submit();

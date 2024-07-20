@@ -57,7 +57,7 @@ public class ReserveServlet extends HttpServlet {
                     boolean isValid = validateOverlap(reserveBean, schedules);
 
                     if(!isValid){
-                        throw new IllegalArgumentException("overlap");
+                        throw new IllegalArgumentException("overlaps");
                     }
                     reserveDao.insertReserve(reserveBean);
                     resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=registerOk");
@@ -72,19 +72,27 @@ public class ReserveServlet extends HttpServlet {
             case "update":
                 try{
                     int updateReserveId = Integer.parseInt(req.getParameter("updateReserveId"));
-                    int userId = sessionUserId;
-                    int roomId = Integer.parseInt(req.getParameter("roomId"));
-                    String description = req.getParameter("description");
-                    Date date = Date.valueOf(req.getParameter("date"));
-                    Time startTime = Time.valueOf(req.getParameter("starttime"));
-                    Time endTime = Time.valueOf(req.getParameter("endtime"));
+                    int roomId = Integer.parseInt(req.getParameter("updateRoomId"));
+                    String description = req.getParameter("updateDescription");
+                    Date date = Date.valueOf(req.getParameter("updateDate"));
+                    Time startTime = Time.valueOf(req.getParameter("updateStarttime"));
+                    Time endTime = Time.valueOf(req.getParameter("updateEndtime"));
                     Status status = Status.Active;
 
                     if(endTime.before(startTime)){
                         throw new IllegalArgumentException("startAfterEnd");
                     }
 
-                    reserveBean = new ReserveBean(updateReserveId,userDao.getUser(userId),roomDao.getRoom(roomId),description,date,startTime,endTime,status);
+                    reserveBean = new ReserveBean(updateReserveId,roomDao.getRoom(roomId),description,date,startTime,endTime,status);
+
+                    ScheduleDao scheduleDao = new ScheduleDao();
+                    List<ScheduleBean> schedules = scheduleDao.getAllRoomSchedules(roomId);
+                    boolean isValid = validateOverlap(reserveBean, schedules);
+
+                    if(!isValid){
+                        throw new IllegalArgumentException("overlaps");
+                    }
+
                     reserveDao.updateReserve(reserveBean);
                     resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=updateOk");
 
@@ -144,9 +152,13 @@ public class ReserveServlet extends HttpServlet {
         Day reserveDay = Day.numbToDay(dayNumber); //Convertimos el número del día de la semana a un objeto de tipo Day - Esto quedó raro, podría haber usado el DayOfWeek al crear mi schedule en lugar de la clase Enum Day
 
         for(ScheduleBean schedule : schedules) {
-            if (schedule.getDay().equals(reserveDay)) {
-                if (!reserve.getEndTime().before(schedule.getStartTime()) && !reserve.getStartTime().after(schedule.getEndTime())) {
-                    return false;
+            //Validamos que la fecha de la reserva esté dentro del rango de fechas de la cuatrimestre
+            if(schedule.getQuarter().getStartDate().toLocalDate().isBefore(reserveDate) && schedule.getQuarter().getEndDate().toLocalDate().isAfter(reserveDate)) {
+                //Validamos si el día de la reserva es igual al día del horario
+                if(schedule.getDay().equals(reserveDay)) {
+                    if(!reserve.getEndTime().before(schedule.getStartTime()) && !reserve.getStartTime().after(schedule.getEndTime())) {
+                        return false;
+                    }
                 }
             }
         }

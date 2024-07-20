@@ -27,6 +27,16 @@ public class ReserveBean {
         this.status = status;
     }
 
+    public ReserveBean(int id, RoomBean room, String description, Date date, Time startTime, Time endTime, Status status) {
+        this.id = id;
+        this.room = room;
+        this.description = description;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.status = status;
+    }
+
     public ReserveBean(UserBean user, RoomBean room, String description, Date date, Time startTime, Time endTime, Status status) {
         this.user = user;
         this.room = room;
