@@ -113,7 +113,7 @@ public class ReserveServlet extends HttpServlet {
                 }
                 break;
 
-            case "reactivate":
+            case "reactivate": //Falta verificar que al reactivar la reserva no se solape con otra
                 try{
                     reserveDao.updateStatus(Integer.parseInt(req.getParameter("reactivateReserveId")),Status.Active);
                     resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=reactivateOk");

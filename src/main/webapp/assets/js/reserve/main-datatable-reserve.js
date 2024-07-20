@@ -71,9 +71,13 @@ const listReserves=async()=>{
                     data-endtime="${rse.endTime}"
                     ><i class="bi bi-pencil-square"></i></button>
                     
-                    <button class="btn btn-danger btn-sm delete-btn"
-                    data-id="${rse.id}"
-                    ><i class="bi bi-trash3-fill"></i></button>
+                    <button class="${rse.status === 'Active' ? 'bi btn btn-danger btn-sm delete-btn' :
+                                     rse.status === 'Canceled' ? 'bi btn btn-success btn-sm enable-btn' :
+                                     rse.status === 'Admin_Canceled' ? 'bi btn btn-success btn-sm enable-btn' : ''}"
+                            data-id="${rse.id}"
+                    ><i class="${rse.status === 'Active' ? 'bi bi-trash3-fill' :
+                                rse.status === 'Canceled' ? 'bi bi-check-square-fill' :
+                                rse.status === 'Admin_Canceled' ? 'bi bi-check-square-fill' : ''}"></i></button>
                 </td>
             </tr>`;
         });
@@ -123,4 +127,12 @@ $(document).ready(function () {
         $('#cancelReserveId').val(id);
         $('#reserveCancelModal').modal('show');
     });
+
+    $('#datatable_reserves').on('click', '.enable-btn', function () {
+        const id = $(this).data('id');
+        $('#reactivateReserveId').val(id);
+        $('#reactivateReserveModal').modal('show');
+    });
+
+
 });
