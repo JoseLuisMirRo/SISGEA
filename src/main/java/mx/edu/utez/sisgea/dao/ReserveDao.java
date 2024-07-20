@@ -85,6 +85,33 @@ public class ReserveDao extends DataBaseConnection {
         return List.of();
     }
 
+    public List<ReserveBean> getAllUserReserves(int userId) {
+        UserDao userDao = new UserDao();
+        RoomDao roomDao = new RoomDao();
+        List<ReserveBean> reservesList= new ArrayList<ReserveBean>();
+        try{
+            PreparedStatement ps = createConnection().prepareCall("SELECT * FROM reserve WHERE user_id = ?");
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                int id = rs.getInt("id");
+                int roomId = rs.getInt("room_id");
+                String description = rs.getString("description");
+                Date date = rs.getDate("date");
+                Time startTime = rs.getTime("starttime");
+                Time endTime = rs.getTime("endtime");
+                Status status = Status.valueOf(rs.getString("status"));
+                reservesList.add(new ReserveBean(id,userDao.getUser(userId),roomDao.getRoom(roomId),description,date,startTime,endTime,status));
+            }
+            ps.close();
+            rs.close();
+            return reservesList;
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return List.of();
+    }
+
     public void updateReserve(ReserveBean reserve) throws SQLException {
         try{
             CallableStatement cs = createConnection().prepareCall("call update_reserve(?,?,?,?,?,?)");
@@ -105,9 +132,9 @@ public class ReserveDao extends DataBaseConnection {
 
     public void updateStatus(int id, Status status) throws SQLException {
         try{
-            PreparedStatement ps = createConnection().prepareCall("UPDATE reserve SET status=? WHERE id=?");
-            ps.setString(1, status.name());
-            ps.setInt(2, id);
+            PreparedStatement ps = createConnection().prepareCall("call update_reserve_status(?,?)");
+            ps.setInt(1, id);
+            ps.setString(2, status.name());
             ps.execute();
             ps.close();
         }catch (SQLException e){

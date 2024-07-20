@@ -24,10 +24,10 @@
                     <label for="updateDate">Fecha:</label>
                     <input type="date" class="form-control" name="updateDate" id="updateDate"/>
                     <br>
-                    <label for="starttime">Hora de inicio:</label>
+                    <label for="updateStarttime">Hora de inicio:</label>
                     <input type="time" class="form-control" name="updateStarttime" id="updateStarttime" min="07:00" max="20:00"/>
                     <br>
-                    <label for="endtime">Hora de fin:</label>
+                    <label for="updateEndtime">Hora de fin:</label>
                     <input type="time" name="updateEndtime" class="form-control" id="updateEndtime" min="08:00" max="21:00"/>
                     <input type="text" name="action" value="update" hidden/>
                 </form>

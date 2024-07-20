@@ -81,3 +81,55 @@ else if (status === "updateOk"){
         }
     });
 }
+else if (status === "deleteOk"){
+    Swal.fire({
+        icon: "success",
+        title: "Reserva cancelada con éxito",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#208c7d",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+            window.location.href = contextPath + "/reserveServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+        }
+    });
+}
+else if (status === "deleteError"){
+    Swal.fire({
+        icon: "error",
+        title: "Error al cancelar la reserva",
+        confirmButtonText: "Reintentar",
+        confirmButtonColor: "#dc3545",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+            window.location.href = contextPath + "/reserveServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+        }
+    });
+}
+else if (status === "reactivateOk"){
+    Swal.fire({
+        icon: "success",
+        title: "Reserva reactivada con éxito",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#208c7d",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+            window.location.href = contextPath + "/reserveServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+        }
+    });
+}
+else if (status === "reactivateError"){
+    Swal.fire({
+        icon: "error",
+        title: "Error al reactivar la reserva",
+        confirmButtonText: "Reintentar",
+        confirmButtonColor: "#dc3545",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+            window.location.href = contextPath + "/reserveServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+        }
+    });
+}

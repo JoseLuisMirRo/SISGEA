@@ -21,16 +21,16 @@
 <jsp:include page="/views/layout/banner.jsp"></jsp:include>
 
 <body>
-<jsp:include page="/views/reserve/data-table-reserve.jsp"></jsp:include>
+<jsp:include page="/views/reserveAdmin/data-table-reserve-admin.jsp"></jsp:include>
 
 <!--MODAL AGREGAR RESERVA-->
-<jsp:include page="/views/reserve/reserve-add.jsp"></jsp:include>
+<jsp:include page="/views/reserveAdmin/reserve-add-admin.jsp"></jsp:include>
 
 <!--MODAL ACTUALIZAR RESERVA-->
-<jsp:include page="/views/reserve/reserve-update.jsp"></jsp:include>
+<jsp:include page="/views/reserveAdmin/reserve-update-admin.jsp"></jsp:include>
 
 <!--MODAL CANCELAR RESERVA-->
-<jsp:include page="/views/reserve/reserve-cancel.jsp"></jsp:include>
+<jsp:include page="/views/reserveAdmin/reserve-cancel-admin.jsp"></jsp:include>
 
 <!--STATUS DE LA PAGINA-->
 <%
@@ -38,6 +38,6 @@
 %>
 
 <input type="hidden" id="status" value="<%=status%>">
-<script src="${pageContext.request.contextPath}/assets/js/reserve/reserveMan.js"> </script>
+<script src="${pageContext.request.contextPath}/assets/js/reserveAdmin/reserveManAdmin.js"> </script>
 </body>
 </html>

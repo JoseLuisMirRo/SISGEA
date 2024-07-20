@@ -62,7 +62,7 @@
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
 
 <!--JS Custom-->
-<script src="${pageContext.request.contextPath}/assets/js/reserve/main-datatable-reserve.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/reserveAdmin/main-datatable-reserve-admin.js"></script>
 </body>
 </html>
 
