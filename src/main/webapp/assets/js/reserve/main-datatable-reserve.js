@@ -54,7 +54,11 @@ const listReserves=async()=>{
                                 rse.status === 'Admin_Canceled' ? 'bi bi-x-octagon' : ''}" 
                         style="color: ${rse.status === 'Active' ? 'green' :
                                         rse.status === 'Canceled' ? 'red' :
-                                        rse.status === 'Admin_Canceled' ? 'orange' : 'black'};">
+                                        rse.status === 'Admin_Canceled' ? 'orange' : 'black'};"
+                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-title="${rse.status === 'Active' ? 'Activa' :
+                        rse.status === 'Canceled' ? 'Cancelada por usuario' :
+                        rse.status === 'Admin_Canceled' ? 'Cancelada por un Administrador - Verifique su email para más detalles' : 'Desconocido'}">
                     </i>
                 </td>
                 <td>
@@ -74,6 +78,8 @@ const listReserves=async()=>{
             </tr>`;
         });
         tableBody_reserves.innerHTML=content;
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
     }catch(ex){
         alert(ex);
@@ -114,8 +120,7 @@ $(document).ready(function () {
 
     $('#datatable_reserves').on('click', '.delete-btn', function () {
         const id = $(this).data('id');
-        $('#idDelete').val(id);
-
-        $('#deleteModal').modal('show');
+        $('#cancelReserveId').val(id);
+        $('#reserveCancelModal').modal('show');
     });
 });
