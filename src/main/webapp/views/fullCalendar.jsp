@@ -18,34 +18,25 @@
     <link rel="stylesheet" href="styles.css" />
     <!--FullCalendar SCRIPT-->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.14/index.global.min.js'></script>
+    <!--Resources script-->
+    <script src="${pageContext.request.contextPath}/assets/js/fullCalendar/generateResources.js"></script>
     <script>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
+        document.addEventListener('DOMContentLoaded', async function () {
+            const roomResources = await fetchRooms();
+            const reserveResources = await fetchReserves();
+            console.log(reserveResources);
+
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
                 schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives', //Licencia Creative Commons
                 timezone: 'GMT -5',
                 locale: 'es',
                 initialView: 'resourceTimeGrid',
                 contentHeight: 'auto',
                 themeSystem: 'bootstrap5',
-                resources: [
-                    { id: 'D1A1', title: 'A1', eventColor: 'green'},
-                    { id: 'D1A2', title: 'A2', eventColor: 'blue'},
-                    { id: 'D1A3', title: 'A3', eventColor: 'red'},
-                    { id: 'D1A4', title: 'A4', eventColor: 'yellow'},
-                    { id: 'D1A5', title: 'A5', eventColor: 'green'},
-                    { id: 'D1A6', title: 'A6', eventColor: 'green'},
-                    { id: 'D1A7', title: 'A7', eventColor: 'green'},
-                    { id: 'D1A8', title: 'A8', eventColor: 'green'},
-                    { id: 'D1A9', title: 'A9', eventColor: 'green'},
-                    { id: 'D2CC7', title: 'CC7', eventColor: 'blue'}
-                ],
-                events: [
-                    { id: '1', resourceId: 'D1A1', start: '2024-06-10T14:00:00', end: '2024-06-10T16:00:00', title: 'Aplicaciones Web' },
-                    {id: '2', resourceId: 'D2CC7', start: '2024-06-10T12:00:00', end: '2024-06-10T14:00:00', title: 'Sistemas Operativos'},
-
-                ],
+                resources: roomResources,
+                events: reserveResources,
                 slotLabelFormat: [
                     {
                         hour: 'numeric',
@@ -59,12 +50,12 @@
                     center: 'title',
                     right: 'resourceTimeGridDay,resourceTimeline'
                 },
-                selectable: true,
-                editable: true,
+                selectable: false,
+                editable: false,
                 nowIndicator: true,
-                slotMinTime: "09:00:00",
+                slotMinTime: "07:00:00",
                 slotMaxTime: "22:00:00",
-                droppable: true,
+                droppable: false,
                 hiddenDays: [7]
 
 

@@ -103,7 +103,7 @@ public class LoginServlet extends HttpServlet {
         }else if (user.getRole()==null){
             rd = req.getRequestDispatcher("/views/login/login-multirole.jsp");
         }else {
-            rd = req.getRequestDispatcher("/views/index.jsp");
+            rd = req.getRequestDispatcher("/calendar");
         }
         rd.forward(req, resp);
     }
