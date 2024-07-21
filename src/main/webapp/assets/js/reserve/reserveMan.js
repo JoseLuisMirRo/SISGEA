@@ -139,6 +139,9 @@ else if (status === "reactivateOk"){
 }
 
 else if (status === "reactivateError"){
+    const urlParams = new URLSearchParams(window.location.search);
+    const errorMessage = urlParams.get("errorMessage");
+    let textShow;
     if (errorMessage==="alreadyActive"){
         textShow = "La reserva ya está activa"
     }else if(errorMessage==="adminCanceled"){

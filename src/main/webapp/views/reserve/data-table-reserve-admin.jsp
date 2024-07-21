@@ -1,8 +1,8 @@
-<%@ page import="mx.edu.utez.sisgea.model.LoginBean" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: JLuis
-  Date: 20/07/2024
-  Time: 15:45
+  Date: 18/07/2024
+  Time: 17:09
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -21,18 +21,9 @@
 
 </head>
 <body>
-<!--Obtenemos el id de usuario de la sesion par la solicitud de fetch posterior-->
-<%  HttpSession activeSession = request.getSession();
-    LoginBean user = (LoginBean)activeSession.getAttribute("activeUser");
-    int userId = user.getId();
-%>
-<script>
-    const userId = <%=userId%>
-</script>
-
 <div class="container my-6"> <!--Contenedor de una tabla con margen de 6 unidades-->
     <div>
-        <h2 style="color: black">Mis reservas</h2>
+        <h2 style="color: black">Gestión de reservas</h2>
     </div>
     <div class="text-end">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reserveRegisterModal" id="reserveRegisterButton">
@@ -43,6 +34,7 @@
             <table id="datatable_reserves" class="table table-striped" style="width: 100%;">
                 <thead> <!--Encabezado de la tabla-->
                 <tr> <!--Fila de la tabla-->
+                    <th>Usuario</th>
                     <th>Descripción</th>
                     <th>Espacio</th>
                     <th>Fecha</th>
@@ -70,7 +62,7 @@
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
 
 <!--JS Custom-->
-<script src="${pageContext.request.contextPath}/assets/js/reserveUser/main-datatable-reserve-user.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/reserve/main-datatable-reserve-admin.js"></script>
 </body>
 </html>
 

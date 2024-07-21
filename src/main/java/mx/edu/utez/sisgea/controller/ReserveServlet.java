@@ -160,9 +160,9 @@ public class ReserveServlet extends HttpServlet {
 
         if(user!=null){
             if(user.getRole().getId()==1) {
-                rd = req.getRequestDispatcher("/views/reserveAdmin/reserveManAdmin.jsp");
+                rd = req.getRequestDispatcher("/views/reserve/reserveManAdmin.jsp");
             }else if(user.getRole().getId()==2){
-                rd = req.getRequestDispatcher("/views/reserveUser/reserveManUser.jsp");
+                rd = req.getRequestDispatcher("/views/reserve/reserveManUser.jsp");
             }else{
                 rd = req.getRequestDispatcher("/views/layout/error403.jsp");
             }
