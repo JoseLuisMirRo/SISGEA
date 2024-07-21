@@ -30,7 +30,7 @@ const fetchReserves = async () => {
         return reserves.map(reserve => ({
             id: reserve.id,
             resourceId: reserve.room.id,
-            title: `${reserve.description} - ${reserve.user.firstName} ${reserve.user.lastNameP} ${reserve.user.lastNameM}`,
+            title: `Reserva: ${reserve.description} - Autor: ${reserve.user.firstName} ${reserve.user.lastNameP} ${reserve.user.lastNameM}`,
             start: `${manageDate(reserve.date)}T${hourTo24(reserve.startTime)}`,
             end: `${manageDate(reserve.date)}T${hourTo24(reserve.endTime)}`,
         }));
@@ -43,18 +43,56 @@ const fetchSchedules = async () => {
         const response = await fetch('http://localhost:8080/SISGEA_war_exploded/data/schedules');
         const schedules = await response.json();
 
-        return schedules.map(schedule => ({
-            id: schedule.id,
-            resourceId: schedule.room.id,
-            title: schedule.classe.name,
-            start: `${manageDate(schedule.date)}T${hourTo24(schedule.startTime)}`,
-            end: `${manageDate(schedule.date)}T${hourTo24(schedule.endTime)}`,
-        }));
+        const formattedEvents = [];
+
+        schedules.forEach(schedule => {
+            const startDate = manageDate(schedule.quarter.startDate);
+            const endDate = manageDate(schedule.quarter.endDate);
+            const dayOfWeek = schedule.day.id;
+
+            const classDates = generateDates(startDate, endDate, dayOfWeek);
+
+            const startTime24 = hourTo24(schedule.startTime);
+            const endTime24 = hourTo24(schedule.endTime);
+
+            classDates.forEach(date => {
+                const formattedDate = date.toISOString().split('T')[0]; //Obtenemos la fecha generada en formato yyyy-mm-dd
+
+                formattedEvents.push({
+                    id: schedule.id,
+                    resourceId: schedule.room.id,
+                    title: `Clase: ${schedule.classe.name}`,
+                    start: `${formattedDate}T${startTime24}`,
+                    end: `${formattedDate}T${endTime24}`,
+                });
+            });
+        });
+        return formattedEvents;
+
     }catch (error){
         console.log('Error: ', error);
     }
 
 }
+const  generateDates = (startDate, endDate, dayOfWeek) =>{
+    let dates = [];
+    let currentDate = new Date(startDate);
+    const end = new Date(endDate);
+
+    //Avanzar hasta el primer día de la semana que coincide con el día de la semana deseado
+    while (currentDate.getDay() !== dayOfWeek) {
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    //Generar todas las fechas que coincidan con el día de la semana en el rango
+    while (currentDate <= end) {
+        dates.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 7);
+
+    }
+    return dates;
+}
+
 const hourTo24 = (hour12) => {
     const parts = hour12.split(' '); //DIVIDIMOS POR ESPACIOS PARA SEPARAR AM Y PM
     const time = parts[0] //OBTENEMOS LA PARTE SOLO CON LA HORA
@@ -94,3 +132,5 @@ const manageDate = (dateD) => {
 
     return `${yearStr}-${monthStr}-${dayStr}`;
 }
+
+

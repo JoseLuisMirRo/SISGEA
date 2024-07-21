@@ -24,8 +24,12 @@
 
         document.addEventListener('DOMContentLoaded', async function () {
             const roomResources = await fetchRooms();
-            const reserveResources = await fetchReserves();
-            console.log(reserveResources);
+            const [reserveResources, scheduleResources] = await Promise.all([
+                fetchReserves(),
+                fetchSchedules()
+            ]);
+
+            const eventResources = roomResources.concat(reserveResources, scheduleResources);
 
             const calendarEl = document.getElementById('calendar');
             const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -36,7 +40,7 @@
                 contentHeight: 'auto',
                 themeSystem: 'bootstrap5',
                 resources: roomResources,
-                events: reserveResources,
+                events: eventResources,
                 slotLabelFormat: [
                     {
                         hour: 'numeric',
