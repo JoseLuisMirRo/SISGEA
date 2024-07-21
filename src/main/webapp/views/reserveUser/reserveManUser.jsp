@@ -24,13 +24,13 @@
 <jsp:include page="/views/reserveUser/data-table-reserve-user.jsp"></jsp:include>
 
 <!--MODAL AGREGAR RESERVA-->
-
+<jsp:include page="/views/reserveAdmin/reserve-add-admin.jsp"></jsp:include> <!--Compartido con el administrador-->
 
 <!--MODAL ACTUALIZAR RESERVA-->
-
+<jsp:include page="/views/reserveAdmin/reserve-update-admin.jsp"></jsp:include>
 
 <!--MODAL CANCELAR RESERVA-->
-
+<jsp:include page="/views/reserveAdmin/reserve-cancel-admin.jsp"></jsp:include>
 
 <!--STATUS DE LA PAGINA-->
 <%
@@ -38,7 +38,7 @@
 %>
 
 <input type="hidden" id="status" value="<%=status%>">
-<script src="${pageContext.request.contextPath}/assets/js/reserveUser/reserveManUser.js"> </script>
+<script src="${pageContext.request.contextPath}/assets/js/reserveAdmin/reserveManAdmin.js"> </script>
 </body>
 </html>
 

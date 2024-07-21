@@ -105,21 +105,48 @@ public class ReserveServlet extends HttpServlet {
 
             case "cancel":
                 try{
-                    reserveDao.updateStatus(Integer.parseInt(req.getParameter("cancelReserveId")),Status.Admin_Canceled);
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=deleteOk");
+                    int idC = Integer.parseInt(req.getParameter("cancelReserveId"));
+                    Status status = Status.Canceled;
+                    if(reserveDao.getReserve(idC).getStatus()==Status.Active) { //Validación para que no se pueda cancelar una reserva que ya esté cancelada
+                        if (user.getRole().getId() == 1) {
+                            status = Status.Admin_Canceled;
+                        } else if (user.getRole().getId() == 2) {
+                            status = Status.Canceled;
+                        }
+                        reserveDao.updateStatus(Integer.parseInt(req.getParameter("cancelReserveId")), status);
+                        resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=deleteOk");
+                    }else if(reserveDao.getReserve(idC).getStatus()==(Status.Canceled)) {
+                        throw new Exception("alreadyCanceled");
+                    }else if(reserveDao.getReserve(idC).getStatus()==(Status.Admin_Canceled)){
+                        throw new Exception("adminCanceled");
+                    }
                 }catch (Exception e){
                     e.printStackTrace();
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=deleteError");
+                    String errorMessage = e.getMessage();
+                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=deleteError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
                 }
                 break;
 
-            case "reactivate": //Falta verificar que al reactivar la reserva no se solape con otra
+            case "reactivate": //TODAS LAS VERIFICACIONES OK
                 try{
-                    reserveDao.updateStatus(Integer.parseInt(req.getParameter("reactivateReserveId")),Status.Active);
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=reactivateOk");
+                    int idA= Integer.parseInt(req.getParameter("reactivateReserveId"));
+                    if(user.getRole().getId() == 1) {
+                        reserveDao.updateStatus(idA, Status.Active);
+                        resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=reactivateOk");
+                    }else if (user.getRole().getId() == 2){
+                        if(reserveDao.getReserve(idA).getStatus()==Status.Canceled) {
+                            reserveDao.updateStatus(idA, Status.Active);
+                            resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=reactivateOk");
+                        }else if(reserveDao.getReserve(idA).getStatus()==Status.Admin_Canceled){
+                            throw new Exception("adminCanceled");
+                        }else{
+                            throw new Exception("alreadyActive");
+                        }
+                    }
                 }catch (Exception e){
                     e.printStackTrace();
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=reactivateError");
+                    String errorMessage = e.getMessage();
+                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=reactivateError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
                 }
                 break;
         }
@@ -132,8 +159,10 @@ public class ReserveServlet extends HttpServlet {
         RequestDispatcher rd;
 
         if(user!=null){
-            if(user.getRole().getId()==1){
+            if(user.getRole().getId()==1) {
                 rd = req.getRequestDispatcher("/views/reserveAdmin/reserveManAdmin.jsp");
+            }else if(user.getRole().getId()==2){
+                rd = req.getRequestDispatcher("/views/reserveUser/reserveManUser.jsp");
             }else{
                 rd = req.getRequestDispatcher("/views/layout/error403.jsp");
             }

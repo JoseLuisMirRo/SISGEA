@@ -54,7 +54,7 @@
                         <li><a class="dropdown-item" href="${pageContext.request.contextPath}/reserveServlet">Gestionar reservas</a></li>
                         <li><a class="dropdown-item" href="#">Gestionar feriados</a></li>
                         <% } else if (2==userRole) {%>
-                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/teacherReserve">Gestionar reservas</a></li>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/reserveServlet">Gestionar reservas</a></li>
                         <% } %>
                     </ul>
                 </li>

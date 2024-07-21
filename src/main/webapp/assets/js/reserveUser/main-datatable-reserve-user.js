@@ -70,7 +70,7 @@ const listReserves=async()=>{
                     
                     <button class="${rse.status === 'Active' ? 'bi btn btn-danger btn-sm delete-btn' :
                 rse.status === 'Canceled' ? 'bi btn btn-success btn-sm enable-btn' :
-                    rse.status === 'Admin_Canceled' ? 'bi btn btn-success btn-sm enable-btn' : ''}"
+                    rse.status === 'Admin_Canceled' ? 'bi btn btn btn-outline-success btn-sm enable-btn disabled ' : ''}"
                             data-id="${rse.id}"
                     ><i class="${rse.status === 'Active' ? 'bi bi-trash3-fill' :
                 rse.status === 'Canceled' ? 'bi bi-check-square-fill' :
