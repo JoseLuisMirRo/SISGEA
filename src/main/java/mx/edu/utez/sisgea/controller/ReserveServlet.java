@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpSession;
 import mx.edu.utez.sisgea.dao.*;
 import mx.edu.utez.sisgea.model.*;
 
+import mx.edu.utez.sisgea.controller.ResendAPI;
+
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -22,6 +24,7 @@ import java.time.LocalDate;
 @WebServlet("/reserveServlet")
 public class ReserveServlet extends HttpServlet {
     private int id;
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -35,9 +38,9 @@ public class ReserveServlet extends HttpServlet {
         LoginBean user = (LoginBean) activeSession.getAttribute("activeUser");
         int sessionUserId = user.getId();
 
-        switch(action){
+        switch (action) {
             case "add":
-                try{
+                try {
                     int userId = sessionUserId;
                     int roomId = Integer.parseInt(req.getParameter("roomId"));
                     String description = req.getParameter("description");
@@ -46,31 +49,31 @@ public class ReserveServlet extends HttpServlet {
                     Time endTime = Time.valueOf(req.getParameter("endtime"));
                     Status status = Status.Active;
 
-                    if(endTime.before(startTime)){
+                    if (endTime.before(startTime)) {
                         throw new IllegalArgumentException("startAfterEnd");
                     }
 
-                    reserveBean = new ReserveBean(userDao.getUser(userId),roomDao.getRoom(roomId),description,date,startTime,endTime,status);
+                    reserveBean = new ReserveBean(userDao.getUser(userId), roomDao.getRoom(roomId), description, date, startTime, endTime, status);
 
                     ScheduleDao scheduleDao = new ScheduleDao();
                     List<ScheduleBean> schedules = scheduleDao.getAllRoomSchedules(roomId);
                     boolean isValid = validateOverlap(reserveBean, schedules);
 
-                    if(!isValid){
+                    if (!isValid) {
                         throw new IllegalArgumentException("overlaps");
                     }
                     reserveDao.insertReserve(reserveBean);
                     resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=registerOk");
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     String errorMessage = e.getMessage();
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=registerError&errorMessage="+ URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=registerError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
                 }
                 break;
 
             case "update":
-                try{
+                try {
                     int updateReserveId = Integer.parseInt(req.getParameter("updateReserveId"));
                     int roomId = Integer.parseInt(req.getParameter("updateRoomId"));
                     String description = req.getParameter("updateDescription");
@@ -79,24 +82,24 @@ public class ReserveServlet extends HttpServlet {
                     Time endTime = Time.valueOf(req.getParameter("updateEndtime"));
                     Status status = Status.Active;
 
-                    if(endTime.before(startTime)){
+                    if (endTime.before(startTime)) {
                         throw new IllegalArgumentException("startAfterEnd");
                     }
 
-                    reserveBean = new ReserveBean(updateReserveId,roomDao.getRoom(roomId),description,date,startTime,endTime,status);
+                    reserveBean = new ReserveBean(updateReserveId, roomDao.getRoom(roomId), description, date, startTime, endTime, status);
 
                     ScheduleDao scheduleDao = new ScheduleDao();
                     List<ScheduleBean> schedules = scheduleDao.getAllRoomSchedules(roomId);
                     boolean isValid = validateOverlap(reserveBean, schedules);
 
-                    if(!isValid){
+                    if (!isValid) {
                         throw new IllegalArgumentException("overlaps");
                     }
 
                     reserveDao.updateReserve(reserveBean);
                     resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=updateOk");
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     String errorMessage = e.getMessage();
                     resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=updateError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
@@ -104,23 +107,44 @@ public class ReserveServlet extends HttpServlet {
                 break;
 
             case "cancel":
-                try{
+                try {
                     int idC = Integer.parseInt(req.getParameter("cancelReserveId"));
                     Status status = Status.Canceled;
-                    if(reserveDao.getReserve(idC).getStatus()==Status.Active) { //Validación para que no se pueda cancelar una reserva que ya esté cancelada
+                    ReserveBean reserve = reserveDao.getReserve(idC);
+                    if (reserve.getStatus() == Status.Active) { //Validación para que no se pueda cancelar una reserva que ya esté cancelada
                         if (user.getRole().getId() == 1) {
                             status = Status.Admin_Canceled;
+                            if(reserve.getUser().getId() != user.getId()) {
+                                ResendAPI emailSender = new ResendAPI();
+                                String from = "Alertas SISGEA <sisgea@resend.dev>";
+                                String to = reserve.getUser().getEmail();
+                                String subject = "Tu reserva: '" + reserve.getDescription() + "' ha sido cancelada";
+                                String html = "<h2>¡Hola! " + reserve.getUser().getFirstName()
+                                        + "</h2><p>Tu reserva ha sido cancelada por un administrador.</p><p>Administrador: "
+                                        + user.getFirstName() + " " + user.getLastNameP() + " " + user.getLastNameM()
+                                        + "</p><p>Motivo: " + req.getParameter("cancelReason")
+                                        + "</p><h3><b>Detalles de la reserva cancelada:</b></h3>" +
+                                        "<p>Descripcion de la reserva: " + reserve.getDescription() + "</p><p>Espacio: "
+                                        + reserve.getRoom().getRoomType().getAbbreviation() + reserve.getRoom().getNumber()
+                                        + " - " + reserve.getRoom().getBuilding().getName()
+                                        + "<p>Fecha: " + reserveDao.getReserve(idC).getDate()
+                                        + "</p><p>Hora de inicio: " + reserveDao.getReserve(idC).getStartTime()
+                                        + "</p><p>Hora de fin: " + reserveDao.getReserve(idC).getEndTime() + "</p>";
+
+                                emailSender.sendEmail(from, to, subject, html);
+                            }
+
                         } else if (user.getRole().getId() == 2) {
                             status = Status.Canceled;
                         }
                         reserveDao.updateStatus(Integer.parseInt(req.getParameter("cancelReserveId")), status);
                         resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=deleteOk");
-                    }else if(reserveDao.getReserve(idC).getStatus()==(Status.Canceled)) {
+                    } else if (reserveDao.getReserve(idC).getStatus() == (Status.Canceled)) {
                         throw new Exception("alreadyCanceled");
-                    }else if(reserveDao.getReserve(idC).getStatus()==(Status.Admin_Canceled)){
+                    } else if (reserveDao.getReserve(idC).getStatus() == (Status.Admin_Canceled)) {
                         throw new Exception("adminCanceled");
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     String errorMessage = e.getMessage();
                     resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=deleteError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
@@ -128,22 +152,22 @@ public class ReserveServlet extends HttpServlet {
                 break;
 
             case "reactivate": //TODAS LAS VERIFICACIONES OK
-                try{
-                    int idA= Integer.parseInt(req.getParameter("reactivateReserveId"));
-                    if(user.getRole().getId() == 1) {
+                try {
+                    int idA = Integer.parseInt(req.getParameter("reactivateReserveId"));
+                    if (user.getRole().getId() == 1) {
                         reserveDao.updateStatus(idA, Status.Active);
                         resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=reactivateOk");
-                    }else if (user.getRole().getId() == 2){
-                        if(reserveDao.getReserve(idA).getStatus()==Status.Canceled) {
+                    } else if (user.getRole().getId() == 2) {
+                        if (reserveDao.getReserve(idA).getStatus() == Status.Canceled) {
                             reserveDao.updateStatus(idA, Status.Active);
                             resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=reactivateOk");
-                        }else if(reserveDao.getReserve(idA).getStatus()==Status.Admin_Canceled){
+                        } else if (reserveDao.getReserve(idA).getStatus() == Status.Admin_Canceled) {
                             throw new Exception("adminCanceled");
-                        }else{
+                        } else {
                             throw new Exception("alreadyActive");
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     String errorMessage = e.getMessage();
                     resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=reactivateError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
@@ -158,15 +182,15 @@ public class ReserveServlet extends HttpServlet {
         LoginBean user = (LoginBean) activeSession.getAttribute("activeUser");
         RequestDispatcher rd;
 
-        if(user!=null){
-            if(user.getRole().getId()==1) {
+        if (user != null) {
+            if (user.getRole().getId() == 1) {
                 rd = req.getRequestDispatcher("/views/reserve/reserveManAdmin.jsp");
-            }else if(user.getRole().getId()==2){
+            } else if (user.getRole().getId() == 2) {
                 rd = req.getRequestDispatcher("/views/reserve/reserveManUser.jsp");
-            }else{
+            } else {
                 rd = req.getRequestDispatcher("/views/layout/error403.jsp");
             }
-        }else{
+        } else {
             rd = req.getRequestDispatcher("/views/login/login.jsp");
         }
         rd.forward(req, resp);
@@ -180,12 +204,12 @@ public class ReserveServlet extends HttpServlet {
 
         Day reserveDay = Day.numbToDay(dayNumber); //Convertimos el número del día de la semana a un objeto de tipo Day - Esto quedó raro, podría haber usado el DayOfWeek al crear mi schedule en lugar de la clase Enum Day
 
-        for(ScheduleBean schedule : schedules) {
+        for (ScheduleBean schedule : schedules) {
             //Validamos que la fecha de la reserva esté dentro del rango de fechas de la cuatrimestre
-            if(schedule.getQuarter().getStartDate().toLocalDate().isBefore(reserveDate) && schedule.getQuarter().getEndDate().toLocalDate().isAfter(reserveDate)) {
+            if (schedule.getQuarter().getStartDate().toLocalDate().isBefore(reserveDate) && schedule.getQuarter().getEndDate().toLocalDate().isAfter(reserveDate)) {
                 //Validamos si el día de la reserva es igual al día del horario
-                if(schedule.getDay().equals(reserveDay)) {
-                    if(!reserve.getEndTime().before(schedule.getStartTime()) && !reserve.getStartTime().after(schedule.getEndTime())) {
+                if (schedule.getDay().equals(reserveDay)) {
+                    if (!reserve.getEndTime().before(schedule.getStartTime()) && !reserve.getStartTime().after(schedule.getEndTime())) {
                         return false;
                     }
                 }

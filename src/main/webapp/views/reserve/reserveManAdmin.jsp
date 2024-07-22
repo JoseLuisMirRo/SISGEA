@@ -30,7 +30,7 @@
 <jsp:include page="/views/reserve/reserve-update.jsp"></jsp:include>
 
 <!--MODAL CANCELAR RESERVA-->
-<jsp:include page="/views/reserve/reserve-cancel.jsp"></jsp:include>
+<jsp:include page="/views/reserve/reserve-cancel-admin.jsp"></jsp:include>
 
 <!--STATUS DE LA PAGINA-->
 <%
