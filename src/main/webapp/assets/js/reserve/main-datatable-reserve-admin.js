@@ -1,21 +1,27 @@
 let dataTable;
 let dataTableInitiated=false;
 
-const dataTableOptions={
+const dataTableOptions= {
     //scrollX: "2000px"
-    lengthMenu:[5,10,25],
+    lengthMenu: [5, 10, 25],
     scrollX: true,
     columnDefs: [
-        {className: "text-center",targets:[0,1,2,3,4,5,6,7]},
-        {orderable: false,targets:[6,7]},
-        {searchable:false,targets:[6,7]},
-        {width:"",targets:[]}
+        {className: "text-center", targets: [0, 1, 2, 3, 4, 5, 6, 7]},
+        {orderable: false, targets: [6, 7]},
+        {searchable: false, targets: [6, 7]},
+        {width: "", targets: []}
     ],
-    pageLength:10,
-    language:{
-        url:'https://cdn.datatables.net/plug-ins/2.0.8/i18n/es-ES.json'
+    pageLength: 10,
+    language: {
+        url: 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/es-ES.json'
+    },
+    dom: 'Plfrtip',
+    searchPanes: {
+        initCollapsed: true,
+        panes: []
     }
 };
+
 const initDataTable=async()=>{
     if(dataTableInitiated){
         dataTable.destroy();
@@ -35,6 +41,9 @@ const listReserves=async(showAll = false)=>{
     try{
         const response=await fetch('http://localhost:8080/SISGEA_war_exploded/data/reserves');
         const reserves=await response.json();
+
+        // Extraer edificios únicos del JSON
+        const buildings = new Set();
 
         let content= ``;
         const currentDate = new Date().toISOString().split('T')[0];
@@ -90,7 +99,25 @@ const listReserves=async(showAll = false)=>{
                     rse.status === 'Admin_Canceled' ? 'bi bi-check-square-fill' : ''}"></i></button>
                 </td>
             </tr>`;
+            buildings.add(rse.room.building.name);
         });
+        // Crear las opciones dinámicas para el filtro de DataTables
+        const buildingOptions = [];
+        buildings.forEach(building => {
+            buildingOptions.push({
+                label: `${building}`,
+                value: function(rowData) {
+                    return rowData[2].includes(building);
+                }
+            });
+        });
+
+        dataTableOptions.searchPanes.panes = [
+            {
+                header: 'Edificio',
+                options: buildingOptions
+            }
+        ];
         tableBody_reserves.innerHTML=content;
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))

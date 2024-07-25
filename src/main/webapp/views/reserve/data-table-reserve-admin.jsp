@@ -15,7 +15,11 @@
     <!--Bootstrap CSS-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!--DataTables CSS-->
-    <link href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <!--SearchPane CSS-->
+    <link href="https://cdn.datatables.net/searchpanes/2.3.1/css/searchPanes.dataTables.min.css" rel="stylesheet">
+    <!--Select CSS-->
+    <link href="https://cdn.datatables.net/select/2.0.8/css/select.dataTables.min.css" rel="stylesheet">
     <!--Bootstrap ICONS-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
@@ -58,6 +62,12 @@
 
 <!--DataTable SCRIPT-->
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+
+<!--SearchPane SCRIPT-->
+<script src="https://cdn.datatables.net/searchpanes/2.3.1/js/dataTables.searchPanes.min.js"></script>
+
+<!--Select SCRIPT-->
+<script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.min.js"></script>
 
 <!--DataTable Bootstrap SCRIPT-->
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
