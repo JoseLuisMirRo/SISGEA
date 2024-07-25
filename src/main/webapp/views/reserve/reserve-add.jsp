@@ -98,7 +98,7 @@
         const day = dateobjetc.getDay();
 
         if (roomId.value && description.value && date.value && starttime.value && endtime.value) {
-            if (day === 6) {
+            if (day !== 6) {
                 if (starttime.value >= initialStartTime && starttime.value <= finalStartTime) {
                     if (endtime.value >= initialEndTime && endtime.value <= finalEndTime) {
                         form.submit();

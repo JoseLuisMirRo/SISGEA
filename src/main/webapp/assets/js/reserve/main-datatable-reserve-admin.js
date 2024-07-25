@@ -40,6 +40,7 @@ const listReserves=async()=>{
         reserves.forEach((rse,index) => {
             const startTime = deleteSeconds(rse.startTime);
             const endTime = deleteSeconds(rse.endTime);
+            const isPast = isPastDateTime(manageDate(rse.date), hourTo24(rse.startTime));
             content+=`
             <tr>
                 <td>${rse.user.firstName} ${rse.user.lastNameP} ${rse.user.lastNameM}</td>
@@ -57,27 +58,31 @@ const listReserves=async()=>{
                                         rse.status === 'Admin_Canceled' ? 'orange' : 'black'};"
                         data-bs-toggle="tooltip" data-bs-placement="top"
                         data-bs-title="${rse.status === 'Active' ? 'Activa' :
-                        rse.status === 'Canceled' ? 'Cancelada por usuario' :
-                        rse.status === 'Admin_Canceled' ? 'Cancelada por un Administrador - Verifique su email para más detalles' : 'Desconocido'}">
+                                         rse.status === 'Canceled' ? 'Cancelada por usuario' :
+                                         rse.status === 'Admin_Canceled' ? 'Cancelada por un Administrador - Verifique su email para más detalles' : 'Desconocido'}">
                     </i>
                 </td>
                 <td>
-                    <button class="btn btn-primary btn-sm edit-btn" 
+                    <button class="btn ${isPast ? 'btn-outline-secondary' : 'btn-primary'} btn-sm edit-btn" 
                     data-id="${rse.id}"
                     data-roomid="${rse.room.id}"
                     data-date="${rse.date}" //CUIDADO: NO USAR MAYUSCULAS EN DATA
                     data-description="${rse.description}"
                     data-startime="${rse.startTime}"
                     data-endtime="${rse.endTime}"
+                    data-past="${isPast}"
+                    ${isPast ? 'disabled' : ''}
                     ><i class="bi bi-pencil-square"></i></button>
                     
-                    <button class="${rse.status === 'Active' ? 'bi btn btn-danger btn-sm delete-btn' :
-                                     rse.status === 'Canceled' ? 'bi btn btn-success btn-sm enable-btn' :
-                                     rse.status === 'Admin_Canceled' ? 'bi btn btn-success btn-sm enable-btn' : ''}"
-                            data-id="${rse.id}"
+                    <button class="${rse.status === 'Active' ? (isPast ? 'btn btn-outline-secondary btn-sm delete-btn' : 'btn btn-danger btn-sm delete-btn') :
+                    rse.status === 'Canceled' ? (isPast ? 'btn btn-outline-secondary btn-sm enable-btn' : 'btn btn-success btn-sm enable-btn') :
+                    rse.status === 'Admin_Canceled' ? (isPast ? 'btn btn-outline-secondary btn-sm enable-btn' : 'btn btn-success btn-sm enable-btn') : ''}"
+                    data-id="${rse.id}"
+                    data-past="${isPast}"
+                    ${isPast ? 'disabled' : ''}
                     ><i class="${rse.status === 'Active' ? 'bi bi-trash3-fill' :
-                                rse.status === 'Canceled' ? 'bi bi-check-square-fill' :
-                                rse.status === 'Admin_Canceled' ? 'bi bi-check-square-fill' : ''}"></i></button>
+                    rse.status === 'Canceled' ? 'bi bi-check-square-fill' :
+                    rse.status === 'Admin_Canceled' ? 'bi bi-check-square-fill' : ''}"></i></button>
                 </td>
             </tr>`;
         });
@@ -88,6 +93,11 @@ const listReserves=async()=>{
     }catch(ex){
         alert(ex);
     }
+};
+const isPastDateTime = (date, time) => {
+    const reserveDateTime = new Date(`${date}T${time}`);
+    const currentDateTime = new Date();
+    return reserveDateTime < currentDateTime;
 };
 
 window.addEventListener('load',async()=>{
@@ -123,12 +133,20 @@ $(document).ready(function () {
     });
 
     $('#datatable_reserves').on('click', '.delete-btn', function () {
+        const isPast = $(this).data('past');
+        if (isPast) {
+            return;
+        }
         const id = $(this).data('id');
         $('#cancelReserveId').val(id);
         $('#reserveCancelModal').modal('show');
     });
 
     $('#datatable_reserves').on('click', '.enable-btn', function () {
+        const isPast = $(this).data('past');
+        if (isPast) {
+            return;
+        }
         const id = $(this).data('id');
         $('#reactivateReserveId').val(id);
         $('#reactivateReserveModal').modal('show');
