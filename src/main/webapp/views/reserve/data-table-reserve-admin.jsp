@@ -26,6 +26,7 @@
         <h2 style="color: black">Gestión de reservas</h2>
     </div>
     <div class="text-end">
+        <button id="historyBtn" class="btn btn-primary">Ver historial completo</button>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reserveRegisterModal" id="reserveRegisterButton">
             <i class="bi bi-plus-lg"></i> Agregar reserva </button>
     </div>

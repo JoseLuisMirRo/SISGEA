@@ -29,16 +29,22 @@ const initDataTable=async()=>{
     dataTableInitiated=true;
 };
 
-const listReserves=async()=>{
+const listReserves=async(showAll = false)=>{
     try{
         const response=await fetch(`http://localhost:8080/SISGEA_war_exploded/data/userReserves?userId=${userId}`);
         const reserves=await response.json();
 
         let content= ``;
+        const currentDate = new Date().toISOString().split('T')[0];
+
         reserves.forEach((rse,index) => {
             const startTime = deleteSeconds(rse.startTime);
             const endTime = deleteSeconds(rse.endTime);
             const isPast = isPastDateTime(manageDate(rse.date), hourTo24(rse.startTime));
+            if(!showAll && manageDate(rse.date) < currentDate){
+                return;
+            }
+
             content+=`
             <tr>
                 <td>${rse.description}</td>
@@ -72,9 +78,9 @@ const listReserves=async()=>{
                     ><i class="bi bi-pencil-square"></i></button>
                     
                     <button class="btn ${isPast ? 'btn-outline-secondary' :
-                rse.status === 'Active' ? 'btn-danger' :
-                    rse.status === 'Canceled' ? 'btn-success' :
-                        rse.status === 'Admin_Canceled' ? 'btn-outline-success' : ''} btn-sm delete-btn"
+                            rse.status === 'Active' ? 'bi btn btn-danger btn-sm delete-btn' :
+                            rse.status === 'Canceled' ? 'bi btn btn-success btn-sm enable-btn' :
+                            rse.status === 'Admin_Canceled' ? 'bi btn btn btn-outline-success btn-sm enable-btn disabled' : ''} btn-sm delete-btn"
                             data-id="${rse.id}"
                             data-past="${isPast}"
                     ${isPast ? 'disabled' : ''}
@@ -102,6 +108,8 @@ const isPastDateTime = (date, time) => {
 
 window.addEventListener('load',async()=>{
     await initDataTable();
+    await listReserves(false);
+    document.getElementById('historyBtn').setAttribute('data-showAll', false);
 });
 
 function deleteSeconds(timeS) {
@@ -155,4 +163,12 @@ $(document).ready(function () {
         $('#reactivateReserveId').val(id);
         $('#reactivateReserveModal').modal('show');
     });
+});
+document.getElementById('historyBtn').addEventListener('click',async()=>{
+    const button = document.getElementById('historyBtn');
+    const showAll = button.getAttribute('data-showAll') === 'true';
+
+    await listReserves(!showAll);
+    button.setAttribute('data-showAll', !showAll);
+    button.textContent = !showAll ? 'Ver reservas vigentes' : 'Ver historial completo';
 });

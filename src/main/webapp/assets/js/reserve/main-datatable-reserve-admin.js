@@ -31,16 +31,21 @@ const initDataTable=async()=>{
 
 
 
-const listReserves=async()=>{
+const listReserves=async(showAll = false)=>{
     try{
         const response=await fetch('http://localhost:8080/SISGEA_war_exploded/data/reserves');
         const reserves=await response.json();
 
         let content= ``;
+        const currentDate = new Date().toISOString().split('T')[0];
+
         reserves.forEach((rse,index) => {
             const startTime = deleteSeconds(rse.startTime);
             const endTime = deleteSeconds(rse.endTime);
             const isPast = isPastDateTime(manageDate(rse.date), hourTo24(rse.startTime));
+            if(!showAll && manageDate(rse.date) < currentDate){
+                return;
+            }
             content+=`
             <tr>
                 <td>${rse.user.firstName} ${rse.user.lastNameP} ${rse.user.lastNameM}</td>
@@ -102,6 +107,8 @@ const isPastDateTime = (date, time) => {
 
 window.addEventListener('load',async()=>{
     await initDataTable();
+    await listReserves(false);
+    document.getElementById('historyBtn').setAttribute('data-showAll', false);
 });
 
 function deleteSeconds(timeS) {
@@ -152,5 +159,15 @@ $(document).ready(function () {
         $('#reactivateReserveModal').modal('show');
     });
 
-
 });
+document.getElementById('historyBtn').addEventListener('click',async()=>{
+    const button = document.getElementById('historyBtn');
+    const showAll = button.getAttribute('data-showAll') === 'true';
+
+    await listReserves(!showAll);
+    button.setAttribute('data-showAll', !showAll);
+    button.textContent = !showAll ? 'Ver reservas vigentes' : 'Ver historial completo';
+});
+
+
+
