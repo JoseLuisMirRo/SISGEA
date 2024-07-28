@@ -7,14 +7,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DataBaseConnection {
+    private static final String URL = "jdbc:mysql://localhost:3306/sisgea_dev";
+    private static final String USER = "root";
+    private static final String PASSWORD = "root";
+
+
     public static Connection createConnection() throws SQLException{
         Connection con = null;
         String driver = "com.mysql.jdbc.Driver";
-
-        //Conexion con LocalHost
-        String url = "jdbc:mysql://localhost:3306/sisgea_dev";
-        String user = "root";
-        String password = "root";
 
         System.setProperty(driver,"");
         try{
@@ -23,7 +23,7 @@ public class DataBaseConnection {
         }catch(Exception e){
             System.out.println(e);
         }
-        con = DriverManager.getConnection(url,user,password);
+        con = DriverManager.getConnection(URL,USER,PASSWORD);
         return con;
     }
 }
