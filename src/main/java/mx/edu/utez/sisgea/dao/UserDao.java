@@ -40,22 +40,22 @@ public class UserDao extends DataBaseConnection {
         return 0;
     }
 
-    public UserBean getUser(String id) throws SQLException {
+    public UserBean getUser(int id) throws SQLException {
         UserBean user = null;
         try {
-            PreparedStatement st = createConnection().prepareCall("SELECT * FROM usuario WHERE id=?");
-            st.setString(1, id);
+            PreparedStatement st = createConnection().prepareCall("SELECT * FROM user WHERE id=?");
+            st.setInt(1, id);
             st.execute();
             ResultSet rs = st.getResultSet();
 
             while (rs.next()) {
+                int idE = rs.getInt("id");
                 String email = rs.getString("email");
                 String firstname = rs.getString("firstname");
                 String lastNameP = rs.getString("lastnamep");
                 String lastNameM = rs.getString("lastnamem");
-                String password = rs.getString("password");
                 boolean status = rs.getBoolean("status");
-                user = new UserBean(email, firstname, lastNameP, lastNameM, password, status);
+                user = new UserBean(idE, email, firstname, lastNameP, lastNameM, status);
             }
             st.close();
             rs.close();
@@ -77,9 +77,8 @@ public class UserDao extends DataBaseConnection {
                 String firstname = rs.getString("firstname");
                 String lastNameP = rs.getString("lastnamep");
                 String lastNameM = rs.getString("lastnamem");
-                String password = rs.getString("password");
                 boolean status = rs.getBoolean("status");
-                usersList.add(new UserBean(id,email,firstname,lastNameP,lastNameM,password,status));
+                usersList.add(new UserBean(id,email,firstname,lastNameP,lastNameM,status));
             }
             cs.close();
             rs.close();

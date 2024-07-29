@@ -8,7 +8,7 @@ const dataTableOptions={
     columnDefs: [
         {className: "text-center",targets:[0,1,2,3,4,5,6,7]},
         {orderable: false,targets:[5,6,7]},
-        {serchable:false,targets:[5,6,7]},
+        {searchable:false,targets:[5,6,7]},
         {width:"",targets:[]}
     ],
     pageLength:10,
@@ -31,7 +31,7 @@ const initDataTable=async()=>{
 
 
 
-const listUsers=async()=>{
+const listUsers=async(showActive = true)=>{
     try{
         const response=await fetch('http://localhost:8080/SISGEA_war_exploded/data/users');
         const users=await response.json();
@@ -40,6 +40,13 @@ const listUsers=async()=>{
         users.forEach((user,index) => {
             let rolesNames = user.roles.map(role => role.name).join(', ');
             let rolesIds = user.roles.map(role => role.id).join(',');
+
+            if(showActive && !user.status){
+                return;
+            }
+            if(!showActive && user.status){
+                return;
+            }
             content+=`
             <tr>
                 <td>${rolesNames}</td>
@@ -80,6 +87,8 @@ const listUsers=async()=>{
 
 window.addEventListener('load',async()=>{
     await initDataTable();
+    await listUsers(true);
+    document.getElementById('historyBtn').setAttribute('data-showActive',true);
 });
 
 //UTILIZANDO JQUERY OBTENEMOS EL DATOS DEL USUARIO CUANDO SE PULSA EL BOTÓN DE EDITAR, PARA DESPUES ENVIARLO AL MODAL. (se podría obtener solo id y lo demás con un select).
@@ -128,6 +137,13 @@ $(document).ready(function() {
         $('#revertDeleteUserId').val(id);
         $('#revertDeleteUserModal').modal('show');
     });
+});
 
+document.getElementById('historyBtn').addEventListener('click',async()=>{
+    const button = document.getElementById('historyBtn');
+    const showActive = button.getAttribute('data-showActive') === 'true';
 
+    await listUsers(!showActive);
+    button.setAttribute('data-showActive', !showActive);
+    button.textContent = showActive ? 'Ver usuarios activos' : 'Ver usuarios inactivos';
 });

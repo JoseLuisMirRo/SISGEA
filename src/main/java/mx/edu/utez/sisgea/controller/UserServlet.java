@@ -12,8 +12,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.servlet.http.HttpSession;
 import mx.edu.utez.sisgea.dao.UserDao;
 import mx.edu.utez.sisgea.dao.UserroleDao;
+import mx.edu.utez.sisgea.model.LoginBean;
 import mx.edu.utez.sisgea.model.UserBean;
 import mx.edu.utez.sisgea.model.UserroleBean;
 
@@ -54,11 +56,11 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                                 userRoleDao.insertUserRole(userrole);
                             }
                         }
-                        resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=registerOk");
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=registerOk");
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=registerError");
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=registerError");
                     }
                     break;
 
@@ -95,11 +97,11 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                             }
                         }
 
-                        resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=updateOk");
+                        resp.sendRedirect(req.getContextPath() + "/views/user//userMan.jsp?status=updateOk");
 
                     }catch(Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=updateError");
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=updateError");
                     }
                     break;
 
@@ -107,10 +109,10 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                     try{
                         id=(Integer.parseInt(req.getParameter("deleteUserId")));
                         userDao.deleteUser(id);
-                        resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=deleteOk");
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=deleteOk");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=deleteError");
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=deleteError");
                     }
                     break;
 
@@ -118,10 +120,10 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                     try{
                         id=(Integer.parseInt(req.getParameter("revertDeleteUserId")));
                         userDao.revertDeleteUser(id);
-                        resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=revertDeleteOk");
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=revertDeleteOk");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/views/mainAdministrador.jsp?status=revertDeleteError");
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=revertDeleteError");
                         //req.setAttribute("usuarios", lista);
                         //req.getRequestDispatcher("jsp").forward(req, resp);
                     }
@@ -133,7 +135,18 @@ import mx.edu.utez.sisgea.model.UserroleBean;
 
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            RequestDispatcher rd = req.getRequestDispatcher("/views/mainAdministrador.jsp");
-            rd.forward(req, resp);
+            HttpSession activeSession = req.getSession();
+            LoginBean user = (LoginBean) activeSession.getAttribute("activeUser");
+            RequestDispatcher rd;
+            if(user!=null){
+                if(user.getRole().getId()==1){
+                    rd = req.getRequestDispatcher("/views/user/userMan.jsp");
+                }else{
+                    rd = req.getRequestDispatcher("/views/layout/error403.jsp");
+                }
+            }else {
+                rd = req.getRequestDispatcher("/views/login/login.jsp");
+            }
+            rd.forward(req,resp);
         }
     }

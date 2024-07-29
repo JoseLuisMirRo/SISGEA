@@ -56,7 +56,7 @@
         flex: 2;
     }
 </style>
-</head>
+
 <body>
 <!-- Modal -->
 <div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="updateUserTitle" aria-hidden="true">
