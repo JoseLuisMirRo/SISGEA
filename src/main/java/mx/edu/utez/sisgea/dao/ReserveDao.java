@@ -10,9 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReserveDao extends DataBaseConnection {
+    private Connection con = null;
+    private PreparedStatement ps = null;
+    private CallableStatement cs = null;
+    private ResultSet rs = null;
+
     public void insertReserve(ReserveBean reserve) throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("call insert_reserve(?,?,?,?,?,?,?)");
+            con = createConnection();
+            cs = con.prepareCall("CALL insert_reserve(?,?,?,?,?,?,?)");
             cs.setInt(1, reserve.getUser().getId());
             cs.setInt(2,reserve.getRoom().getId());
             cs.setString(3,reserve.getDescription());
@@ -21,10 +27,11 @@ public class ReserveDao extends DataBaseConnection {
             cs.setTime(6, reserve.getEndTime());
             cs.setString(7,reserve.getStatus().name());
             cs.execute();
-            cs.close();
         }catch (SQLException e){
             e.printStackTrace();
             throw new SQLException(e.getMessage());
+        }finally {
+            closeConnection();
         }
     }
 
@@ -34,9 +41,10 @@ public class ReserveDao extends DataBaseConnection {
         ReserveBean reserve = null;
 
         try{
-            PreparedStatement ps = createConnection().prepareCall("SELECT * FROM reserve WHERE id = ?");
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
+            con = createConnection();
+            cs = con.prepareCall("SELECT * FROM reserve WHERE id = ?");
+            cs.setInt(1, id);
+            rs = cs.executeQuery();
 
             if(rs.next()){
                 int idE = rs.getInt("id");
@@ -49,11 +57,11 @@ public class ReserveDao extends DataBaseConnection {
                 Status status = Status.valueOf(rs.getString("status"));
                 reserve = new ReserveBean(idE,userDao.getUser(userId),roomDao.getRoom(roomId),description,date,startTime,endTime,status);
             }
-            ps.close();
-            rs.close();
         }catch (SQLException e){
             e.printStackTrace();
             throw new SQLException(e.getMessage());
+        }finally {
+            closeConnection();
         }
         return reserve;
     }
@@ -63,8 +71,9 @@ public class ReserveDao extends DataBaseConnection {
         RoomDao roomDao = new RoomDao();
         List<ReserveBean> reservesList= new ArrayList<ReserveBean>();
         try{
-            PreparedStatement ps = createConnection().prepareCall("SELECT * FROM reserve");
-            ResultSet rs = ps.executeQuery();
+            con = createConnection();
+            ps = con.prepareStatement("SELECT * FROM reserve");
+            rs = ps.executeQuery();
             while(rs.next()){
                 int id = rs.getInt("id");
                 int userId = rs.getInt("user_id");
@@ -76,11 +85,11 @@ public class ReserveDao extends DataBaseConnection {
                 Status status = Status.valueOf(rs.getString("status"));
                 reservesList.add(new ReserveBean(id,userDao.getUser(userId),roomDao.getRoom(roomId),description,date,startTime,endTime,status));
             }
-            ps.close();
-            rs.close();
             return reservesList;
         }catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            closeConnection();
         }
         return List.of();
     }
@@ -90,9 +99,10 @@ public class ReserveDao extends DataBaseConnection {
         RoomDao roomDao = new RoomDao();
         List<ReserveBean> reservesList= new ArrayList<ReserveBean>();
         try{
-            PreparedStatement ps = createConnection().prepareCall("SELECT * FROM reserve WHERE user_id = ?");
+            con = createConnection();
+            ps = con.prepareStatement("SELECT * FROM reserve WHERE user_id = ?");
             ps.setInt(1, userId);
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             while(rs.next()){
                 int id = rs.getInt("id");
                 int roomId = rs.getInt("room_id");
@@ -103,18 +113,19 @@ public class ReserveDao extends DataBaseConnection {
                 Status status = Status.valueOf(rs.getString("status"));
                 reservesList.add(new ReserveBean(id,userDao.getUser(userId),roomDao.getRoom(roomId),description,date,startTime,endTime,status));
             }
-            ps.close();
-            rs.close();
             return reservesList;
         }catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            closeConnection();
         }
         return List.of();
     }
 
     public void updateReserve(ReserveBean reserve) throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("call update_reserve(?,?,?,?,?,?)");
+            con = createConnection();
+            cs = con.prepareCall("call update_reserve(?,?,?,?,?,?)");
             cs.setInt(1, reserve.getRoom().getId());
             cs.setString(2, reserve.getDescription());
             cs.setDate(3, reserve.getDate());
@@ -122,25 +133,40 @@ public class ReserveDao extends DataBaseConnection {
             cs.setTime(5, reserve.getEndTime());
             cs.setInt(6, reserve.getId());
             cs.execute();
-            cs.close();
 
         }catch (SQLException e){
             e.printStackTrace();
             throw new SQLException(e.getMessage());
+        }finally {
+            closeConnection();
         }
     }
 
     public void updateStatus(int id, Status status) throws SQLException {
         try{
-            PreparedStatement ps = createConnection().prepareCall("call update_reserve_status(?,?)");
-            ps.setInt(1, id);
-            ps.setString(2, status.name());
-            ps.execute();
-            ps.close();
+            con = createConnection();
+            cs = con.prepareCall("call update_reserve_status(?,?)");
+            cs.setInt(1, id);
+            cs.setString(2, status.name());
+            cs.execute();
         }catch (SQLException e){
             e.printStackTrace();
             throw new SQLException(e.getMessage());
+        }finally {
+            closeConnection();
         }
     }
+
+    private void closeConnection() {
+        try {
+            if (ps != null) ps.close();
+            if (cs != null) cs.close();
+            if (rs != null) rs.close();
+            if (con != null) con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
