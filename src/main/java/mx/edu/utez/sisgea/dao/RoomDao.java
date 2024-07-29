@@ -135,6 +135,7 @@ public class RoomDao extends DataBaseConnection {
     private void closeConnection() {
         try {
             if (ps != null) ps.close();
+            if (cs != null) cs.close();
             if (rs != null) rs.close();
             if (con != null) con.close();
         } catch (SQLException e) {
