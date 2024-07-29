@@ -31,13 +31,19 @@ const initDataTable=async()=>{
 
 
 
-const listRooms=async()=>{
+const listRooms=async(showActive = true)=>{
     try{
         const response=await fetch('http://localhost:8080/SISGEA_war_exploded/data/rooms');
         const rooms=await response.json();
 
         let content= ``;
         rooms.forEach((room,index) => {
+            if(showActive && !room.status){
+                return;
+            }
+            if(!showActive && room.status){
+                return;
+            }
             content+=`
             <tr>
                 <td>${room.roomType.abbreviation}${room.number}${room.building.abbreviation}</td>
@@ -73,6 +79,8 @@ const listRooms=async()=>{
 
 window.addEventListener('load',async()=>{
     await initDataTable();
+    await listRooms(true);
+    document.getElementById('historyBtn').setAttribute('data-showActive',true);
 });
 
 //UTILIZANDO JQUERY OBTENEMOS DATOS DEL USUARIO CUANDO SE PULSA EL BOTÓN DE EDITAR, PARA DESPUES ENVIARLO AL MODAL. (se podría obtener solo id y lo demás con un select).
@@ -106,4 +114,12 @@ $(document).ready(function() {
     });
 
 
+});
+document.getElementById('historyBtn').addEventListener('click',async()=>{
+    const button = document.getElementById('historyBtn');
+    const showActive = button.getAttribute('data-showActive')==='true';
+
+    await listRooms(!showActive);
+    button.setAttribute('data-showActive',!showActive);
+    button.textContent = showActive ? 'Ver espacios activos' : 'Ver espacios inactivos';
 });

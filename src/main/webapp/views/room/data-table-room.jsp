@@ -26,6 +26,7 @@
         <h2 style="color: black">Gestión de espacios</h2>
     </div>
     <div class="text-end">
+        <button type="button" id="historyBtn" class="btn btn-primary">Ver espacios inactivos</button>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#roomRegisterModal" id="roomRegisterButton">
             <i class="bi bi-plus-lg"></i> Agregar Espacio </button>
     </div>
