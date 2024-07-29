@@ -9,9 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScheduleDao extends DataBaseConnection {
+    private Connection con;
+    private PreparedStatement ps;
+    private CallableStatement cs;
+    private ResultSet rs;
+
     public void insertSchedule(ScheduleBean sch)throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("call insert_schedule(?,?,?,?,?,?)");
+            con = createConnection();
+            cs = con.prepareCall("call insert_schedule(?,?,?,?,?,?)");
             cs.setInt(1, sch.getClasse().getId());
             cs.setInt(2, sch.getQuarter().getId());
             cs.setInt(3, sch.getRoom().getId());
@@ -19,10 +25,11 @@ public class ScheduleDao extends DataBaseConnection {
             cs.setTime(5, sch.getStartTime());
             cs.setTime(6, sch.getEndTime());
             cs.execute();
-            cs.close();
         }catch (Exception e) {
             e.printStackTrace();
             throw new SQLException(e.getMessage());
+        }finally {
+            closeConnection();
         }
     }
 
@@ -32,12 +39,12 @@ public class ScheduleDao extends DataBaseConnection {
         RoomDao roomDao = new RoomDao();
         ScheduleBean sch = null;
         try {
-            PreparedStatement st = createConnection().prepareCall("SELECT * FROM schedule WHERE id=?");
-            st.setInt(1, id);
-            st.executeQuery();
-            ResultSet rs = st.getResultSet();
+            con = createConnection();
+            ps = con.prepareStatement("SELECT * FROM schedule WHERE id=?");
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
 
-            while(rs.next()){
+            if(rs.next()){
                 int idE = rs.getInt("id");
                 int class_id = rs.getInt("class_id");
                 int quarter_id = rs.getInt("quarter_id");
@@ -47,10 +54,10 @@ public class ScheduleDao extends DataBaseConnection {
                 Time endtime = rs.getTime("endtime");
                 sch = new ScheduleBean(idE,classDao.getClass(class_id),quarterDao.getQuarter(quarter_id),roomDao.getRoom(room_id),day,starttime,endtime);
             }
-            st.close();
-            rs.close();
         }catch (SQLException e) {
             throw new SQLException(e.getMessage());
+        }finally {
+            closeConnection();
         }
         return sch;
     }
@@ -61,9 +68,10 @@ public class ScheduleDao extends DataBaseConnection {
         RoomDao roomDao = new RoomDao();
         List<ScheduleBean> schList = new ArrayList<ScheduleBean>();
         try{
-            CallableStatement cs = createConnection().prepareCall("SELECT * FROM schedule");
-            cs.execute();
-            ResultSet rs = cs.getResultSet();
+            con = createConnection();
+            ps = con.prepareStatement("SELECT * FROM schedule");
+            rs = ps.executeQuery();
+
             while(rs.next()){
                 int id=rs.getInt("id");
                 int class_id = rs.getInt("class_id");
@@ -74,11 +82,11 @@ public class ScheduleDao extends DataBaseConnection {
                 Time endtime = rs.getTime("endtime");
                 schList.add(new ScheduleBean(id,classDao.getClass(class_id),quarterDao.getQuarter(quarter_id),roomDao.getRoom(room_id),day,starttime,endtime));
             }
-            cs.close();
-            rs.close();
             return schList;
         }catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            closeConnection();
         }
         return List.of();
     }
@@ -89,10 +97,11 @@ public class ScheduleDao extends DataBaseConnection {
         RoomDao roomDao = new RoomDao();
         List<ScheduleBean> schList = new ArrayList<ScheduleBean>();
         try{
-            CallableStatement cs = createConnection().prepareCall("SELECT * FROM schedule WHERE room_id=?");
-            cs.setInt(1, roomId);
-            cs.execute();
-            ResultSet rs = cs.getResultSet();
+            con = createConnection();
+            ps = con.prepareStatement("SELECT * FROM schedule WHERE room_id=?");
+            ps.setInt(1, roomId);
+            rs = ps.executeQuery();
+
             while(rs.next()){
                 int id=rs.getInt("id");
                 int class_id = rs.getInt("class_id");
@@ -103,18 +112,19 @@ public class ScheduleDao extends DataBaseConnection {
                 Time endtime = rs.getTime("endtime");
                 schList.add(new ScheduleBean(id,classDao.getClass(class_id),quarterDao.getQuarter(quarter_id),roomDao.getRoom(room_id),day,starttime,endtime));
             }
-            cs.close();
-            rs.close();
             return schList;
         }catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            closeConnection();
         }
         return List.of();
     }
 
     public void updateSchedule(ScheduleBean sch)throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("call update_schedule(?,?,?,?,?,?,?)");
+            con = createConnection();
+            cs = con.prepareCall("call update_schedule(?,?,?,?,?,?,?)");
             cs.setInt(1, sch.getId());
             cs.setInt(2, sch.getClasse().getId());
             cs.setInt(3, sch.getQuarter().getId());
@@ -123,23 +133,35 @@ public class ScheduleDao extends DataBaseConnection {
             cs.setTime(6, sch.getStartTime());
             cs.setTime(7, sch.getEndTime());
             cs.execute();
-            cs.close();
-
         }catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException(e.getMessage());
+        }finally {
+            closeConnection();
         }
     }
 
     public void deleteSchedule(int id)throws SQLException {
         try{
-            CallableStatement cs = createConnection().prepareCall("DELETE FROM schedule WHERE id=?");
-            cs.setInt(1, id);
-            cs.execute();
-            cs.close();
+            con = createConnection();
+            ps = con.prepareStatement("DELETE FROM schedule WHERE id=?");
+            ps.setInt(1, id);
+            ps.execute();
         }catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException(e.getMessage());
+        }finally {
+            closeConnection();
+        }
+    }
+    private void closeConnection() {
+        try {
+            if (ps != null) ps.close();
+            if (cs != null) cs.close();
+            if (rs != null) rs.close();
+            if (con != null) con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
