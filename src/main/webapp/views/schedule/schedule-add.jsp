@@ -36,10 +36,10 @@
                     </select>
                     <br>
                     <label for="starttime">Hora de inicio:</label>
-                    <input type="time" name="starttime" id="starttime" min="07:00" max="20:00"/>
+                    <input class="form-control" type="time" name="starttime" id="starttime" min="07:00" max="20:00"/>
                     <br><br>
                     <label for="endtime">Hora de fin:</label>
-                    <input type="time" name="endtime" id="endtime" min="08:00" max="21:00"/>
+                    <input class="form-control" type="time" name="endtime" id="endtime" min="08:00" max="21:00"/>
                     <input type="text" name="action" value="add" hidden/>
                 </form>
             </div>

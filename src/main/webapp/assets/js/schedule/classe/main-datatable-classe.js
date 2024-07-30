@@ -6,9 +6,9 @@ const dataTableOptions={
     lengthMenu:[5,10,25],
     scrollX: true,
     columnDefs: [
-        {className: "text-center",targets:[0,1,2,3,4]},
-        {orderable: false,targets:[4]},
-        {searchable:false,targets:[4]},
+        {className: "text-center",targets:[0,1,2,3]},
+        {orderable: false,targets:[3]},
+        {searchable:false,targets:[3]},
         {width:"",targets:[]}
     ],
     pageLength:10,
@@ -22,33 +22,35 @@ const initDataTable=async()=>{
         destroy=true;
     }
 
-    await listSchedules();
+    await listClasses();
 
-    dataTable=$('#datatable_schedules').DataTable(dataTableOptions);
+    dataTable=$('#datatable_classes').DataTable(dataTableOptions);
 
     dataTableInitiated=true;
 };
 
 
 
-const listSchedules=async()=>{
+const listClasses=async()=>{
     try{
         const response=await fetch('http://localhost:8080/SISGEA_war_exploded/data/classes');
-        const schedules=await response.json();
+        const classes=await response.json();
 
         let content= ``;
-        schedules.forEach((cl,index) => {
+        classes.forEach((cl,index) => {
             content+=`
             <tr>
                 <td>${cl.name}</td>
                 <td>${cl.program.name}</td>
-                <td>${cl.period.name}</td>
-                <td>${cl.status}</td>
+                <td>
+                    <i class="${cl.status ? 'bi bi-check-circle' : 'bi bi-x-circle'}" 
+                       style="color: ${cl.status ? 'green' : 'red'};">
+                    </i>
+                </td>
                 <td>
                     <button class="btn btn-primary btn-sm edit-btn" 
                     data-id="${cl.id}"
-                    data-programid="${cl.program.id}"
-                    data-periodid="${cl.period.id}" //CUIDADO: NO USAR MAYUSCULAS EN DATA
+                    data-programid="${cl.program.id}" //CUIDADO: NO USAR MAYUSCULAS EN DATA
                     ><i class="bi bi-pencil-square"></i></button>
                     
                     <button class="btn btn-danger btn-sm delete-btn"
@@ -66,33 +68,4 @@ const listSchedules=async()=>{
 
 window.addEventListener('load',async()=>{
     await initDataTable();
-});
-
-//UTILIZANDO JQUERY OBTENEMOS DATOS DE HORARIO CUANDO SE PULSA EL BOTÓN DE EDITAR, PARA DESPUÉS ENVIARLO AL MODAL.
-$(document).ready(function(){
-    $('#datatable_schedules').on('click', '.edit-btn', function () {
-        const id = $(this).data('id');
-        const classId = $(this).data('classid');
-        const quarterId = $(this).data('quarterid');
-        const roomId = $(this).data('roomid');
-        const day = $(this).data('day');
-        const startime = $(this).data('startime');
-        const endtime = $(this).data('endtime');
-
-        $('#scheduleUpdateModal').attr('data-id', id);
-        $('#scheduleUpdateModal').attr('data-classid', classId);
-        $('#scheduleUpdateModal').attr('data-quarterid', quarterId);
-        $('#scheduleUpdateModal').attr('data-roomid', roomId);
-        $('#scheduleUpdateModal').attr('data-day', day);
-        $('#scheduleUpdateModal').attr('data-startime', startime);
-        $('#scheduleUpdateModal').attr('data-endtime', endtime);
-
-        $('#scheduleUpdateModal').modal('show');
-    });
-
-    $('#datatable_schedules').on('click', '.delete-btn', function () {
-        const id = $(this).data('id');
-        $('#deleteScheduleId').val(id);
-        $('#deleteScheduleModal').modal('show');
-    });
 });

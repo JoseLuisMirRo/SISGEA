@@ -5,7 +5,7 @@
   Time: 3:04 PM
   To change this template use File | Settings | File Templates.
 --%>
---%><%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -31,12 +31,11 @@
     </div>
     <div class="row"> <!--Fila de la tabla-->
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"> <!--Columna de la tabla que va a ser de 12 en todos los tamaños de pantallas-->
-            <table id="datatable_schedules" class="table table-striped" style="width: 100%;">
+            <table id="datatable_classes" class="table table-striped" style="width: 100%;">
                 <thead> <!--Encabezado de la tabla-->
                 <tr> <!--Fila de la tabla-->
                     <th>Nombre</th>
                     <th>Programa</th>
-                    <th>Periodo</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                 </tr>
@@ -59,7 +58,7 @@
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
 
 <!--JS Custom-->
-<script src="${pageContext.request.contextPath}/assets/js/schedule/main-datatable-schedule.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/schedule/classe/main-datatable-classe.js"></script>
 </body>
 </html>
 
