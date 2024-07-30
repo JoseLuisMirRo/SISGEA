@@ -151,7 +151,7 @@
                 Swal.fire({
                     icon: "error",
                     title: "Error",
-                    text: "Ingresa una fecha de reserva posterior a la fecha y hora actuales",
+                    text: "Ingresa una fecha y hora de reserva posterior a la fecha y hora actuales",
                     confirmButtonText: "Revisar",
                     confirmButtonColor: "#dc3545",
                 });

@@ -111,56 +111,77 @@
         const wfinalStartTime = "15:00:00";
         const wfinalEndTime = "16:00:00";
 
-        if(updateRoomId.value && updateDescription.value && updateDate.value && updateStarttime.value && updateEndtime.value){
-            const dateobjetc = new Date(updateDate.value);
-            const day = dateobjetc.getDay();
+        const currentDateTime = new Date();
+        const inputDateTime = new Date(`${updateDate.value}T${updateStarttime.value}`);
 
-            if(day !== 6){
-                if(updateStarttime.value >= initialStartTime && updateStarttime.value <= finalStartTime){
-                    if(updateEndtime.value >= initialEndTime && updateEndtime.value <= finalEndTime){
-                        form.submit();
-                    }else{
+        const dateobjetc = new Date(updateDate.value);
+        const day = dateobjetc.getDay();
+
+        if(updateRoomId.value && updateDescription.value && updateDate.value && updateStarttime.value && updateEndtime.value) {
+            if (inputDateTime > currentDateTime) {
+                if (day !== 6) {
+                    if (updateStarttime.value >= initialStartTime && updateStarttime.value <= finalStartTime) {
+                        if (updateEndtime.value >= initialEndTime && updateEndtime.value <= finalEndTime) {
+                            form.submit();
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: "Ingresa un tiempo final válido \n(Entre las 08:00 y 21:00 hrs según el horario de la UTEZ)",
+                                confirmButtonText: "Revisar",
+                                confirmButtonColor: "#dc3545",
+                            });
+                        }
+                    } else {
                         Swal.fire({
                             icon: "error",
                             title: "Error",
-                            text: "Ingresa un tiempo final válido \n(Entre las 08:00 y 21:00 hrs según el horario de la UTEZ)",
+                            text: "Ingresa un tiempo inicial válido \n(Entre las 07:00 y 20:00 hrs según el horario de la UTEZ)",
                             confirmButtonText: "Revisar",
                             confirmButtonColor: "#dc3545",
                         });
                     }
-                }else{
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "Ingresa un tiempo inicial válido \n(Entre las 07:00 y 20:00 hrs según el horario de la UTEZ)",
-                        confirmButtonText: "Revisar",
-                        confirmButtonColor: "#dc3545",
-                    });
-                }
+                } else {
+                    if (updateStarttime.value >= initialStartTime && updateStarttime.value <= wfinalStartTime) {
+                        if (updateEndtime.value >= initialEndTime && updateEndtime.value <= wfinalEndTime) {
+                            form.submit();
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: "Ingresa un tiempo final válido \n(Entre las 08:00 y 16:00 hrs según el horario de la UTEZ)",
+                                confirmButtonText: "Revisar",
+                                confirmButtonColor: "#dc3545",
+                            });
+                        }
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Ingresa un tiempo inicial válido \n(Entre las 07:00 y 15:00 hrs según el horario de la UTEZ)",
+                            confirmButtonText: "Revisar",
+                            confirmButtonColor: "#dc3545",
+                        });
+                    }
                 }
             }else{
-                if(updateStarttime.value >= initialStartTime && updateStarttime.value <= wfinalStartTime){
-                    if(updateEndtime.value >= initialEndTime && updateEndtime.value <= wfinalEndTime){
-                        form.submit();
-                    }else{
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error",
-                            text: "Ingresa un tiempo final válido \n(Entre las 08:00 y 16:00 hrs según el horario de la UTEZ)",
-                            confirmButtonText: "Revisar",
-                            confirmButtonColor: "#dc3545",
-                        });
-                    }
-                }else{
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "Ingresa un tiempo inicial válido \n(Entre las 07:00 y 15:00 hrs según el horario de la UTEZ)",
-                        confirmButtonText: "Revisar",
-                        confirmButtonColor: "#dc3545",
-                    });
-                }
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Ingresa una fecha y hora de reserva posterior a la fecha y hora actuales",
+                    confirmButtonText: "Revisar",
+                    confirmButtonColor: "#dc3545",
+                });
             }
+        }else{
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Completa todos los campos",
+                confirmButtonText: "Revisar",
+                confirmButtonColor: "#dc3545",
+            });
+        }
     });
 
     const hourTo24 = (hour12) => {
