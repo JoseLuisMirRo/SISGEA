@@ -6,7 +6,7 @@ const fetchRooms = async () => {
         return rooms.map(room => ({
             id: room.id,
             title: `${room.roomType.abbreviation}${room.number}${room.building.abbreviation}`,
-            eventColor: getEventColor(room.roomType.abbreviation)
+            //eventColor: getEventColor(room.roomType.abbreviation)
         }));
     }catch (error){
         console.log('Error: ', error);
@@ -33,6 +33,7 @@ const fetchReserves = async () => {
             title: `Reserva: ${reserve.description} - Autor: ${reserve.user.firstName} ${reserve.user.lastNameP} ${reserve.user.lastNameM}`,
             start: `${manageDate(reserve.date)}T${hourTo24(reserve.startTime)}`,
             end: `${manageDate(reserve.date)}T${hourTo24(reserve.endTime)}`,
+            color: '#0078ff'
         }));
     }catch (error){
         console.log('Error: ', error);
@@ -64,6 +65,7 @@ const fetchSchedules = async () => {
                     title: `Clase: ${schedule.classe.name}`,
                     start: `${formattedDate}T${startTime24}`,
                     end: `${formattedDate}T${endTime24}`,
+                    color: '#d30505'
                 });
             });
         });

@@ -70,6 +70,7 @@
     </script>
 </head>
 <body>
+<br>
 <div id='calendar'></div>
 </body>
 </html>
