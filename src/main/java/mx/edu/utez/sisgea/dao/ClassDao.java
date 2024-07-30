@@ -15,7 +15,7 @@ public class ClassDao extends DataBaseConnection {
     public void insertClass(ClassBean classe) throws SQLException {
         try{
             con = createConnection();
-            ps = con.prepareStatement("INSERT INTO class VALUES (?,?,?)");
+            ps = con.prepareStatement("INSERT INTO class (name, program_id, status) VALUES (?,?,?)");
             ps.setString(1, classe.getName());
             ps.setInt(2, classe.getProgram().getId());
             ps.setBoolean(3,true);

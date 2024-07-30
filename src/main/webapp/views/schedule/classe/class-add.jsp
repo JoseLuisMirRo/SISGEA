@@ -15,7 +15,7 @@
                 <h1 class="modal-title fs-5" id="clRegisterTitle">Registrar nueva clase</h1>
             </div>
             <div class="modal-body">
-                <form id ="registerClasseForm" action="<%=request.getContextPath()%>/clases" method="post">
+                <form id ="registerClasseForm" action="<%=request.getContextPath()%>/classServlet" method="post">
                     <label for="name">Nombre:</label>
                     <input class="form-control" type="text" id="name" name="name">
                     <br>
@@ -31,3 +31,40 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const classeRegisterModal = document.getElementById('classeRegisterModal');
+
+        classeRegisterModal.addEventListener('shown.bs.modal', async ()=> {
+            const response = await fetch('http://localhost:8080/SISGEA_war_exploded/data/classes');
+            const data = await response.json();
+
+            const programSelect = document.getElementById('program');
+
+            data.programs.forEach(program => {
+                const option = document.createElement('option');
+                option.value = program.id;
+                option.textContent = program.name;
+                programSelect.appendChild(option);
+            });
+        });
+    });
+
+    document.getElementById("submitButtonAdd").addEventListener("click", async () => {
+        const form = document.getElementById("registerClasseForm");
+        const {name, program} = form.elements;
+
+        if(name.value && program.value) {
+            form.submit();
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Completa todos los campos",
+                confirmButtonText: "Revisar",
+                confirmButtonColor: "#dc3545",
+            });
+        }
+    });
+</script>

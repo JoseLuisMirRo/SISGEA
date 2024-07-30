@@ -14,7 +14,7 @@ import mx.edu.utez.sisgea.model.LoginBean;
 
 import java.io.IOException;
 
-@WebServlet("/clases")
+@WebServlet("/classServlet")
 public class ClassServlet extends HttpServlet {
     private int id;
     @Override

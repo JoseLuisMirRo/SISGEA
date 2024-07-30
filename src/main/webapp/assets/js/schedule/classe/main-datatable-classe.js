@@ -34,10 +34,10 @@ const initDataTable=async()=>{
 const listClasses=async()=>{
     try{
         const response=await fetch('http://localhost:8080/SISGEA_war_exploded/data/classes');
-        const classes=await response.json();
+        const data=await response.json();
 
         let content= ``;
-        classes.forEach((cl,index) => {
+        data.classes.forEach((cl,index) => {
             content+=`
             <tr>
                 <td>${cl.name}</td>

@@ -24,7 +24,7 @@
 <jsp:include page="/views/schedule/classe/data-table-classe.jsp"></jsp:include>
 
 <!--MODAL AGREGAR HORARIO-->
-<jsp:include page="/views/schedule/schedule-add.jsp"></jsp:include>
+<jsp:include page="/views/schedule/classe/class-add.jsp"></jsp:include>
 
 <!--MODAL ACTUALIZAR HORARIO-->
 <jsp:include page="/views/schedule/schedule-update.jsp"></jsp:include>
@@ -38,6 +38,6 @@
 %>
 
 <input type="hidden" id="status" value="<%=status%>">
-<script src="${pageContext.request.contextPath}/assets/js/schedule/scheduleMan.js"> </script>
+<script src="${pageContext.request.contextPath}/assets/js/schedule/classe/classeMan.js"> </script>
 </body>
 </html>
