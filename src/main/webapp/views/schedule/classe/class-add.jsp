@@ -42,6 +42,10 @@
 
             const programSelect = document.getElementById('program');
 
+            while(programSelect.firstChild){
+                programSelect.removeChild(programSelect.firstChild);
+            }
+
             data.programs.forEach(program => {
                 const option = document.createElement('option');
                 option.value = program.id;

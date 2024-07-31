@@ -105,7 +105,6 @@
             const dayId = updateScheduleModal.getAttribute('data-day');
             const starttime = updateScheduleModal.getAttribute('data-startime');
             const endtime = updateScheduleModal.getAttribute('data-endtime');
-            console.log(dayId)
 
             const starttime24 = hourTo24(starttime);
             const endtime24 = hourTo24(endtime);

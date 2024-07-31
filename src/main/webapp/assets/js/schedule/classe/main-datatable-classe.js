@@ -50,6 +50,7 @@ const listClasses=async()=>{
                 <td>
                     <button class="btn btn-primary btn-sm edit-btn" 
                     data-id="${cl.id}"
+                    data-name="${cl.name}"
                     data-programid="${cl.program.id}" //CUIDADO: NO USAR MAYUSCULAS EN DATA
                     ><i class="bi bi-pencil-square"></i></button>
                     
@@ -68,4 +69,25 @@ const listClasses=async()=>{
 
 window.addEventListener('load',async()=>{
     await initDataTable();
+});
+
+$(document).ready(function() {
+    $('#datatable_classes').on('click', '.edit-btn', function() {
+        const id = $(this).data('id');
+        const name = $(this).data('name');
+        const programId = $(this).data('programid');
+
+        $('#classeUpdateModal').attr('data-id', id);
+        $('#classeUpdateModal').attr('data-name', name);
+        $('#classeUpdateModal').attr('data-programid', programId);
+
+        $('#classeUpdateModal').modal('show');
+    });
+
+    $('#datatable_classes').on('click', '.delete-btn', function() {
+        const id = $(this).data('id');
+        $('deleteClasseId').val(id);
+        $('#classeDeleteModal').modal('show');
+    });
+
 });

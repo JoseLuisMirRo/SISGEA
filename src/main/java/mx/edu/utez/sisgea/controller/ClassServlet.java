@@ -42,7 +42,7 @@ public class ClassServlet extends HttpServlet {
 
                 case "update":
                     try{
-                        classBean.setId(Integer.parseInt(req.getParameter("updateClassId")));
+                        classBean.setId(Integer.parseInt(req.getParameter("updateClasseId")));
                         classBean.setName(req.getParameter("updateName"));
                         classBean.setProgram(programDao.getProgram(Integer.parseInt(req.getParameter("updateProgramId"))));
                         classDao.updateClass(classBean);

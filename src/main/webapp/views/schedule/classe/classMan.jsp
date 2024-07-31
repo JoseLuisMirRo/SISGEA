@@ -23,11 +23,11 @@
 <body>
 <jsp:include page="/views/schedule/classe/data-table-classe.jsp"></jsp:include>
 
-<!--MODAL AGREGAR HORARIO-->
+<!--MODAL AGREGAR CLASE-->
 <jsp:include page="/views/schedule/classe/class-add.jsp"></jsp:include>
 
-<!--MODAL ACTUALIZAR HORARIO-->
-<jsp:include page="/views/schedule/schedule-update.jsp"></jsp:include>
+<!--MODAL ACTUALIZAR CLASE-->
+<jsp:include page="/views/schedule/classe/class-update.jsp"></jsp:include>
 
 <!--MODAL ELIMINAR HORARIO-->
 <jsp:include page="/views/schedule/schedule-delete.jsp"></jsp:include>
