@@ -86,8 +86,8 @@ $(document).ready(function() {
 
     $('#datatable_classes').on('click', '.delete-btn', function() {
         const id = $(this).data('id');
-        $('deleteClasseId').val(id);
-        $('#classeDeleteModal').modal('show');
+        $('#deleteClassId').val(id);
+        $('#deleteClasseModal').modal('show');
     });
 
 });
