@@ -112,7 +112,7 @@
         const wfinalEndTime = "16:00:00";
 
         const currentDateTime = new Date();
-        const inputDateTime = new Date(`${updateDate.value}T${updateStarttime.value}`);
+        const inputDateTime = new Date(`\${updateDate.value}T\${updateStarttime.value}`);
 
         const dateobjetc = new Date(updateDate.value);
         const day = dateobjetc.getDay();

@@ -63,7 +63,7 @@
             ]);
 
             const quarters = await response1.json();
-            const classes = await response2.json();
+            const classes = (await response2.json()).classes;
             const rooms = await response3.json();
 
             const quartersElement = document.getElementById("quarter");

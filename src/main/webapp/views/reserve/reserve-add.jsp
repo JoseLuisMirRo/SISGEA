@@ -94,7 +94,7 @@
         const wfinalEndTime = "16:00:00";
 
         const currentDateTime = new Date();
-        const inputDateTime = new Date(`${date.value}T${starttime.value}`);
+        const inputDateTime = new Date(`\${date.value}T\${starttime.value}`);
 
         //PASAR DATE A OBJETO DATE
         const dateobjetc = new Date(date.value);
