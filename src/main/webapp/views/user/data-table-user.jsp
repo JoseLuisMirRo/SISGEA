@@ -26,6 +26,7 @@
         <h2 style="color: black">Gestión de usuarios</h2>
     </div>
     <div class="text-end">
+        <button id="historyBtn" class="btn btn-primary">Ver usuarios inactivos</button>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userRegisterModal">
             <i class="bi bi-plus-lg"></i> Agregar Usuario </button>
     </div>
@@ -39,7 +40,6 @@
                     <th>Nombre</th>
                     <th>Apellido paterno</th>
                     <th>Apellido materno</th>
-                    <th>Contraseña</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                 </tr>

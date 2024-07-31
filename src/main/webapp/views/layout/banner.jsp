@@ -15,6 +15,7 @@
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styles-banner.css" />
 </head>
+<body>
 <header>
     <nav class="navbar navbar-expand">
         <div class="container-fluid">
@@ -39,18 +40,25 @@
 
             </ul>
             <ul class="navbar-nav" style="align-content: center">
+                <% int userRole = user.getRole().getId(); %>
+                <% if(1==userRole || 2==userRole){ %> <!--Si el role es 1 (Admin) se muestran todas las opciones del nav)-->
                 <li class="nav-item dropdown">
                     <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="height: 90% !important">
                         <i class="bi bi-list"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="#">Gestionar usuarios</a></li>
-                        <li><a class="dropdown-item" href="#">Gestionar espacios</a></li>
-                        <li><a class="dropdown-item" href="#">Gestionar horarios</a></li>
-                        <li><a class="dropdown-item" href="#">Gestionar reservas</a></li>
+                        <% if(1==userRole){ %>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/userServlet">Gestionar usuarios</a></li>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/roomServlet">Gestionar espacios</a></li>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/scheduleServlet">Gestionar horarios</a></li>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/reserveServlet">Gestionar reservas</a></li>
                         <li><a class="dropdown-item" href="#">Gestionar feriados</a></li>
+                        <% } else if (2==userRole) {%>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/reserveServlet">Gestionar reservas</a></li>
+                        <% } %>
                     </ul>
                 </li>
+                <% } %>
                 <li> <!--Pendiente cambiar importacion de iconos a version CDN--> <!--PROBLEMA: ME ESTÁ TOMANDO ESTILOS BOOTSTRAP EN LUGAR DE MIS PROPIOS ESTILOS, SOLUCIONAR CON REFACTOR DEL CÓDIGO-->
                     <form id="logoutButtonForm" action="${pageContext.request.contextPath}/LogoutServlet" method="POST">
                         <button type="button" class="btn btn-danger btn-lg" style="margin-left: 15px !important; margin-right: 15px!important; height: 90% !important;" onclick="logoutAlert()">
@@ -61,6 +69,7 @@
             </ul>
         </div>
     </nav>
+</header>
     <script>
         function logoutAlert(){
             Swal.fire({
@@ -80,6 +89,6 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="sweetalert2.all.min.js"></script>
-</header>
+</body>
 
 </html>

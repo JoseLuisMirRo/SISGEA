@@ -3,30 +3,37 @@ package mx.edu.utez.sisgea.dao;
 import mx.edu.utez.sisgea.model.UserroleBean;
 import mx.edu.utez.sisgea.utility.DataBaseConnection;
 
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserroleDao extends DataBaseConnection {
+    private Connection con = null;
+    private PreparedStatement ps = null;
+    private ResultSet rs = null;
+
     public void insertUserRole(UserroleBean userrole) throws SQLException {
         try {
-            CallableStatement cs = createConnection().prepareCall("INSERT INTO userrole VALUES (?,?)");
-            cs.setInt(1,userrole.getUser_id());
-            cs.setInt(2,userrole.getRole_id());
-            cs.execute();
+            con = createConnection();
+            ps = con.prepareStatement("INSERT INTO userrole VALUES (?,?)");
+            ps.setInt(1,userrole.getUser_id());
+            ps.setInt(2,userrole.getRole_id());
+            ps.execute();
         } catch (Exception e){
             e.printStackTrace();
             throw new SQLException(e.getMessage());
+        } finally {
+            closeConnection();
         }
     }
+
     public List<Integer> getUserRoles(int id) {
         try{
             List<Integer> roles = new ArrayList<Integer>();
-            CallableStatement cs = createConnection().prepareCall("SELECT * FROM userrole WHERE user_id=?");
-            cs.setInt(1, id);
-            ResultSet rs = cs.executeQuery();
+            con = createConnection();
+            ps = con.prepareStatement("SELECT * FROM userrole WHERE user_id=?");
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
             while (rs.next()){
                 roles.add((rs.getInt("role_id")));
             }
@@ -34,15 +41,30 @@ public class UserroleDao extends DataBaseConnection {
         }catch (Exception e){
             e.printStackTrace();
             return null;
+        }finally {
+            closeConnection();
         }
     }
     public void deleteUserRoles(UserroleBean userrole) {
         try{
-            CallableStatement cs = createConnection().prepareCall("DELETE FROM userrole WHERE user_id=? AND role_id=?");
-            cs.setInt(1,userrole.getUser_id());
-            cs.setInt(2,userrole.getRole_id());
-            cs.execute();
+            con = createConnection();
+            ps = con.prepareStatement("DELETE FROM userrole WHERE user_id=? AND role_id=?");
+            ps.setInt(1,userrole.getUser_id());
+            ps.setInt(2,userrole.getRole_id());
+            ps.execute();
         }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            closeConnection();
+        }
+    }
+
+    private void closeConnection() {
+        try {
+            if (ps != null) ps.close();
+            if (rs != null) rs.close();
+            if (con != null) con.close();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

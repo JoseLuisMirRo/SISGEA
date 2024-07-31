@@ -10,13 +10,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="deleteUserTitle">Actualizar usuario</h1>
+                <h1 class="modal-title fs-5" id="deleteUserTitle">Eliminar usuario</h1>
             </div>
             <div class="modal-body">
                 <h3>¿Desea eliminar usuario?</h3>
                 <form id="deleteForm" action="<%=request.getContextPath()%>/userServlet" method="post" style="display:none">
                     <input id="deleteUserId" name="deleteUserId" type="text"/>
-                    <input type="text" name="action" value="delete"/> <!--VALOR PARA INDICAR AL SERVLET QUE ES UN ACCION DE UPDATE-->
+                    <input type="text" name="action" value="delete"/>
                 </form>
             </div>
             <div class="modal-footer">
@@ -44,7 +44,7 @@
                 <h3>¿Desea reactivar usuario?</h3>
                 <form id="revertDeleteForm" action="<%=request.getContextPath()%>/userServlet" method="post" style="display:none">
                     <input id="revertDeleteUserId" name="revertDeleteUserId" type="text"/>
-                    <input type="text" name="action" value="revertDelete"/> <!--VALOR PARA INDICAR AL SERVLET QUE ES UN ACCION DE UPDATE-->
+                    <input type="text" name="action" value="revertDelete"/>
                 </form>
             </div>
             <div class="modal-footer">

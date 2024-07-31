@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebContextManager">
+    <option name="state">
+      <map>
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/views/reserve/reserve-add.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views/reserve" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/views/room/roomMan.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views/room" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/views/user/userMan.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views/user" />
+      </map>
+    </option>
+  </component>
+</project>

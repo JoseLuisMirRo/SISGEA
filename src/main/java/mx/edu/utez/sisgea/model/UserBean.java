@@ -23,13 +23,12 @@ public class UserBean {
         this.status = status;
     }
 
-    public UserBean(int id,String email, String firstName, String lastNameP, String lastNameM, String password, boolean status) {
+    public UserBean(int id,String email, String firstName, String lastNameP, String lastNameM, boolean status) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
         this.lastNameP = lastNameP;
         this.lastNameM = lastNameM;
-        this.password = password;
         this.status = status;
     }
 

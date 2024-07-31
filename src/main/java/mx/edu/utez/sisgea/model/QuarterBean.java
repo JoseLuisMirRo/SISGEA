@@ -12,6 +12,13 @@ public class QuarterBean {
     }
 
     public QuarterBean(int id, String name, Date startDate, Date endDate) {
+        this.id = id;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public QuarterBean(String name, Date startDate, Date endDate) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;

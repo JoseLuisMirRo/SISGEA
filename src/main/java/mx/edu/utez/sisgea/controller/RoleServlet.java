@@ -1,5 +1,6 @@
 package mx.edu.utez.sisgea.controller;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,27 +22,38 @@ public class RoleServlet extends HttpServlet {
 
         int selectedRole=Integer.parseInt(req.getParameter("role"));
         HttpSession activeSession = req.getSession();
-        LoginBean user = (LoginBean) req.getSession().getAttribute("user");
+        LoginBean user = (LoginBean) req.getSession().getAttribute("activeUser");
         RoleDao roleDao = new RoleDao();
         System.out.println(user.getFirstName());
         RoleBean role = roleDao.getRoleById(selectedRole);
         user.setRole(role);
-        System.out.println(user.getRole().getName());
-        activeSession.removeAttribute("user");
-        System.out.println(user);
         activeSession.setAttribute("activeUser", user);
 
-        //Rutas del sistema
-        String[] routes = {"mainAdministrador", "mainDocente", "mainAlumno"};
         //Roles del sistema
         Integer[] roles = {1, 2, 3};
 
         for (int i = 0; i < roles.length; i++) {
             if (roles[i].equals(role.getId())) {
-                req.getRequestDispatcher("/views/" + routes[i] + ".jsp").forward(req, resp);
+                req.getRequestDispatcher("/calendar").forward(req, resp);
             }
         }
     }
 
-
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession activeSession = req.getSession();
+        LoginBean user = (LoginBean) req.getSession().getAttribute("activeUser");
+        List<RoleBean> userRoles = (List<RoleBean>) req.getAttribute("userRoles");
+        RequestDispatcher rd;
+        if(user!=null){
+            if(userRoles!=null){
+                rd = req.getRequestDispatcher("/views/login/login-multirole.jsp");
+            }else{
+                rd = req.getRequestDispatcher("/views/layout/error403.jsp");
+            }
+        }else {
+            rd = req.getRequestDispatcher("/views/login/login.jsp");
+        }
+        rd.forward(req,resp);
+    }
 }
