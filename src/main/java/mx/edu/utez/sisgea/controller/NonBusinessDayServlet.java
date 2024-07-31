@@ -1,11 +1,14 @@
 package mx.edu.utez.sisgea.controller;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import mx.edu.utez.sisgea.dao.NonBusinessDayDao;
+import mx.edu.utez.sisgea.model.LoginBean;
 import mx.edu.utez.sisgea.model.NonBusinessDay;
 
 import java.io.IOException;
@@ -14,15 +17,6 @@ import java.util.List;
 
 @WebServlet("/NonBusinessDayServlet")
 public class NonBusinessDayServlet extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        NonBusinessDayDao dao = new NonBusinessDayDao();
-        List<NonBusinessDay> nonBusinessDays = dao.getNonBusinessDays();
-
-        req.setAttribute("nonBusinessDays", nonBusinessDays);
-        req.getRequestDispatcher("views/nonBusinessDay.jsp").forward(req, resp);
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -65,5 +59,21 @@ public class NonBusinessDayServlet extends HttpServlet {
                 resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al insertar el día no laborable.");
             }
         }
+    }
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession activeSession = req.getSession();
+        LoginBean user = (LoginBean) activeSession.getAttribute("activeUser");
+        RequestDispatcher rd;
+
+        if(user!=null){
+            if(user.getRole().getId()==1){
+                rd = req.getRequestDispatcher("/views/nonbusinessday/nbdMan.jsp");
+            }else{
+                rd = req.getRequestDispatcher("/views/layout/error403.jsp");
+            }
+        }else{
+            rd = req.getRequestDispatcher("/views/login/login.jsp");
+        }
+        rd.forward(req, resp);
     }
 }
