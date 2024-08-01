@@ -3,8 +3,9 @@ if (status === "registerError") {
     const urlParams = new URLSearchParams(window.location.search);
     const errorMessage = urlParams.get("errorMessage");
     let textShow;
+    console.log(errorMessage);
     if (errorMessage === "repeated") {
-        textShow = "Existe un registro con los mismso datos"
+        textShow = "Existe un registro con los mismos datos para el programa seleccionado";
     } else {
         textShow = "Error del sistema, por favor contacte al administrador"
     }
@@ -39,7 +40,7 @@ else if (status === "updateError") {
     const errorMessage = urlParams.get("errorMessage");
     let textShow;
     if (errorMessage === "repeated") {
-        textShow = "Existe un registro con los mismso datos"
+        textShow = "Existe un registro con los mismos datos para el programa seleccionado"
     } else {
         textShow = "Error del sistema, por favor contacte al administrador"
     }

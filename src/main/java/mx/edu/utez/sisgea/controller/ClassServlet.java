@@ -13,6 +13,8 @@ import mx.edu.utez.sisgea.model.ClassBean;
 import mx.edu.utez.sisgea.model.LoginBean;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @WebServlet("/classServlet")
 public class ClassServlet extends HttpServlet {
@@ -36,7 +38,11 @@ public class ClassServlet extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/classServlet?status=registerOk");
                 }catch (Exception e){
                     e.printStackTrace();
-                    resp.sendRedirect(req.getContextPath() + "/classServlet?status=registerError");
+                    String errorMessage = e.getMessage();
+                    if(errorMessage.contains("Duplicate entry")){
+                        errorMessage = "duplicateEntry";
+                    }
+                    resp.sendRedirect(req.getContextPath() + "/classServlet?status=registerError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
                 }
                 break;
 
@@ -49,7 +55,11 @@ public class ClassServlet extends HttpServlet {
                         resp.sendRedirect(req.getContextPath() + "/classServlet?status=updateOk");
                     }catch (Exception e){
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/classServlet?status=updateError");
+                        String errorMessage = e.getMessage();
+                        if(errorMessage.contains("Duplicate entry")){
+                            errorMessage = "duplicateEntry";
+                        }
+                        resp.sendRedirect(req.getContextPath() + "/classServlet?status=updateError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
                     }
                     break;
 
