@@ -64,7 +64,7 @@ public class ClassServlet extends HttpServlet {
                         }
                         break;
 
-            case "revertDekete":
+            case "revertDelete":
                 try{
                     id=Integer.parseInt(req.getParameter("revertDeleteClassId"));
                     classDao.revertDeleteClass(id);

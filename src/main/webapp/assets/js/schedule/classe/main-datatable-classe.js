@@ -54,9 +54,10 @@ const listClasses=async()=>{
                     data-programid="${cl.program.id}" //CUIDADO: NO USAR MAYUSCULAS EN DATA
                     ><i class="bi bi-pencil-square"></i></button>
                     
-                    <button class="btn btn-danger btn-sm delete-btn"
+                     <button class="${cl.status ? 'btn btn-danger btn-sm delete-btn' : 'btn btn-success btn-sm enable-btn'}"
                     data-id="${cl.id}"
-                    ><i class="bi bi-trash3-fill"></i></button>
+                    data-status="${cl.status}"
+                    ><i class="${cl.status ? 'bi bi-trash3-fill' : 'bi bi-check-square-fill'}"></i></button>
                 </td>
             </tr>`;
         });
@@ -88,6 +89,12 @@ $(document).ready(function() {
         const id = $(this).data('id');
         $('#deleteClassId').val(id);
         $('#deleteClasseModal').modal('show');
+    });
+
+    $('#datatable_classes').on('click', '.enable-btn', function() {
+        const id = $(this).data('id');
+        $('#revertDeleteClassId').val(id);
+        $('#revertDeleteClasseModal').modal('show');
     });
 
 });

@@ -82,3 +82,44 @@ else if (status === "deleteOk") {
         }
     });
 }
+else if (status === "deleteError") {
+    Swal.fire({
+        icon: "error",
+        title: "Error, no se eliminó la clase",
+        text: "Error del sistema, por favor contacte al administrador",
+        confirmButtonText: "Reintentar",
+        confirmButtonColor: "#dc3545",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
+            window.location.href = contextPath + "/classServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+        }
+    });
+}
+else if (status === revertDeleteOk) {
+    Swal.fire({
+        icon: "success",
+        title: "Clase reactivada con éxito",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#208c7d",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
+            window.location.href = contextPath + "/classServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+        }
+    });
+}
+else if (status === revertDeleteError) {
+    Swal.fire({
+        icon: "error",
+        title: "Error, no se reactivó la clase",
+        text: "Error del sistema, por favor contacte al administrador",
+        confirmButtonText: "Reintentar",
+        confirmButtonColor: "#dc3545",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
+            window.location.href = contextPath + "/classServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+        }
+    });
+}

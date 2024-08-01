@@ -42,8 +42,8 @@
             </div>
             <div class="modal-body">
                 <h3>¿Desea reactivar la clase?</h3>
-                <form id="revertDeleteForm" action="<%=request.getContextPath()%>/roomServlet" method="post" style="display:none">
-                    <input id="revertDeleteClasseId" name="revertDeleteClasseId" type="text"/>
+                <form id="revertDeleteForm" action="<%=request.getContextPath()%>/classServlet" method="post" style="display:none">
+                    <input id="revertDeleteClassId" name="revertDeleteClassId" type="text"/>
                     <input type="text" name="action" value="revertDelete"/>
                 </form>
             </div>
