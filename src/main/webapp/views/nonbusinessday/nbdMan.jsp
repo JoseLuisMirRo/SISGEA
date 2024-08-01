@@ -24,8 +24,10 @@
 <jsp:include page="/views/nonbusinessday/data-table-nbd.jsp"></jsp:include>
 
 <!--MODAL AGREGAR HORARIO-->
+<jsp:include page="/views/nonbusinessday/nbd-add.jsp"></jsp:include>
 
 <!--MODAL ACTUALIZAR HORARIO-->
+<jsp:include page="/views/nonbusinessday/nbd-update.jsp"></jsp:include>
 
 <!--MODAL ELIMINAR HORARIO-->
 
@@ -35,6 +37,6 @@
 %>
 
 <input type="hidden" id="status" value="<%=status%>">
-<script src="${pageContext.request.contextPath}/assets/js/schedule/scheduleMan.js"> </script>
+<script src="${pageContext.request.contextPath}/assets/js/nonbusinessday/nbdMan.js"> </script>
 </body>
 </html>

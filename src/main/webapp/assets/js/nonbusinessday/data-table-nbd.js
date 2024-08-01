@@ -67,4 +67,17 @@ window.addEventListener('load',async()=>{
 });
 
 //UTILIZANDO JQUERY OBTENEMOS DATOS DE HORARIO CUANDO SE PULSA EL BOTÓN DE EDITAR, PARA DESPUÉS ENVIARLO AL MODAL.
+$(document).ready(function() {
+    $('#datatable_nbd').on('click', '.edit-btn', function () {
+        const id = $(this).data('id');
+        const date = $(this).data('date');
+        const name = $(this).data('name');
+        console.log(id,date,name);
 
+        $('#nbdUpdateModal').attr('data-id', id);
+        $('#nbdUpdateModal').attr('data-date', date);
+        $('#nbdUpdateModal').attr('data-name', name);
+
+        $('#nbdUpdateModal').modal('show');
+    });
+});

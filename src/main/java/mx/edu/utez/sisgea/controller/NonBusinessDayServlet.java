@@ -21,9 +21,24 @@ public class NonBusinessDayServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
-        NonBusinessDayDao dao = new NonBusinessDayDao();
+        NonBusinessDayDao nbdDao = new NonBusinessDayDao();
+        NonBusinessDay nbdBean = new NonBusinessDay();
 
-        if ("delete".equals(action)) {
+        switch (action){
+            case "add":
+                try{
+                    nbdBean.setName(req.getParameter("name"));
+                    nbdBean.setDate(Date.valueOf(req.getParameter("date")));
+                    nbdDao.insertNonBusinessDay(nbdBean);
+                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=registerOk");
+                }catch(Exception e){
+                    e.printStackTrace();
+                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=registerError");
+                }
+                break;
+        }
+
+        /*if ("delete".equals(action)) {
             int id = Integer.parseInt(req.getParameter("id"));
             boolean result = dao.deleteNonBusinessDay(id);
             if (result) {
@@ -58,7 +73,7 @@ public class NonBusinessDayServlet extends HttpServlet {
             } else {
                 resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al insertar el día no laborable.");
             }
-        }
+        }*/
     }
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession activeSession = req.getSession();
