@@ -13,7 +13,7 @@
                 <h1 class="modal-title fs-5" id="deleteNbdTitle">Eliminar feriado</h1>
             </div>
             <div class="modal-body">
-                <h3>¿Desea eliminar horario?</h3>
+                <h3>¿Desea eliminar feriado?</h3>
                 <h4>¡Cuidado! Esta acción no se puede revertir</h4>
                 <form id="deleteForm" action="<%=request.getContextPath()%>/NonBusinessDayServlet" method="post" style="display:none">
                     <input id="deleteNbdId" name="deleteNbdId" type="text"/>
