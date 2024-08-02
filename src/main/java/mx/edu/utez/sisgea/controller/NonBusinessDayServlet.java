@@ -52,8 +52,13 @@ public class NonBusinessDayServlet extends HttpServlet {
 
                 }catch (Exception e){
                     e.printStackTrace();
-                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=updateError");
+                    String errorMsg = e.getMessage();
+                    if(errorMsg.contains("Duplicate entry")){
+                        errorMsg="duplicate";
+                    }
+                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=updateError&errorMessage=" + URLEncoder.encode(errorMsg, StandardCharsets.UTF_8));
                 }
+                break;
             case "delete":
                 try{
                     int id = Integer.parseInt(req.getParameter("deleteNbdId"));

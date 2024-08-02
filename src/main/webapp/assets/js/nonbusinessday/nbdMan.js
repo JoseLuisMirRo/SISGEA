@@ -38,18 +38,14 @@ else if (status === "updateError"){
     const urlParams = new URLSearchParams(window.location.search);
     const errorMessage = urlParams.get("errorMessage");
     let textShow;
-    if (errorMessage==="repeated"){
-        textShow = "Existe un registro con los mismso datos"
-    }else if (errorMessage==="conflict"){
-        textShow = "Horario de clase traslapa con otra clase"
-    }else if (errorMessage==="startAfterEnd"){
-        textShow = "Hora de inicio no puede ir antes de hora final"
+    if (errorMessage==="duplicate"){
+        textShow = "Existe un feriado registrado en esta fecha"
     }else {
         textShow = "Error del sistema, por favor contacte al administrador"
     }
     Swal.fire({
         icon: "error",
-        title: "Error, no se actualizó el horario",
+        title: "Error, no se actualizó el feriado",
         text: textShow,
         confirmButtonText: "Reintentar",
         confirmButtonColor: "#dc3545",
@@ -76,7 +72,7 @@ else if (status === "updateOk"){
 else if (status === "deleteError"){
     Swal.fire({
         icon: "error",
-        title: "Error, no se eliminó el horario",
+        title: "Error, no se eliminó el feriado",
         text: "Vuelva a intentarlo",
         confirmButtonText: "Reintentar",
         confirmButtonColor: "#dc3545",
@@ -90,7 +86,7 @@ else if (status === "deleteError"){
 else if (status === "deleteOk"){
     Swal.fire({
         icon: "success",
-        title: "Horario eliminado con éxito",
+        title: "Feriado eliminado con éxito",
         confirmButtonText: "Ok",
         confirmButtonColor: "#208c7d",
     }).then((result) => {
