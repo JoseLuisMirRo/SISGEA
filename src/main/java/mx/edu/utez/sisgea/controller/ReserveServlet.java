@@ -30,6 +30,7 @@ public class ReserveServlet extends HttpServlet {
 
         ReserveBean reserveBean = new ReserveBean();
         ReserveDao reserveDao = new ReserveDao();
+        NonBusinessDayDao nbdDao = new NonBusinessDayDao();
         UserDao userDao = new UserDao();
         RoomDao roomDao = new RoomDao();
 
@@ -57,10 +58,15 @@ public class ReserveServlet extends HttpServlet {
 
                     ScheduleDao scheduleDao = new ScheduleDao();
                     List<ScheduleBean> schedules = scheduleDao.getAllRoomSchedules(roomId);
+                    List<NonBusinessDay> nbds = nbdDao.getNonBusinessDays();
                     boolean isValid = validateOverlap(reserveBean, schedules);
+                    boolean isNbd = validateNbd(reserveBean, nbds);
 
                     if (!isValid) {
                         throw new IllegalArgumentException("overlaps");
+                    }
+                    if(isNbd){
+                        throw new IllegalArgumentException("overlapsnbd");
                     }
                     reserveDao.insertReserve(reserveBean);
                     resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=registerOk");
@@ -90,10 +96,16 @@ public class ReserveServlet extends HttpServlet {
 
                     ScheduleDao scheduleDao = new ScheduleDao();
                     List<ScheduleBean> schedules = scheduleDao.getAllRoomSchedules(roomId);
+                    List<NonBusinessDay> nbds = nbdDao.getNonBusinessDays();
                     boolean isValid = validateOverlap(reserveBean, schedules);
+                    boolean isNbd = validateNbd(reserveBean, nbds);
 
                     if (!isValid) {
                         throw new IllegalArgumentException("overlaps");
+                    }
+
+                    if(isNbd) {
+                        throw new IllegalArgumentException("overlapsnbd");
                     }
 
                     reserveDao.updateReserve(reserveBean);
@@ -216,5 +228,18 @@ public class ReserveServlet extends HttpServlet {
             }
         }
         return true;
+    }
+    private boolean validateNbd(ReserveBean reserve, List<NonBusinessDay> nbds) {
+        LocalDate reserveDate = reserve.getDate().toLocalDate();
+        boolean status = false;
+
+        for (NonBusinessDay nbd : nbds) {
+            if (nbd.getDate().toLocalDate().equals(reserveDate)) {
+                status = true;
+            } else {
+                status = false;
+            }
+        }
+        return status;
     }
 }
