@@ -20,7 +20,7 @@ public class UserDao extends DataBaseConnection {
             int userId=0;
             boolean result=false;
             con = createConnection();
-            ps = con.prepareStatement("INSERT INTO user (email,firstname,lastnamep,lastnamem,password,status) VALUES (?, ?, ?, ?, ?, ?)");
+            ps = con.prepareStatement("INSERT INTO user (email,firstname,lastnamep,lastnamem,password,status) VALUES (?, ?, ?, ?, ?, ?)",Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getFirstName());
             ps.setString(3, user.getLastNameP());
