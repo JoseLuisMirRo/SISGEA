@@ -232,8 +232,11 @@ public class ReserveServlet extends HttpServlet {
     private boolean validateNbd(ReserveBean reserve, List<NonBusinessDay> nbds) {
         LocalDate reserveDate = reserve.getDate().toLocalDate();
         boolean status = false;
+        System.out.println(reserveDate);
 
         for (NonBusinessDay nbd : nbds) {
+            //MEJORAR PARA QUE EN LUGAR DE QUE RECORRAR EL ARREGLO, PONER UNA FUNCION EN EL DAO PARA CONSULTAR LA FECHA
+            System.out.println(nbd.getDate().toLocalDate());
             if (nbd.getDate().toLocalDate().equals(reserveDate)) {
                 status = true;
             } else {
