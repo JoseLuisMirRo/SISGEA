@@ -3,12 +3,8 @@ if (status === "registerError") {
     const urlParams = new URLSearchParams(window.location.search);
     const errorMessage = urlParams.get("errorMessage");
     let textShow;
-    if (errorMessage==="repeated"){
-        textShow = "Existe un registro con los mismso datos"
-    }else if (errorMessage==="conflict"){
-        textShow = "Horario de clase traslapa con otra clase"
-    }else if (errorMessage==="startAfterEnd"){
-        textShow = "Hora de inicio no puede ir antes de hora final"
+    if (errorMessage==="duplicate"){
+        textShow = "Existe un feriado registrado en esta fecha"
     }else {
         textShow = "Error del sistema, por favor contacte al administrador"
     }

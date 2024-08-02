@@ -15,7 +15,7 @@ public class NonBusinessDayDao extends DataBaseConnection {
     private PreparedStatement ps = null;
     private ResultSet rs = null;
 
-    public boolean insertNonBusinessDay(NonBusinessDay nonBusinessDay) {
+    public boolean insertNonBusinessDay(NonBusinessDay nonBusinessDay) throws SQLException {
         String sql = "INSERT INTO nonbusinessday(date, name) VALUES(?, ?)";
         boolean resultado = false;
         try {
@@ -26,7 +26,8 @@ public class NonBusinessDayDao extends DataBaseConnection {
             ps.executeUpdate();
             resultado = true;
         } catch (Exception ex) {
-            System.err.println("Error al insertar nonBusinessDay: " + ex.getMessage());
+            ex.printStackTrace();
+            throw new SQLException(ex.getMessage());
         } finally {
             closeDBConnection();
         }

@@ -12,6 +12,8 @@ import mx.edu.utez.sisgea.model.LoginBean;
 import mx.edu.utez.sisgea.model.NonBusinessDay;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.util.List;
 
@@ -33,7 +35,11 @@ public class NonBusinessDayServlet extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=registerOk");
                 }catch(Exception e){
                     e.printStackTrace();
-                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=registerError");
+                    String errorMsg = e.getMessage();
+                    if(errorMsg.contains("Duplicate entry")){
+                        errorMsg="duplicate";
+                    }
+                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=registerError&errorMessage=" + URLEncoder.encode(errorMsg, StandardCharsets.UTF_8));
                 }
                 break;
             case "update":
