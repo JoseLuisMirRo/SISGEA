@@ -24,10 +24,9 @@
     <div class="container" style="background-color: rgb(5, 35, 73); text-align: center; margin-top: 100px; padding: 50px; width: 800px; border-radius: 10px;">
         <h3 style="color: white; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><b>Hola, ${activeUser.firstName} ${activeUser.lastNameP} ${activeUser.lastNameM}</b></h3>
         <br>
-        <h4 style="text-align: center; color: white">Se han encontrado multiples roles para tu usuario</h4>A
+        <h4 style="text-align: center; color: white">Se han encontrado multiples roles para tu usuario</h4>
         <br>
         <form action="<%=request.getContextPath()%>/roleController" method="post" id="multirolForm">
-            <label for="roles">Selecciona un rol: </label>
             <select id="roles" name="role" style="width: 205px; margin: 0 auto;" class="form-select" aria-label="Select roles">
             <option value="" disabled selected>Seleccionar Rol</option>
             <%

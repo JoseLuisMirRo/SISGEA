@@ -9,8 +9,10 @@ if (status === "registerError") {
         textShow = "Horario de reserva traslapa con otra reserva"
     }else if (errorMessage==="startAfterEnd") {
         textShow = "Hora de inicio no puede ir antes de hora final"
-    }else if (errorMessage==="overlaps"){
+    }else if (errorMessage==="overlaps") {
         textShow = "Horario de reserva traslapa con una clase"
+    }else if (errorMessage==="overlapsnbd"){
+        textShow = "No se puede reservar en dias feriados"
     }else {
         textShow = "Error del sistema, por favor contacte al administrador"
     }
@@ -52,8 +54,10 @@ else if (status === "updateError"){
         textShow = "Horario de reserva traslapa con otra reserva"
     }else if (errorMessage==="startAfterEnd"){
         textShow = "Hora de inicio no puede ir antes de hora final"
-    }else if (errorMessage==="overlaps"){
+    }else if (errorMessage==="overlaps") {
         textShow = "Horario de reserva traslapa con una clase"
+    }else if (errorMessage==="overlapsNbd"){
+        textShow = "No se puede reservar en dias feriados"
     }else {
         textShow = "Error del sistema, por favor contacte al administrador"
     }
