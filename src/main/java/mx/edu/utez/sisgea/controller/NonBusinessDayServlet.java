@@ -36,7 +36,30 @@ public class NonBusinessDayServlet extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=registerError");
                 }
                 break;
+            case "update":
+                try{
+                    nbdBean.setId(Integer.parseInt(req.getParameter("updateNbdId")));
+                    nbdBean.setName(req.getParameter("updateName"));
+                    nbdBean.setDate(Date.valueOf(req.getParameter("updateDate")));
+                    nbdDao.updateNonBusinessDay(nbdBean);
+                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=updateOk");
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=updateError");
+                }
+            case "delete":
+                try{
+                    int id = Integer.parseInt(req.getParameter("deleteNbdId"));
+                    nbdDao.deleteNonBusinessDay(id);
+                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=deleteOk");
+                } catch (Exception e){
+                    e.printStackTrace();
+                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=deleteError");
+                }
         }
+
+
 
         /*if ("delete".equals(action)) {
             int id = Integer.parseInt(req.getParameter("id"));

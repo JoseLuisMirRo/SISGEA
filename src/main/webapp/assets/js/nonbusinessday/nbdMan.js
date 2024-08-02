@@ -60,7 +60,7 @@ else if (status === "updateError"){
     }).then((result) => {
         if (result.isConfirmed) {
             const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/scheduleServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+            window.location.href = contextPath + "/NonBusinessDayServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
         }
     });
 }
@@ -73,7 +73,7 @@ else if (status === "updateOk"){
     }).then((result) => {
         if (result.isConfirmed) {
             const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/scheduleServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+            window.location.href = contextPath + "/NonBusinessDayServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
         }
     });
 }
@@ -87,7 +87,7 @@ else if (status === "deleteError"){
     }).then((result) => {
         if (result.isConfirmed) {
             const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/scheduleServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+            window.location.href = contextPath + "/NonBusinessDayServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
         }
     });
 }
@@ -100,7 +100,7 @@ else if (status === "deleteOk"){
     }).then((result) => {
         if (result.isConfirmed) {
             const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/scheduleServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+            window.location.href = contextPath + "/NonBusinessDayServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
         }
     });
 }

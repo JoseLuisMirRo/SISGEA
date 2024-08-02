@@ -72,6 +72,23 @@ public class NonBusinessDayDao extends DataBaseConnection {
         return resultado;
     }
 
+    public void updateNonBusinessDay(NonBusinessDay nonBusinessDay) throws SQLException {
+        try{
+            con = createConnection();
+            ps = con.prepareStatement("UPDATE nonbusinessday set name = ?, date = ? WHERE id = ?");
+            ps.setString(1, nonBusinessDay.getName());
+            ps.setDate(2, nonBusinessDay.getDate());
+            ps.setInt(3, nonBusinessDay.getId());
+            ps.executeUpdate();
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+            throw new SQLException(ex.getMessage());
+        } finally {
+            closeDBConnection();
+        }
+    }
+
     private void closeDBConnection() {
         try {
             if (ps != null) ps.close();

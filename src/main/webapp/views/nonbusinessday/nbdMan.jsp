@@ -30,6 +30,7 @@
 <jsp:include page="/views/nonbusinessday/nbd-update.jsp"></jsp:include>
 
 <!--MODAL ELIMINAR HORARIO-->
+<jsp:include page="/views/nonbusinessday/nbd-delete.jsp"></jsp:include>
 
 <!--STATUS DE LA PAGINA-->
 <%

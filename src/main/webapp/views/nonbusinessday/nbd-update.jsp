@@ -30,7 +30,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button id="submitButtonAdd" type="button" class="btn btn-success">Registrar</button>
+                <button id="submitButtonUpdate" type="button" class="btn btn-success">Registrar</button>
             </div>
         </div>
     </div>
@@ -52,11 +52,12 @@
             document.getElementById('updateDate').value=dateYMD;
         });
     });
-    document.getElementById("submitButtonAdd").addEventListener("click",function (){
-        const form= document.getElementById("registerNbdForm");
-        const {name,date}=form.elements;
+    document.getElementById("submitButtonUpdate").addEventListener("click",function (){
+        console.log(updateNbdId);
+        const form= document.getElementById("updateNbdForm");
+        const {updateName,updateDate}=form.elements;
 
-        if(name.value && date.value){
+        if(updateName.value && updateDate.value){
             form.submit();
         } else {
             Swal.fire({
@@ -87,4 +88,5 @@
 
         return `\${yearStr}-\${monthStr}-\${dayStr}`;
     }
+
 </script>

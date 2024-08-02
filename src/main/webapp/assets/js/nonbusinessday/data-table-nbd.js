@@ -80,4 +80,10 @@ $(document).ready(function() {
 
         $('#nbdUpdateModal').modal('show');
     });
+    $('#datatable_nbd').on('click', '.delete-btn', function () {
+        const id = $(this).data('id');
+        $('#deleteNbdId').val(id);
+        $('#deleteNbdModal').modal('show');
+    });
 });
+
