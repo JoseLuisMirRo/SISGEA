@@ -28,7 +28,7 @@ const fetchReserves = async () => {
         const reserves = await response.json();
 
         return reserves.map(reserve => ({
-            id: reserve.id,
+            id: `R${reserve.id}`,
             resourceId: reserve.room.id,
             title: `Reserva: ${reserve.description} - Autor: ${reserve.user.firstName} ${reserve.user.lastNameP} ${reserve.user.lastNameM}`,
             start: `${manageDate(reserve.date)}T${hourTo24(reserve.startTime)}`,
@@ -60,7 +60,7 @@ const fetchSchedules = async () => {
                 const formattedDate = date.toISOString().split('T')[0]; //Obtenemos la fecha generada en formato yyyy-mm-dd
 
                 formattedEvents.push({
-                    id: schedule.id,
+                    id: `S${schedule.id}`,
                     resourceId: schedule.room.id,
                     title: `Clase: ${schedule.classe.name}`,
                     start: `${formattedDate}T${startTime24}`,
@@ -75,6 +75,26 @@ const fetchSchedules = async () => {
         console.log('Error: ', error);
     }
 
+}
+const fetchNonBusinessDays = async () => {
+    try{
+        const response = await fetch('http://localhost:8080/SISGEA_war_exploded/data/nbd');
+        const nonBusinessDays = await response.json();
+
+        const rooms = await fetchRooms();
+        const allResourceIds = rooms.map(room => room.id);
+
+        return nonBusinessDays.map(nbd => ({
+            id: `NBD${nbd.id}`,
+            title: `Feriado: ${nbd.name} NO SE PUEDE RESERVAR EN ESTA FECHA`,
+            start: manageDate(nbd.date),
+            color: '#c10000',
+            resourceIds: allResourceIds,
+            allDay: true
+        }));
+    }catch (error){
+        console.log('Error: ', error);
+    }
 }
 const  generateDates = (startDate, endDate, dayOfWeek) =>{
     let dates = [];

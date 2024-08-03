@@ -24,12 +24,13 @@
 
         document.addEventListener('DOMContentLoaded', async function () {
             const roomResources = await fetchRooms();
-            const [reserveResources, scheduleResources] = await Promise.all([
+            const [reserveResources, scheduleResources, nbdResources] = await Promise.all([
                 fetchReserves(),
-                fetchSchedules()
+                fetchSchedules(),
+                fetchNonBusinessDays()
             ]);
 
-            const eventResources = roomResources.concat(reserveResources, scheduleResources);
+            const eventResources = roomResources.concat(reserveResources, scheduleResources, nbdResources);
 
             const calendarEl = document.getElementById('calendar');
             const calendar = new FullCalendar.Calendar(calendarEl, {
