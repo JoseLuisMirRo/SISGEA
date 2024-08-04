@@ -44,6 +44,10 @@ const fetchSchedules = async () => {
         const response = await fetch('http://localhost:8080/SISGEA_war_exploded/data/schedules');
         const schedules = await response.json();
 
+        //NonBussinesDays
+        const nonBusinessDaysResponse = await fetchNonBusinessDays();
+        const nonBusinessDays = nonBusinessDaysResponse.map(nbd => nbd.start);
+
         const formattedEvents = [];
 
         schedules.forEach(schedule => {
@@ -59,14 +63,16 @@ const fetchSchedules = async () => {
             classDates.forEach(date => {
                 const formattedDate = date.toISOString().split('T')[0]; //Obtenemos la fecha generada en formato yyyy-mm-dd
 
-                formattedEvents.push({
-                    id: `S${schedule.id}`,
-                    resourceId: schedule.room.id,
-                    title: `Clase: ${schedule.classe.name}`,
-                    start: `${formattedDate}T${startTime24}`,
-                    end: `${formattedDate}T${endTime24}`,
-                    color: '#d30505'
-                });
+                if(!nonBusinessDays.includes(formattedDate)) { //Si la fecha generada no es un día feriado
+                    formattedEvents.push({
+                        id: `S${schedule.id}`,
+                        resourceId: schedule.room.id,
+                        title: `Clase: ${schedule.classe.name}`,
+                        start: `${formattedDate}T${startTime24}`,
+                        end: `${formattedDate}T${endTime24}`,
+                        color: '#d30505'
+                    });
+                }
             });
         });
         return formattedEvents;
