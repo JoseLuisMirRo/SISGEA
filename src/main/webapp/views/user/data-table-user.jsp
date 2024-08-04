@@ -27,6 +27,7 @@
     </div>
     <div class="text-end">
         <button id="historyBtn" class="btn btn-primary">Ver usuarios inactivos</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bulkRegisterModal">Agregar usuarios masivamente</button>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userRegisterModal">
             <i class="bi bi-plus-lg"></i> Agregar Usuario </button>
     </div>

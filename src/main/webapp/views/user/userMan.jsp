@@ -25,6 +25,9 @@
 <body>
 <jsp:include page="/views/user/data-table-user.jsp"></jsp:include>
 
+<!--MODAL USER BULK ADD-->
+<jsp:include page="/views/user/user-bulkadd.jsp"></jsp:include>
+
 <!--MODAL AGREGAR USUARIO-->
 <jsp:include page="/views/user/user-add.jsp"></jsp:include>
 

@@ -3,16 +3,13 @@ package mx.edu.utez.sisgea.controller;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import jakarta.servlet.http.HttpSession;
 import mx.edu.utez.sisgea.dao.UserDao;
 import mx.edu.utez.sisgea.dao.UserroleDao;
 import mx.edu.utez.sisgea.model.LoginBean;
@@ -128,8 +125,6 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                         //req.getRequestDispatcher("jsp").forward(req, resp);
                     }
                     break;
-
-
             }
         }
 
