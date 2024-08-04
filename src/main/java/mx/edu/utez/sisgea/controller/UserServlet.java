@@ -39,7 +39,7 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                         userBean.setLastNameP(req.getParameter("lastNameP"));
                         userBean.setLastNameM(req.getParameter("lastNameM"));
                         userBean.setEmail(req.getParameter("email"));
-                        userBean.setPassword(req.getParameter("password"));
+                        userBean.setPassword(GeneratePassword.generatePassword(2, 2, 2));
                         userBean.setStatus(true);
 
                         int createdId=userDao.insertUser(userBean); //Al ejecutar la insercion del usuario, el metodo devuelve su ID
@@ -53,8 +53,18 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                                 userRoleDao.insertUserRole(userrole);
                             }
                         }
+                        ResendAPI emailSender=new ResendAPI();
+                        String from = "Bienvenidas SISGEA <sisgea@resend.dev>";
+                        String to = userBean.getEmail();
+                        String subject = "Bienvenido a SISGEA";
+                        String body = "Hola "+userBean.getFirstName()+" "+userBean.getLastNameP()+" "+userBean.getLastNameM()+"\n\n"+
+                                "Bienvenido a SISGEA" + "\n\n"+
+                                "Tu contraseña es: "+userBean.getPassword()+"\n\n"+
+                                "Por favor, cambia tu contraseña en tu primer inicio de sesión.\n\n"+
+                                "Saludos cordiales,\n"+
+                                "Equipo de SISGEA";
+                        emailSender.sendEmail(from, to, subject, body);
                         resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=registerOk");
-
                     } catch (Exception e) {
                         e.printStackTrace();
                         resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=registerError");
@@ -145,3 +155,4 @@ import mx.edu.utez.sisgea.model.UserroleBean;
             rd.forward(req,resp);
         }
     }
+

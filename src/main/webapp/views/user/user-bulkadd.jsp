@@ -20,14 +20,14 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button id="submitButtonAdd" type="button" class="btn btn-success">Enviar</button>
+                <button id="submitButtonBulk" type="button" class="btn btn-success">Enviar</button>
             </div>
         </div>
     </div>
 </div>
 </html>
 <script>
-    document.getElementById("submitButtonAdd").addEventListener("click",function () {
+    document.getElementById("submitButtonBulk").addEventListener("click",function () {
         document.getElementById("usrBulkAdd").submit();
     });
 </script>

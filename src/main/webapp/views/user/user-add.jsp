@@ -65,17 +65,8 @@
                             <input id="email" type="email" class="form-control" name="email" required />
                         </div>
                     </div>
-                    <div class="mb-3 row">
-                        <label for="password" class="col-sm-4 col-form-label form-label">Contraseña:</label>
-                        <div class="col-sm-8">
-                            <input id="password" type="password" class="form-control" name="password" required />
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="confirmPassword" class="col-sm-4 col-form-label form-label">Confirmar contraseña:</label>
-                        <div class="col-sm-8">
-                            <input id="confirmPassword" type="password" class="form-control" name="confirmPassword" required />
-                        </div>
+                    <div>
+                        <label>La contraseña se envía por correo al usuario registrado</label>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-sm-4 col-form-label form-label">Tipo de usuario:</label>
@@ -107,7 +98,7 @@
 <script>
     document.getElementById("submitButtonAdd").addEventListener("click",function () {
         const form= document.getElementById("registerForm");
-        const {name,lastNameP,lastNameM,email,password,confirmPassword}=form.elements;
+        const {name,lastNameP,lastNameM,email}=form.elements;
         const roles = form.querySelectorAll('input[name="roles[]"]');
         let rolesSelected = false;
         for (let role of roles){
@@ -116,25 +107,15 @@
                 break;
             }
         }
-        if (name.value && lastNameP.value && lastNameM.value && email.value && password.value && confirmPassword.value) {
+        if (name.value && lastNameP.value && lastNameM.value && email.value) {
             if (email.value.substring(email.value.lastIndexOf("@") + 1) === "utez.edu.mx") {
-                if (password.value === confirmPassword.value) {
-                    if(rolesSelected) {
-                        form.submit();
-                    } else {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error",
-                            text: "Debes seleccionar al menos un rol",
-                            confirmButtonText: "Revisar",
-                            confirmButtonColor: "#dc3545",
-                        });
-                    }
+                if(rolesSelected) {
+                    form.submit();
                 } else {
                     Swal.fire({
                         icon: "error",
                         title: "Error",
-                        text: "Las contraseñas no coinciden",
+                        text: "Debes seleccionar al menos un rol",
                         confirmButtonText: "Revisar",
                         confirmButtonColor: "#dc3545",
                     });
