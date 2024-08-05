@@ -1,5 +1,7 @@
 package mx.edu.utez.sisgea.dao;
 
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 import mx.edu.utez.sisgea.model.UserBean;
 import mx.edu.utez.sisgea.model.UserroleBean;
 import mx.edu.utez.sisgea.utility.DataBaseConnection;
@@ -17,6 +19,10 @@ public class UserDao extends DataBaseConnection {
 
     public int insertUser(UserBean user) throws SQLException {
         try{
+
+            String rawPassword = user.getPassword();
+            Argon2 argon2 = Argon2Factory.create();
+            String hashedPassword = argon2.hash(2, 65536,1, rawPassword);
             int userId=0;
             boolean result=false;
             con = createConnection();
@@ -25,7 +31,7 @@ public class UserDao extends DataBaseConnection {
             ps.setString(2, user.getFirstName());
             ps.setString(3, user.getLastNameP());
             ps.setString(4, user.getLastNameM());
-            ps.setString(5, user.getPassword());
+            ps.setString(5, hashedPassword);
             ps.setBoolean(6, user.isStatus());
             result = ps.execute();
 
@@ -113,9 +119,12 @@ public class UserDao extends DataBaseConnection {
 
     public void updateUserPassword(UserBean user) throws SQLException {
         try{
+            String rawPassword = user.getPassword();
+            Argon2 argon2 = Argon2Factory.create();
+            String hashedPassword = argon2.hash(2, 65536,1, rawPassword);
             con = createConnection();
             ps = con.prepareStatement("UPDATE user SET password=? WHERE id=?");
-            ps.setString(1, user.getPassword());
+            ps.setString(1,hashedPassword);
             ps.setInt(2,user.getId());
             ps.execute();
         }catch (Exception e){
