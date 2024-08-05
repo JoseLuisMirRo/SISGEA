@@ -116,6 +116,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                <button id="updatePswdBtn" type="button" class="btn btn-warning">Regenerar contraseña</button>
                 <button id="submitButtonUpdate" type="button" class="btn btn-success">Actualizar</button>
             </div>
         </div>
@@ -179,5 +180,29 @@
                 confirmButtonColor: "#dc3545",
             });
         }
+    });
+    document.getElementById("updatePswdBtn").addEventListener("click",function() {
+       const form = document.createElement("form");
+       form.id = "updatePswdForm";
+       form.action = "<%=request.getContextPath()%>/userServlet";
+       form.method = "post";
+
+       const actionField = document.createElement("input");
+       actionField.type = "hidden";
+       actionField.name = "action";
+       actionField.value = "updatePswd";
+
+       const userIdField = document.createElement("input");
+         userIdField.type = "hidden";
+         userIdField.name = "updatePswdUserId";
+         userIdField.value = document.getElementById("updateUserId").value;
+
+        form.appendChild(actionField);
+        form.appendChild(userIdField);
+
+        document.body.appendChild(form);
+
+        form.submit();
+
     });
 </script>

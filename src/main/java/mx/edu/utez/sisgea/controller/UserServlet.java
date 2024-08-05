@@ -54,7 +54,7 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                             }
                         }
                         ResendAPI emailSender=new ResendAPI();
-                        String from = "Bienvenidas SISGEA <email@sisgea.tech>";
+                        String from = "SISGEA <email@sisgea.tech>";
                         String to = userBean.getEmail();
                         String subject = "Bienvenido a SISGEA";
                         String html = "<h2>¡Hola! "+userBean.getFirstName()+" "+userBean.getLastNameP()+" "+userBean.getLastNameM()+"</h2>"+
@@ -77,7 +77,6 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                         userBean.setLastNameP(req.getParameter("lastNameP"));
                         userBean.setLastNameM(req.getParameter("lastNameM"));
                         userBean.setEmail(req.getParameter("email"));
-                        userBean.setPassword(req.getParameter("password"));
                         userDao.updateUser(userBean);
 
                         //SOPORTE MULTIROL
@@ -110,7 +109,27 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                         resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=updateError");
                     }
                     break;
-
+                case "updatePswd":
+                    try {
+                        userBean.setId(Integer.parseInt(req.getParameter("updatePswdUserId")));
+                        userBean.setEmail(req.getParameter("email"));
+                        userBean.setPassword(GeneratePassword.generatePassword(2, 2, 2));
+                        userDao.updateUserPassword(userBean);
+                        UserBean targetUser = userDao.getUser(userBean.getId());
+                        ResendAPI emailSender = new ResendAPI();
+                        String from = "SISGEA <email@sisgea.tech>";
+                        String to = targetUser.getEmail();
+                        String subject = "Tu contraseña ha sido recuperada exitosamente";
+                        String html = "<h2>¡Hola! "+targetUser.getFirstName()+" "+targetUser.getLastNameP()+" "+targetUser.getLastNameM()+"</h2>"+
+                                "<h3>¡Tu contraseña ha sido recuperada exitosamente!</h3><p>Nueva contraseña: "+userBean.getPassword()+"</p>"+
+                                "<p>Saludos cordiales,</p><p>Equipo de SISGEA</p>";
+                        emailSender.sendEmail(from, to, subject, html);
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=updatePswdOk");
+                    }catch (Exception e) {
+                        e.printStackTrace();
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=updatePswdError");
+                    }
+                    break;
                 case "delete": //Eliminacion logica
                     try{
                         id=(Integer.parseInt(req.getParameter("deleteUserId")));

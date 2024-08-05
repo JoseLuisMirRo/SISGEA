@@ -96,13 +96,27 @@ public class UserDao extends DataBaseConnection {
     public void updateUser(UserBean user) throws SQLException {
         try{
             con = createConnection();
-            ps = con.prepareStatement("UPDATE user SET email=?,firstname=?,lastnamep=?,lastnamem=?,password=? WHERE id=?");
+            ps = con.prepareStatement("UPDATE user SET email=?,firstname=?,lastnamep=?,lastnamem=? WHERE id=?");
             ps.setString(1, user.getEmail());
             ps.setString(2,user.getFirstName());
             ps.setString(3,user.getLastNameP());
             ps.setString(4,user.getLastNameM());
-            ps.setString(5, user.getPassword());
-            ps.setInt(6,user.getId());
+            ps.setInt(5,user.getId());
+            ps.execute();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new SQLException(e.getMessage());
+        }finally {
+            closeConnection();
+        }
+    }
+
+    public void updateUserPassword(UserBean user) throws SQLException {
+        try{
+            con = createConnection();
+            ps = con.prepareStatement("UPDATE user SET password=? WHERE id=?");
+            ps.setString(1, user.getPassword());
+            ps.setInt(2,user.getId());
             ps.execute();
         }catch (Exception e){
             e.printStackTrace();
