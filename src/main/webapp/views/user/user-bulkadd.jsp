@@ -14,7 +14,7 @@
                 <h1 class="modal-title fs-5" id="userRegisterTitle">Registro masivo de usuarios</h1>
             </div>
             <div class="modal-body">
-                <form id="usrBulkAdd" action="<%=request.getContextPath()%>//bulkUserServlet" method="post" enctype="multipart/form-data">
+                <form id="usrBulkAdd" action="<%=request.getContextPath()%>/userBulkServlet" method="post" enctype="multipart/form-data">
                     <input type="file" name="file" id="file" class="form-action"/>
                 </form>
             </div>

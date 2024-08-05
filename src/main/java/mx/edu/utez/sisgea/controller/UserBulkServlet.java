@@ -10,8 +10,8 @@ import jakarta.servlet.http.Part;
 import mx.edu.utez.sisgea.dao.UserDao;
 import mx.edu.utez.sisgea.dao.UserroleDao;
 import mx.edu.utez.sisgea.model.UserBean;
-import mx.edu.utez.sisgea.model.UserroleBean;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.WorkbookProvider;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,8 +23,8 @@ import java.util.Iterator;
         maxRequestSize = 1024 * 1024 * 10
 )
 
-@WebServlet("/bulkUserServlet")
-public class BulkUserServlet extends HttpServlet {
+@WebServlet("/userBulkServlet")
+public class UserBulkServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserBean userBean = new UserBean();
