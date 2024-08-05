@@ -119,9 +119,12 @@ public class UserDao extends DataBaseConnection {
 
     public void updateUserPassword(UserBean user) throws SQLException {
         try{
+            String rawPassword = user.getPassword();
+            Argon2 argon2 = Argon2Factory.create();
+            String hashedPassword = argon2.hash(2, 65536,1, rawPassword);
             con = createConnection();
             ps = con.prepareStatement("UPDATE user SET password=? WHERE id=?");
-            ps.setString(1, user.getPassword());
+            ps.setString(1,hashedPassword);
             ps.setInt(2,user.getId());
             ps.execute();
         }catch (Exception e){
