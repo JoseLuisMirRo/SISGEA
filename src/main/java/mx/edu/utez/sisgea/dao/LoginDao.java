@@ -1,5 +1,7 @@
 package mx.edu.utez.sisgea.dao;
 
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 import mx.edu.utez.sisgea.model.LoginBean;
 import mx.edu.utez.sisgea.model.RoleBean;
 import mx.edu.utez.sisgea.utility.DataBaseConnection;
@@ -25,27 +27,30 @@ public class LoginDao extends DataBaseConnection {
             int id;
             List<RoleBean> roles = new ArrayList<RoleBean>();
             con = createConnection();
-            ps = con.prepareStatement("SELECT id, email, firstname,lastnamep,lastnamem,status FROM user WHERE email = ? AND password =?");
+            ps = con.prepareStatement("SELECT id, email, firstname,lastnamep,lastnamem,password,status FROM user WHERE email = ?");
             ps.setString(1, email);
-            ps.setString(2,password);
             rs = ps.executeQuery();
 
             if(rs.next()) {
-                id=rs.getInt("id");
-                login.setId(rs.getInt("id"));
-                login.setEmail(rs.getString("email"));
-                login.setFirstName(rs.getString("firstname"));
-                login.setLastNameP(rs.getString("lastnamep"));
-                login.setLastNameM(rs.getString("lastnamem"));
-                status = rs.getBoolean("status");
-                if(status) {
-                    if (email.equals(login.getEmail()) && password.equals(login.getPassword())) {
-                        return login;
+                String storedHash = rs.getString("password");
+                Argon2 argon2 = Argon2Factory.create();
+                if(argon2.verify(storedHash, password)) {
+                    id = rs.getInt("id");
+                    login.setId(rs.getInt("id"));
+                    login.setEmail(rs.getString("email"));
+                    login.setFirstName(rs.getString("firstname"));
+                    login.setLastNameP(rs.getString("lastnamep"));
+                    login.setLastNameM(rs.getString("lastnamem"));
+                    status = rs.getBoolean("status");
+                    if (status) {
+                        if (email.equals(login.getEmail()) && password.equals(login.getPassword())) {
+                            return login;
+                        } else {
+                            return null;
+                        }
                     } else {
-                        return null;
+                        throw new SQLException("deshabilitado");
                     }
-                }else{
-                    throw new SQLException("deshabilitado");
                 }
             }
         }catch (Exception e){
