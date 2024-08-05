@@ -128,7 +128,7 @@ public class ReserveServlet extends HttpServlet {
                             status = Status.Admin_Canceled;
                             if(reserve.getUser().getId() != user.getId()) {
                                 ResendAPI emailSender = new ResendAPI();
-                                String from = "Alertas SISGEA <sisgea@resend.dev>";
+                                String from = "Alertas SISGEA <email@sisgea.tech>";
                                 String to = reserve.getUser().getEmail();
                                 String subject = "Tu reserva: '" + reserve.getDescription() + "' ha sido cancelada";
                                 String html = "<h2>¡Hola! " + reserve.getUser().getFirstName()

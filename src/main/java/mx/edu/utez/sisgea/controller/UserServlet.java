@@ -54,16 +54,15 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                             }
                         }
                         ResendAPI emailSender=new ResendAPI();
-                        String from = "Bienvenidas SISGEA <sisgea@resend.dev>";
+                        String from = "Bienvenidas SISGEA <email@sisgea.tech>";
                         String to = userBean.getEmail();
                         String subject = "Bienvenido a SISGEA";
-                        String body = "Hola "+userBean.getFirstName()+" "+userBean.getLastNameP()+" "+userBean.getLastNameM()+"\n\n"+
-                                "Bienvenido a SISGEA" + "\n\n"+
-                                "Tu contraseña es: "+userBean.getPassword()+"\n\n"+
-                                "Por favor, cambia tu contraseña en tu primer inicio de sesión.\n\n"+
-                                "Saludos cordiales,\n"+
-                                "Equipo de SISGEA";
-                        emailSender.sendEmail(from, to, subject, body);
+                        String html = "<h2>¡Hola! "+userBean.getFirstName()+" "+userBean.getLastNameP()+" "+userBean.getLastNameM()+"</h2>"+
+                                "<h3>Bienvenido a SISGEA</h3><p>Tu contraseña es: "+userBean.getPassword()+"</p>"+
+                                "<p>Utiliza tu correo electrónico y contraseña para iniciar sesión en SISGEA.</p>"+
+                                "<Utiliza el siguiente hipervínculo para acceder: <a href='sisgea.tech'>SISGEA</a>"+
+                                "<p>Saludos cordiales,</p><p>Equipo de SISGEA</p>";
+                        emailSender.sendEmail(from, to, subject, html);
                         resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=registerOk");
                     } catch (Exception e) {
                         e.printStackTrace();
