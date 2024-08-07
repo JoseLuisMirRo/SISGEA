@@ -86,14 +86,6 @@
                         <label for="updateEmail" class="form-label">Correo Institucional:</label>
                         <input id="updateEmail" type="email" name="email" class="form-control" required/>
                     </div>
-                    <div class="form-group">
-                        <label for="updatePassword" class="form-label">Contraseña:</label>
-                        <input id="updatePassword" type="password" name="password" class="form-control" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="updateConfirmPassword" class="form-label">Confirmar contraseña:</label>
-                        <input id="updateConfirmPassword" type="password" name="confirmPassword" class="form-control" required/>
-                    </div>
                     <div class="mb-3 row">
                         <label class="col-sm-4 col-form-label form-label">Tipo de usuario:</label>
                         <div class="col-sm-8">
@@ -126,7 +118,7 @@
 <script>
     document.getElementById("submitButtonUpdate").addEventListener("click",function () {
         const form= document.getElementById("updateForm");
-        const {updateName,updateLastNameP,updateLastNameM,updateEmail,updatePassword,updateConfirmPassword}=form.elements;
+        const {updateName,updateLastNameP,updateLastNameM,updateEmail}=form.elements;
         const roles = form.querySelectorAll('input[name="updateRoles[]"]');
         let rolesSelected = false;
         for (let role of roles){
@@ -136,9 +128,8 @@
             }
         }
 
-        if(updateName.value && updateLastNameP.value && updateLastNameM.value && updateEmail.value && updatePassword.value && updateConfirmPassword.value) {
+        if(updateName.value && updateLastNameP.value && updateLastNameM.value && updateEmail.value) {
             if (updateEmail.value.substring(updateEmail.value.lastIndexOf("@") + 1) === "utez.edu.mx") {
-                if (updatePassword.value === updateConfirmPassword.value) {
                     if(rolesSelected){
                         form.submit();
                     } else {
@@ -150,16 +141,6 @@
                             confirmButtonColor: "#dc3545",
                         });
                     }
-                }
-                else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "Las contraseñas no coinciden",
-                        confirmButtonText: "Revisar",
-                        confirmButtonColor: "#dc3545",
-                    });
-                }
             }
             else {
                 Swal.fire({
