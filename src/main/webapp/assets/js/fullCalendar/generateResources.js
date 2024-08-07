@@ -148,7 +148,7 @@ const manageDate = (dateD) => {
     const months = {
         'ene': 0, 'feb': 1, 'mar': 2, 'abr': 3,
         'may': 4, 'jun': 5, 'jul': 6, 'ago': 7,
-        'sep': 8, 'oct': 9, 'nov': 10, 'dic': 11
+        'sept': 8, 'oct': 9, 'nov': 10, 'dic': 11
     };
     dateD = dateD.replace('.', '');
     const parts = dateD.split(' ');
@@ -160,7 +160,6 @@ const manageDate = (dateD) => {
     const yearStr = date.getFullYear().toString();
     const monthStr = (date.getMonth() + 1).toString().padStart(2, '0');
     const dayStr = date.getDate().toString().padStart(2, '0');
-    console.log(`${yearStr}-${monthStr}-${dayStr}`);
     return `${yearStr}-${monthStr}-${dayStr}`;
 }
 

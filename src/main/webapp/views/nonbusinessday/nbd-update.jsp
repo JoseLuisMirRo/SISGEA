@@ -71,21 +71,19 @@
     });
     const manageDate = (dateD) => {
         const months = {
-            'ene.': 0, 'feb.': 1, 'mar.': 2, 'abr.': 3,
-            'may.': 4, 'jun.': 5, 'jul.': 6, 'ago.': 7,
-            'sep.': 8, 'oct.': 9, 'nov.': 10, 'dic.': 11
+            'ene': 0, 'feb': 1, 'mar': 2, 'abr': 3,
+            'may': 4, 'jun': 5, 'jul': 6, 'ago': 7,
+            'sept': 8, 'oct': 9, 'nov': 10, 'dic': 11
         };
-
+        dateD = dateD.replace('.', '');
         const parts = dateD.split(' ');
         const month = months[parts[0]];
         const day = parseInt(parts[1].replace(',', ''), 10);
         const year = parseInt(parts[2], 10);
         const date = new Date(year, month, day);
-
         const yearStr = date.getFullYear().toString();
         const monthStr = (date.getMonth() + 1).toString().padStart(2, '0');
         const dayStr = date.getDate().toString().padStart(2, '0');
-
         return `\${yearStr}-\${monthStr}-\${dayStr}`;
     }
 
