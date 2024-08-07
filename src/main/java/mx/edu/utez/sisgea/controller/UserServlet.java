@@ -102,7 +102,7 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                             }
                         }
 
-                        resp.sendRedirect(req.getContextPath() + "/views/user//userMan.jsp?status=updateOk");
+                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=updateOk");
 
                     }catch(Exception e) {
                         e.printStackTrace();

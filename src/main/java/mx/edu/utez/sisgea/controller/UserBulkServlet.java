@@ -79,12 +79,12 @@ public class UserBulkServlet extends HttpServlet {
                     UserroleBean userrole = new UserroleBean(createdId, roleObjetc.getId());
                     userRoleDao.insertUserRole(userrole);
                 }
-                List<RoleBean> roles1 = userBean.getRoles();
-
             }
+            resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=bulkOk");
 
         }catch (Exception e) {
             e.printStackTrace();
+            resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=bulkError");
         }
     }
 }

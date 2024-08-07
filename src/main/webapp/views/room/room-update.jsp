@@ -18,7 +18,7 @@
                     <input id="updateRoomId" type="hidden" name="updateRoomId" class="form-control" />
                     <label for="updateBuilding">Edificio:</label>
                     <select class="form-select" id="updateBuilding" name="updateBuildingId"></select>
-                    <br><
+                    <br>
                     <label for="updateRoomType">Tipo de espacio:</label>
                     <select class="form-select" id="updateRoomType" name="updateRoomTypeId"></select>
                     <br>
@@ -40,7 +40,7 @@
         const updateRoomModal = document.getElementById('updateRoomModal');
 
         updateRoomModal.addEventListener('shown.bs.modal', async ()=> {
-            const response = await fetch('http://localhost:8080/SISGEA_war_exploded/select/rooms');
+            const response = await fetch(`\${cleanBasePath}select/rooms`);
             const data = await response.json();
 
             const roomTypesElement = document.getElementById("updateRoomType");

@@ -40,7 +40,7 @@
         const roomRegisterModal = document.getElementById('roomRegisterModal');
 
         roomRegisterModal.addEventListener('shown.bs.modal', async ()=> {
-            const response = await fetch('http://localhost:8080/SISGEA_war_exploded/select/rooms');
+            const response = await fetch(`\${cleanBasePath}select/rooms`);
             const data = await response.json();
 
             const roomTypesElement = document.getElementById("roomType");

@@ -54,9 +54,9 @@
         const updateScheduleModal = document.getElementById('scheduleUpdateModal');
         updateScheduleModal.addEventListener('shown.bs.modal', async ()=> {
             const [response1, response2, response3] = await Promise.all([
-                fetch('http://localhost:8080/SISGEA_war_exploded/data/quarters'),
-                fetch('http://localhost:8080/SISGEA_war_exploded/data/classes'),
-                fetch('http://localhost:8080/SISGEA_war_exploded/data/rooms')
+                fetch(`\${cleanBasePath}data/quarters`),
+                fetch(`\${cleanBasePath}data/classes`),
+                fetch(`\${cleanBasePath}data/rooms`)
             ]);
 
             const quarters = await response1.json();

@@ -43,7 +43,7 @@
         const reserveRegisterModal = document.getElementById('reserveRegisterModal');
 
         reserveRegisterModal.addEventListener('shown.bs.modal', async ()=> {
-            const response = await fetch('http://localhost:8080/SISGEA_war_exploded/data/rooms');
+            const response = await fetch(`\${cleanBasePath}data/rooms`);
             const data = await response.json();
 
             const roomsElement = document.getElementById("room");

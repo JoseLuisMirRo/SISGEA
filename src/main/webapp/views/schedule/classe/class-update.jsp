@@ -37,7 +37,7 @@
         const classeUpdateModal = document.getElementById('classeUpdateModal');
 
         classeUpdateModal.addEventListener('shown.bs.modal', async ()=> {
-            const response = await fetch('http://localhost:8080/SISGEA_war_exploded/data/classes');
+            const response = await fetch(`\${cleanBasePath}data/classes`);
             const data = await response.json();
 
             const programSelect = document.getElementById('updateProgram');

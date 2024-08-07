@@ -135,3 +135,30 @@ else if (status === "revertDeleteOk"){
         }
     });
 }
+else if (status === "bulkOk"){
+    Swal.fire({
+        icon: "success",
+        title: "Usuarios agregados con éxito",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#208c7d",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+            window.location.href = contextPath + "/userServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+        }
+    });
+}
+else if (status === "bulkError"){
+    Swal.fire({
+        icon: "error",
+        title: "Error, no se agregaron los usuarios",
+        text: "Vuelva a intentarlo",
+        confirmButtonText: "Reintentar",
+        confirmButtonColor: "#dc3545",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+            window.location.href = contextPath + "/userServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
+        }
+    });
+}

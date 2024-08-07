@@ -1,6 +1,9 @@
+const basePath = `${window.location.origin}${window.location.pathname}`;
+const lastSlashIndex = basePath.lastIndexOf('/');
+const cleanBasePath = basePath.substring(0, lastSlashIndex + 1);
 const fetchRooms = async () => {
     try{
-        const response = await fetch('http://localhost:8080/SISGEA_war_exploded/data/rooms');
+        const response = await fetch(`${cleanBasePath}data/rooms`);
         const rooms = await response.json();
 
         return rooms.map(room => ({
@@ -24,7 +27,7 @@ function getEventColor(abbreviation){
 }
 const fetchReserves = async () => {
     try{
-        const response = await fetch ('http://localhost:8080/SISGEA_war_exploded/data/reserves');
+        const response = await fetch (`${cleanBasePath}data/reserves`);
         const reserves = await response.json();
 
         return reserves.map(reserve => ({
@@ -41,7 +44,7 @@ const fetchReserves = async () => {
 }
 const fetchSchedules = async () => {
     try{
-        const response = await fetch('http://localhost:8080/SISGEA_war_exploded/data/schedules');
+        const response = await fetch(`${cleanBasePath}data/schedules`);
         const schedules = await response.json();
 
         //NonBussinesDays
@@ -84,7 +87,7 @@ const fetchSchedules = async () => {
 }
 const fetchNonBusinessDays = async () => {
     try{
-        const response = await fetch('http://localhost:8080/SISGEA_war_exploded/data/nbd');
+        const response = await fetch(`${cleanBasePath}data/nbd`);
         const nonBusinessDays = await response.json();
 
         const rooms = await fetchRooms();
@@ -143,11 +146,11 @@ const hourTo24 = (hour12) => {
 
 const manageDate = (dateD) => {
     const months = {
-        'ene.': 0, 'feb.': 1, 'mar.': 2, 'abr.': 3,
-        'may.': 4, 'jun.': 5, 'jul.': 6, 'ago.': 7,
-        'sep.': 8, 'oct.': 9, 'nov.': 10, 'dic.': 11
+        'ene': 0, 'feb': 1, 'mar': 2, 'abr': 3,
+        'may': 4, 'jun': 5, 'jul': 6, 'ago': 7,
+        'sep': 8, 'oct': 9, 'nov': 10, 'dic': 11
     };
-
+    dateD = dateD.replace('.', '');
     const parts = dateD.split(' ');
     const month = months[parts[0]];
     const day = parseInt(parts[1].replace(',', ''), 10);
@@ -157,7 +160,7 @@ const manageDate = (dateD) => {
     const yearStr = date.getFullYear().toString();
     const monthStr = (date.getMonth() + 1).toString().padStart(2, '0');
     const dayStr = date.getDate().toString().padStart(2, '0');
-
+    console.log(`${yearStr}-${monthStr}-${dayStr}`);
     return `${yearStr}-${monthStr}-${dayStr}`;
 }
 

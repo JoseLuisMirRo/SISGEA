@@ -1,5 +1,8 @@
 let dataTable;
 let dataTableInitiated=false;
+const basePath = `${window.location.origin}${window.location.pathname}`;
+const lastSlashIndex = basePath.lastIndexOf('/');
+const cleanBasePath = basePath.substring(0, lastSlashIndex + 1);
 
 const dataTableOptions={
     //scrollX: "2000px"
@@ -33,7 +36,7 @@ const initDataTable=async()=>{
 
 const listUsers=async(showActive = true)=>{
     try{
-        const response=await fetch('http://localhost:8080/SISGEA_war_exploded/data/users');
+        const response=await fetch(`${cleanBasePath}data/users`);
         const users=await response.json();
 
         let content= ``;
