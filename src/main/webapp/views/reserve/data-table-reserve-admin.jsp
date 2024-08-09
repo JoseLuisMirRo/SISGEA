@@ -13,15 +13,11 @@
     <title>Gestión de reservas</title>
     <link href="${pageContext.request.contextPath}/assets/css/styles-admin-profile.css" rel="stylesheet">
     <!--Bootstrap CSS-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="${pageContext.request.contextPath}/assets/css/bootstrap-5-3-3/bootstrap.min.css" rel="stylesheet">
     <!--DataTables CSS-->
-    <link href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <!--SearchPane CSS-->
-    <link href="https://cdn.datatables.net/searchpanes/2.3.1/css/searchPanes.dataTables.min.css" rel="stylesheet">
-    <!--Select CSS-->
-    <link href="https://cdn.datatables.net/select/2.0.8/css/select.dataTables.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/assets/css/datatables-2-1-3/datatables.min.css" rel="stylesheet">
     <!--Bootstrap ICONS-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="${pageContext.request.contextPath}/assets/css/bootstrap-5-3-3/bootstrap-icons.min.css" rel="stylesheet">
 
 </head>
 <body>
@@ -54,23 +50,10 @@
         </div>
     </div>
 </div>
-<!--Bootrastrap SCRIPT-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-<!--JQuery SCRIPT-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+<!--Bootstrap SCRIPT-->
+<script src="${pageContext.request.contextPath}/assets/js/bootstrap-5-5-3/bootstrap.bundle.min.js"></script>
 <!--DataTable SCRIPT-->
-<script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
-
-<!--SearchPane SCRIPT-->
-<script src="https://cdn.datatables.net/searchpanes/2.3.1/js/dataTables.searchPanes.min.js"></script>
-
-<!--Select SCRIPT-->
-<script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.min.js"></script>
-
-<!--DataTable Bootstrap SCRIPT-->
-<script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/datatables-2-1-3/datatables.min.js"></script>
 
 <!--JS Custom-->
 <script src="${pageContext.request.contextPath}/assets/js/reserve/main-datatable-reserve-admin.js"></script>

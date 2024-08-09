@@ -8,11 +8,11 @@ const dataTableOptions={
     //scrollX: "2000px"
     lengthMenu:[5,10,25],
     scrollX: true,
+    autoWidth: false,
     columnDefs: [
         {className: "text-center",targets:[0,1,2,3,4,5,6]},
         {orderable: false,targets:[4,5,6]},
         {searchable:false,targets:[4,5,6]},
-        {width:"",targets:[]}
     ],
     pageLength:10,
     language:{

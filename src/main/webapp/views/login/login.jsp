@@ -12,11 +12,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <html lang="es">
 <head>
-    <!--CSS de Bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!--Bootstrap CSS-->
+    <link href="${pageContext.request.contextPath}/assets/css/bootstrap-5-3-3/bootstrap.min.css" rel="stylesheet">
     <!--CSS Custom Login-->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styles-login.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styles-login.css">
     <title>Login</title>
 </head>
 
@@ -48,16 +47,12 @@
                 </div>
             </div>
         </div>
-
     </form>
 </div>
 <!--Script de Bootstrap-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+<script src="${pageContext.request.contextPath}/assets/js/bootstrap-5-5-3/bootstrap.bundle.min.js"></script>
 <!--SweetAlerts Script-->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="sweetalert2.all.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/sweetalert2-11-12-4/sweetalert2.all.min.js"></script>
 <!--Script Alerts-->
 <script src="${pageContext.request.contextPath}/assets/js/login/login.js"></script>
 </body>

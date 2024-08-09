@@ -80,11 +80,11 @@ public class UserBulkServlet extends HttpServlet {
                     userRoleDao.insertUserRole(userrole);
                 }
             }
-            resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=bulkOk");
+            resp.sendRedirect(req.getContextPath() + "/userServlet?status=bulkOk");
 
         }catch (Exception e) {
             e.printStackTrace();
-            resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=bulkError");
+            resp.sendRedirect(req.getContextPath() + "/userServlet?status=bulkError");
         }
     }
 }

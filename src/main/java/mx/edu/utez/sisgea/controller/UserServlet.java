@@ -63,10 +63,10 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                                 "<Utiliza el siguiente hipervínculo para acceder: <a href='sisgea.tech'>SISGEA</a>"+
                                 "<p>Saludos cordiales,</p><p>Equipo de SISGEA</p>";
                         emailSender.sendEmail(from, to, subject, html);
-                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=registerOk");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=registerOk");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=registerError");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=registerError");
                     }
                     break;
 
@@ -102,11 +102,11 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                             }
                         }
 
-                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=updateOk");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=updateOk");
 
                     }catch(Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=updateError");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=updateError");
                     }
                     break;
                 case "updatePswd":
@@ -124,20 +124,20 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                                 "<h3>¡Tu contraseña ha sido recuperada exitosamente!</h3><p>Nueva contraseña: "+userBean.getPassword()+"</p>"+
                                 "<p>Saludos cordiales,</p><p>Equipo de SISGEA</p>";
                         emailSender.sendEmail(from, to, subject, html);
-                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=updatePswdOk");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=updatePswdOk");
                     }catch (Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=updatePswdError");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=updatePswdError");
                     }
                     break;
                 case "delete": //Eliminacion logica
                     try{
                         id=(Integer.parseInt(req.getParameter("deleteUserId")));
                         userDao.deleteUser(id);
-                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=deleteOk");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=deleteOk");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=deleteError");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=deleteError");
                     }
                     break;
 
@@ -145,10 +145,10 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                     try{
                         id=(Integer.parseInt(req.getParameter("revertDeleteUserId")));
                         userDao.revertDeleteUser(id);
-                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=revertDeleteOk");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=revertDeleteOk");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/views/user/userMan.jsp?status=revertDeleteError");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=revertDeleteError");
                         //req.setAttribute("usuarios", lista);
                         //req.getRequestDispatcher("jsp").forward(req, resp);
                     }
