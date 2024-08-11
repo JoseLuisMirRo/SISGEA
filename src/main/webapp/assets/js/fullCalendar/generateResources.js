@@ -34,8 +34,8 @@ const fetchReserves = async () => {
             id: `R${reserve.id}`,
             resourceId: reserve.room.id,
             title: `Reserva: ${reserve.description} - Autor: ${reserve.user.firstName} ${reserve.user.lastNameP} ${reserve.user.lastNameM}`,
-            start: `${manageDate(reserve.date)}T${hourTo24(reserve.startTime)}`,
-            end: `${manageDate(reserve.date)}T${hourTo24(reserve.endTime)}`,
+            start: `${(reserve.date)}T${hourTo24(reserve.startTime)}`,
+            end: `${(reserve.date)}T${hourTo24(reserve.endTime)}`,
             color: '#0078ff'
         }));
     }catch (error){
@@ -54,8 +54,8 @@ const fetchSchedules = async () => {
         const formattedEvents = [];
 
         schedules.forEach(schedule => {
-            const startDate = manageDate(schedule.quarter.startDate);
-            const endDate = manageDate(schedule.quarter.endDate);
+            const startDate = (schedule.quarter.startDate);
+            const endDate = (schedule.quarter.endDate);
             const dayOfWeek = schedule.day.id;
 
             const classDates = generateDates(startDate, endDate, dayOfWeek);
@@ -96,7 +96,7 @@ const fetchNonBusinessDays = async () => {
         return nonBusinessDays.map(nbd => ({
             id: `NBD${nbd.id}`,
             title: `Feriado: ${nbd.name} NO SE PUEDE RESERVAR EN ESTA FECHA`,
-            start: manageDate(nbd.date),
+            start: (nbd.date),
             color: '#c10000',
             resourceIds: allResourceIds,
             allDay: true
@@ -111,8 +111,8 @@ const  generateDates = (startDate, endDate, dayOfWeek) =>{
     const end = new Date(endDate);
 
     //Avanzar hasta el primer día de la semana que coincide con el día de la semana deseado
-    while (currentDate.getDay() !== dayOfWeek) {
-        currentDate.setDate(currentDate.getDate() + 1);
+    while (currentDate.getDay() !== dayOfWeek-1) {
+        currentDate.setDate(currentDate.getDate()+1);
     }
 
     //Generar todas las fechas que coincidan con el día de la semana en el rango
@@ -142,25 +142,6 @@ const hourTo24 = (hour12) => {
     }
     console.log(hour);
     return `${hour.toString().padStart(2, '0')}:${minute}:${second}`;
-}
-
-const manageDate = (dateD) => {
-    const months = {
-        'ene': 0, 'feb': 1, 'mar': 2, 'abr': 3,
-        'may': 4, 'jun': 5, 'jul': 6, 'ago': 7,
-        'sept': 8, 'oct': 9, 'nov': 10, 'dic': 11
-    };
-    dateD = dateD.replace('.', '');
-    const parts = dateD.split(' ');
-    const month = months[parts[0]];
-    const day = parseInt(parts[1].replace(',', ''), 10);
-    const year = parseInt(parts[2], 10);
-    const date = new Date(year, month, day);
-
-    const yearStr = date.getFullYear().toString();
-    const monthStr = (date.getMonth() + 1).toString().padStart(2, '0');
-    const dayStr = date.getDate().toString().padStart(2, '0');
-    return `${yearStr}-${monthStr}-${dayStr}`;
 }
 
 

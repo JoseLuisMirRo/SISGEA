@@ -43,8 +43,8 @@ const listReserves=async(showAll = false)=>{
         reserves.forEach((rse,index) => {
             const startTime = deleteSeconds(rse.startTime);
             const endTime = deleteSeconds(rse.endTime);
-            const isPast = isPastDateTime(manageDate(rse.date), hourTo24(rse.startTime));
-            if(!showAll && manageDate(rse.date) < currentDate){
+            const isPast = isPastDateTime((rse.date), hourTo24(rse.startTime));
+            if(!showAll && (rse.date) < currentDate){
                 return;
             }
 

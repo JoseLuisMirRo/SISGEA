@@ -24,7 +24,7 @@ public class ListReservesServlet extends HttpServlet {
         ReserveDao reserveDao = new ReserveDao();
         List<ReserveBean> reservesList = reserveDao.getAllReserves();
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create();
         String jsonArray = gson.toJson(reservesList);
 
         PrintWriter out = resp.getWriter();

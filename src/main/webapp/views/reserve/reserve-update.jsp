@@ -79,12 +79,11 @@
 
             const starttime24 = hourTo24(starttime);
             const endtime24 = hourTo24(endtime);
-            const dateYMD = manageDate(date);
 
             document.getElementById('updateReserveId').value = id;
             roomsElement.value = roomId;
             document.getElementById('updateDescription').value = description;
-            document.getElementById('updateDate').value = dateYMD;
+            document.getElementById('updateDate').value = date;
             document.getElementById('updateStarttime').value = starttime24;
             document.getElementById('updateEndtime').value = endtime24;
 

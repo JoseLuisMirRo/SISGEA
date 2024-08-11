@@ -13,6 +13,8 @@ import mx.edu.utez.sisgea.model.ScheduleBean;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @WebServlet("/data/schedules")
@@ -25,7 +27,7 @@ public class ListSchedulesServlet extends HttpServlet {
         ScheduleDao schDao = new ScheduleDao();
         List<ScheduleBean> schList = schDao.getAllSchedules();
         //Serializacion del JSON
-        Gson gson = new GsonBuilder().registerTypeAdapter(Day.class, new JsonSerializer<Day>() {
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").registerTypeAdapter(Day.class, new JsonSerializer<Day>() {
                     @Override
                     public JsonElement serialize(Day day, Type type, JsonSerializationContext jsonSerializationContext) {
                         JsonObject jsonDay = new JsonObject();

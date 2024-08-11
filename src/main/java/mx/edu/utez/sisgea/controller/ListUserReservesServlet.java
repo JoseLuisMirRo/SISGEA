@@ -1,6 +1,7 @@
 package mx.edu.utez.sisgea.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -32,7 +33,7 @@ public class ListUserReservesServlet extends HttpServlet {
             List<ReserveBean> filteredReserves = reservesList.stream()
                     .filter(reserve -> reserve.getUser().getId() == userId).collect(Collectors.toList());
 
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create();
             String jsonArray = gson.toJson(filteredReserves);
 
             PrintWriter out = resp.getWriter();

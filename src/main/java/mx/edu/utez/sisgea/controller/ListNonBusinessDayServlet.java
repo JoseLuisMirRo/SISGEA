@@ -25,7 +25,7 @@ public class ListNonBusinessDayServlet extends HttpServlet {
         NonBusinessDayDao nbdDao = new NonBusinessDayDao();
 
         List<NonBusinessDay> nbdList = nbdDao.getNonBusinessDays();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create();
         String jsonArray = gson.toJson(nbdList);
 
         PrintWriter out = resp.getWriter();

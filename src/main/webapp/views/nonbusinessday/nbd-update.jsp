@@ -45,11 +45,9 @@
             const name=nbdUpdateModal.getAttribute("data-name");
             const date=nbdUpdateModal.getAttribute("data-date");
 
-            const dateYMD = manageDate(date);
-
             document.getElementById('updateNbdId').value=id;
             document.getElementById('updateName').value=name;
-            document.getElementById('updateDate').value=dateYMD;
+            document.getElementById('updateDate').value=date;
         });
     });
     document.getElementById("submitButtonUpdate").addEventListener("click",function (){
