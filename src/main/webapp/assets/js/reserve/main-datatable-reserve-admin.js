@@ -20,13 +20,13 @@ const dataTableOptions= {
     },
 };
 
-const initDataTable=async()=>{
+const initDataTable=async(showMode)=>{
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
     }
 
-    await listReserves();
+    await listReserves(showMode);
 
     dataTable=$('#datatable_reserves').DataTable(dataTableOptions);
 
@@ -35,7 +35,7 @@ const initDataTable=async()=>{
 
 
 
-const listReserves=async(showAll = false)=>{
+const listReserves=async(filterStatus)=>{
     try{
         const response=await fetch(`${cleanBasePath}data/reserves`);
         const reserves=await response.json();
@@ -43,13 +43,13 @@ const listReserves=async(showAll = false)=>{
         let content= ``;
         const currentDate = new Date().toISOString().split('T')[0];
 
-        reserves.forEach((rse,index) => {
+        reserves
+            .filter(filterStatus ? rse => rse.date === rse.date: rse => rse.date >= currentDate)
+            .forEach((rse,index) => {
             const startTime = deleteSeconds(rse.startTime);
             const endTime = deleteSeconds(rse.endTime);
             const isPast = isPastDateTime((rse.date), hourTo24(rse.startTime));
-            if(!showAll && (rse.date) < currentDate){
-                return;
-            }
+
             content+=`
             <tr>
                 <td>${rse.user.firstName} ${rse.user.lastNameP} ${rse.user.lastNameM}</td>
@@ -111,9 +111,7 @@ const isPastDateTime = (date, time) => {
 };
 
 window.addEventListener('load',async()=>{
-    await initDataTable();
-    await listReserves(false);
-    document.getElementById('historyBtn').setAttribute('data-showAll', false);
+    await initDataTable(false);
 });
 
 function deleteSeconds(timeS) {
@@ -167,11 +165,10 @@ $(document).ready(function () {
 });
 document.getElementById('historyBtn').addEventListener('click',async()=>{
     const button = document.getElementById('historyBtn');
-    const showAll = button.getAttribute('data-showAll') === 'true';
-
-    await listReserves(!showAll);
-    button.setAttribute('data-showAll', !showAll);
+    const showAll = button.getAttribute('data-showActive') === 'true';
+    button.setAttribute('data-showActive', !showAll);
     button.textContent = !showAll ? 'Ver reservas vigentes' : 'Ver historial completo';
+    await initDataTable(!showAll);
 });
 
 
