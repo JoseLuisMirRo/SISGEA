@@ -27,6 +27,7 @@ public class ClassServlet extends HttpServlet {
         ProgramDao programDao = new ProgramDao();
 
         String action = req.getParameter("action");
+        HttpSession activeSession = req.getSession();
 
         switch(action){
             case "add":
@@ -35,14 +36,17 @@ public class ClassServlet extends HttpServlet {
                     classBean.setProgram(programDao.getProgram(Integer.parseInt(req.getParameter("programId"))));
                     classBean.setStatus(true);
                     classDao.insertClass(classBean);
-                    resp.sendRedirect(req.getContextPath() + "/classServlet?status=registerOk");
+                    activeSession.setAttribute("status", "registerOk");
+                    resp.sendRedirect(req.getContextPath() + "/classServlet");
                 }catch (Exception e){
                     e.printStackTrace();
                     String errorMessage = e.getMessage();
                     if(errorMessage.contains("Duplicate entry")){
                         errorMessage = "duplicateEntry";
                     }
-                    resp.sendRedirect(req.getContextPath() + "/classServlet?status=registerError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+                    activeSession.setAttribute("status", "registerError");
+                    activeSession.setAttribute("errorMessage", errorMessage);
+                    resp.sendRedirect(req.getContextPath() + "/classServlet");
                 }
                 break;
 
@@ -52,14 +56,17 @@ public class ClassServlet extends HttpServlet {
                         classBean.setName(req.getParameter("updateName"));
                         classBean.setProgram(programDao.getProgram(Integer.parseInt(req.getParameter("updateProgramId"))));
                         classDao.updateClass(classBean);
-                        resp.sendRedirect(req.getContextPath() + "/classServlet?status=updateOk");
+                        activeSession.setAttribute("status", "updateOk");
+                        resp.sendRedirect(req.getContextPath() + "/classServlet");
                     }catch (Exception e){
                         e.printStackTrace();
                         String errorMessage = e.getMessage();
                         if(errorMessage.contains("Duplicate entry")){
                             errorMessage = "duplicateEntry";
                         }
-                        resp.sendRedirect(req.getContextPath() + "/classServlet?status=updateError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+                        activeSession.setAttribute("status", "updateError");
+                        activeSession.setAttribute("errorMessage", errorMessage);
+                        resp.sendRedirect(req.getContextPath() + "/classServlet");
                     }
                     break;
 
@@ -67,10 +74,12 @@ public class ClassServlet extends HttpServlet {
                         try{
                             id=Integer.parseInt(req.getParameter("deleteClassId"));
                             classDao.deleteClass(id);
-                            resp.sendRedirect(req.getContextPath() + "/classServlet?status=deleteOk");
+                            activeSession.setAttribute("status", "deleteOk");
+                            resp.sendRedirect(req.getContextPath() + "/classServlet");
                         }catch (Exception e){
                             e.printStackTrace();
-                            resp.sendRedirect(req.getContextPath() + "/classServlet?status=deleteError");
+                            activeSession.setAttribute("status", "deleteError");
+                            resp.sendRedirect(req.getContextPath() + "/classServlet");
                         }
                         break;
 
@@ -78,10 +87,12 @@ public class ClassServlet extends HttpServlet {
                 try{
                     id=Integer.parseInt(req.getParameter("revertDeleteClassId"));
                     classDao.revertDeleteClass(id);
-                    resp.sendRedirect(req.getContextPath() + "/classServlet?status=revertDeleteOk");
+                    activeSession.setAttribute("status", "revertDeleteOk");
+                    resp.sendRedirect(req.getContextPath() + "/classServlet");
                 }catch (Exception e){
                     e.printStackTrace();
-                    resp.sendRedirect(req.getContextPath() + "/classServlet?status=revertDeleteError");
+                    activeSession.setAttribute("status", "revertDeleteError");
+                    resp.sendRedirect(req.getContextPath() + "/classServlet");
                 }
                 break;
         }
