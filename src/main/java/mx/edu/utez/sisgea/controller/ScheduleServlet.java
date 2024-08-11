@@ -36,6 +36,7 @@ public class ScheduleServlet extends HttpServlet {
 
 
         String action = req.getParameter("action");
+        HttpSession activeSession = req.getSession();
 
         switch(action){
             case "add": //VALIDACIONES DE TRASLAPES Y REPETICIONES EN PROCEDIMIENTO ALMACENADO
@@ -60,11 +61,14 @@ public class ScheduleServlet extends HttpServlet {
                     scheduleBean.setStartTime(startTime);
                     scheduleBean.setEndTime(endTime);
                     scheduleDao.insertSchedule(scheduleBean);
-                    resp.sendRedirect(req.getContextPath() + "/scheduleServlet?status=registerOk");
+                    activeSession.setAttribute("status", "registerOk");
+                    resp.sendRedirect(req.getContextPath() + "/scheduleServlet");
                 }catch (Exception e){
                     e.printStackTrace();
                     String errorMessage = e.getMessage();
-                    resp.sendRedirect(req.getContextPath() + "/scheduleServlet?status=registerError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+                    activeSession.setAttribute("status", "registerError");
+                    activeSession.setAttribute("errorMessage", errorMessage);
+                    resp.sendRedirect(req.getContextPath() + "/scheduleServlet");
                 }
                 break;
 
@@ -92,12 +96,15 @@ public class ScheduleServlet extends HttpServlet {
                         scheduleBean.setStartTime(startTime);
                         scheduleBean.setEndTime(endTime);
                         scheduleDao.updateSchedule(scheduleBean);
-                        resp.sendRedirect(req.getContextPath() + "/scheduleServlet?status=updateOk");
+                        activeSession.setAttribute("status", "updateOk");
+                        resp.sendRedirect(req.getContextPath() + "/scheduleServlet");
 
                     }catch (Exception e){
                         e.printStackTrace();
                         String errorMessage = e.getMessage();
-                        resp.sendRedirect(req.getContextPath() + "/scheduleServlet?status=updateError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+                        activeSession.setAttribute("status", "updateError");
+                        activeSession.setAttribute("errorMessage", errorMessage);
+                        resp.sendRedirect(req.getContextPath() + "/scheduleServlet");
                     }
                     break;
 
@@ -105,15 +112,14 @@ public class ScheduleServlet extends HttpServlet {
                         try{
                             id= Integer.parseInt(req.getParameter("deleteScheduleId"));
                             scheduleDao.deleteSchedule(id);
-                            resp.sendRedirect(req.getContextPath() + "/scheduleServlet?status=deleteOk");
+                            activeSession.setAttribute("status", "deleteOk");
+                            resp.sendRedirect(req.getContextPath() + "/scheduleServlet");
                         }catch (Exception e){
                             e.printStackTrace();
-                            resp.sendRedirect(req.getContextPath() + "/scheduleServlet?status=deleteError");
+                            activeSession.setAttribute("status", "deleteError");
+                            resp.sendRedirect(req.getContextPath() + "/scheduleServlet");
                         }
                         break;
-
-
-
 
         }
     }
