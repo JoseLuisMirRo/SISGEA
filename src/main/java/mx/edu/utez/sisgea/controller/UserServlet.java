@@ -53,16 +53,16 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                                 userRoleDao.insertUserRole(userrole);
                             }
                         }
-                        ResendAPI emailSender=new ResendAPI();
-                        String from = "SISGEA <email@sisgea.tech>";
-                        String to = userBean.getEmail();
-                        String subject = "Bienvenido a SISGEA";
-                        String html = "<h2>¡Hola! "+userBean.getFirstName()+" "+userBean.getLastNameP()+" "+userBean.getLastNameM()+"</h2>"+
-                                "<h3>Bienvenido a SISGEA</h3><p>Tu contraseña es: "+userBean.getPassword()+"</p>"+
-                                "<p>Utiliza tu correo electrónico y contraseña para iniciar sesión en SISGEA.</p>"+
-                                "<Utiliza el siguiente hipervínculo para acceder: <a href='sisgea.tech'>SISGEA</a>"+
-                                "<p>Saludos cordiales,</p><p>Equipo de SISGEA</p>";
-                        emailSender.sendEmail(from, to, subject, html);
+                        //ResendAPI emailSender=new ResendAPI();
+                        //String from = "SISGEA <email@sisgea.tech>";
+                        //String to = userBean.getEmail();
+                        //String subject = "Bienvenido a SISGEA";
+                        //String html = "<h2>¡Hola! "+userBean.getFirstName()+" "+userBean.getLastNameP()+" "+userBean.getLastNameM()+"</h2>"+
+                          //      "<h3>Bienvenido a SISGEA</h3><p>Tu contraseña es: "+userBean.getPassword()+"</p>"+
+                          //      "<p>Utiliza tu correo electrónico y contraseña para iniciar sesión en SISGEA.</p>"+
+                          //      "<Utiliza el siguiente hipervínculo para acceder: <a href='sisgea.tech'>SISGEA</a>"+
+                          //      "<p>Saludos cordiales,</p><p>Equipo de SISGEA</p>";
+                        //emailSender.sendEmail(from, to, subject, html);
                         resp.sendRedirect(req.getContextPath() + "/userServlet?status=registerOk");
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -116,14 +116,14 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                         userBean.setPassword(GeneratePassword.generatePassword(2, 2, 2));
                         userDao.updateUserPassword(userBean);
                         UserBean targetUser = userDao.getUser(userBean.getId());
-                        ResendAPI emailSender = new ResendAPI();
-                        String from = "SISGEA <email@sisgea.tech>";
-                        String to = targetUser.getEmail();
-                        String subject = "Tu contraseña ha sido recuperada exitosamente";
-                        String html = "<h2>¡Hola! "+targetUser.getFirstName()+" "+targetUser.getLastNameP()+" "+targetUser.getLastNameM()+"</h2>"+
-                                "<h3>¡Tu contraseña ha sido recuperada exitosamente!</h3><p>Nueva contraseña: "+userBean.getPassword()+"</p>"+
-                                "<p>Saludos cordiales,</p><p>Equipo de SISGEA</p>";
-                        emailSender.sendEmail(from, to, subject, html);
+                        //ResendAPI emailSender = new ResendAPI();
+                        //String from = "SISGEA <email@sisgea.tech>";
+                        //String to = targetUser.getEmail();
+                        //String subject = "Tu contraseña ha sido recuperada exitosamente";
+                        //String html = "<h2>¡Hola! "+targetUser.getFirstName()+" "+targetUser.getLastNameP()+" "+targetUser.getLastNameM()+"</h2>"+
+                         //       "<h3>¡Tu contraseña ha sido recuperada exitosamente!</h3><p>Nueva contraseña: "+userBean.getPassword()+"</p>"+
+                          //      "<p>Saludos cordiales,</p><p>Equipo de SISGEA</p>";
+                        //emailSender.sendEmail(from, to, subject, html);
                         resp.sendRedirect(req.getContextPath() + "/userServlet?status=updatePswdOk");
                     }catch (Exception e) {
                         e.printStackTrace();
