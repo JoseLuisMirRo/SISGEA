@@ -97,7 +97,7 @@ else if (status === "deleteError") {
         }
     });
 }
-else if (status === revertDeleteOk) {
+else if (status === "revertDeleteOk") {
     Swal.fire({
         icon: "success",
         title: "Clase reactivada con éxito",
@@ -110,7 +110,7 @@ else if (status === revertDeleteOk) {
         }
     });
 }
-else if (status === revertDeleteError) {
+else if (status === "revertDeleteError") {
     Swal.fire({
         icon: "error",
         title: "Error, no se reactivó la clase",

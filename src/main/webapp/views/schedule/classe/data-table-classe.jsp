@@ -25,6 +25,7 @@
         <h2 style="color: black">Gestión de clases</h2>
     </div>
     <div class="text-end">
+        <button type="button" id="showBtn" class="btn btn-primary">Ver clases inactivas</button>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#classeRegisterModal" id="classeRegisterButton">
             <i class="bi bi-plus-lg"></i> Agregar clase </button>
     </div>

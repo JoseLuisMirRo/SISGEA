@@ -18,13 +18,13 @@ const dataTableOptions={
         url:`${cleanBasePath}assets/js/datatables-2-1-3/spanishMX.json`
     }
 };
-const initDataTable=async()=>{
+const initDataTable=async(showMode)=>{
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
     }
 
-    await listClasses();
+    await listClasses(showMode);
 
     dataTable=$('#datatable_classes').DataTable(dataTableOptions);
 
@@ -33,13 +33,15 @@ const initDataTable=async()=>{
 
 
 
-const listClasses=async()=>{
+const listClasses=async(filterStatus)=>{
     try{
         const response=await fetch(`${cleanBasePath}data/classes`);
         const data=await response.json();
 
         let content= ``;
-        data.classes.forEach((cl,index) => {
+        data.classes
+            .filter(cl => cl.status === filterStatus)
+            .forEach((cl,index) => {
             content+=`
             <tr>
                 <td>${cl.name}</td>
@@ -50,11 +52,12 @@ const listClasses=async()=>{
                     </i>
                 </td>
                 <td>
-                    <button class="btn btn-primary btn-sm edit-btn" 
-                    data-id="${cl.id}"
-                    data-name="${cl.name}"
-                    data-programid="${cl.program.id}" //CUIDADO: NO USAR MAYUSCULAS EN DATA
-                    ><i class="bi bi-pencil-square"></i></button>
+                      <button class="btn ${!cl.status ? 'btn-outline-secondary' : 'btn-primary'} btn-sm edit-btn" 
+                        data-id="${cl.id}"
+                        data-name="${cl.name}"
+                        data-programid="${cl.program.id}" 
+                        ${cl.status ? '' : 'disabled'} //CUIDADO: NO USAR MAYUSCULAS EN DATA
+                        ><i class="bi bi-pencil-square"></i></button>
                     
                      <button class="${cl.status ? 'btn btn-danger btn-sm delete-btn' : 'btn btn-success btn-sm enable-btn'}"
                     data-id="${cl.id}"
@@ -71,7 +74,7 @@ const listClasses=async()=>{
 };
 
 window.addEventListener('load',async()=>{
-    await initDataTable();
+    await initDataTable(true);
 });
 
 $(document).ready(function() {
@@ -98,5 +101,11 @@ $(document).ready(function() {
         $('#revertDeleteClassId').val(id);
         $('#revertDeleteClasseModal').modal('show');
     });
-
+});
+document.getElementById('showBtn').addEventListener('click', async () => {
+    const button = document.getElementById('showBtn');
+    const showActive = button.getAttribute('data-showActive') === 'false';
+    button.setAttribute('data-showActive', showActive);
+    button.textContent = !showActive ? 'Ver clases activas' : 'Ver clases inactivas';
+    await initDataTable(showActive);
 });
