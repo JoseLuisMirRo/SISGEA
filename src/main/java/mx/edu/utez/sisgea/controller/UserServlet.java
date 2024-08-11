@@ -30,10 +30,8 @@ import mx.edu.utez.sisgea.model.UserroleBean;
             UserroleDao userRoleDao = new UserroleDao();
 
             String action = req.getParameter("action");
-            System.out.println(action);
             switch (action) {
                 case "add":
-                    System.out.println("AGREGANDO USUARIO");
                     try {
                         userBean.setFirstName(req.getParameter("name"));
                         userBean.setLastNameP(req.getParameter("lastNameP"));

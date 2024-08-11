@@ -24,7 +24,6 @@ public class RoleServlet extends HttpServlet {
         HttpSession activeSession = req.getSession();
         LoginBean user = (LoginBean) req.getSession().getAttribute("activeUser");
         RoleDao roleDao = new RoleDao();
-        System.out.println(user.getFirstName());
         RoleBean role = roleDao.getRoleById(selectedRole);
         user.setRole(role);
         activeSession.setAttribute("activeUser", user);

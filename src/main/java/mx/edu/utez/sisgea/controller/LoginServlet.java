@@ -50,7 +50,6 @@ public class LoginServlet extends HttpServlet {
                 int userId=user.getId();
                 UserroleDao userRoleDao = new UserroleDao();
                 List<Integer> userRoles = userRoleDao.getUserRoles(userId); //RECIBO LOS ID DE ROLES DISPONIBLES PARA EL USUARIO
-                System.out.println(userRoles.size());
                 List<RoleBean> roleBeansList = new ArrayList<>(); // Creo una lista de rolebeans vacía
                 for (Integer roleId : userRoles) {
                     RoleDao roleDao = new RoleDao(); // Creo un nuevo RoleDao
@@ -84,7 +83,6 @@ public class LoginServlet extends HttpServlet {
                 req.setAttribute("status", "unauthorized");
                 req.getRequestDispatcher("/views/login/login.jsp").forward(req, resp);
             } else {
-                System.out.println("Error al iniciar sesion" + e);
                 req.setAttribute("status", "serverError");
                 req.getRequestDispatcher("/views/login/login.jsp").forward(req, resp);
                 e.printStackTrace();

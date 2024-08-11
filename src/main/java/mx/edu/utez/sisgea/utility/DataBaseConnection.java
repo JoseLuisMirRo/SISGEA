@@ -26,7 +26,7 @@ public class DataBaseConnection {
             //Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
         }catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         con = DriverManager.getConnection(URL,USER,PASSWORD);
         return con;

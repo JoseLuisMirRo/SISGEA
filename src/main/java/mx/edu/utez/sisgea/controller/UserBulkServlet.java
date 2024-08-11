@@ -54,7 +54,6 @@ public class UserBulkServlet extends HttpServlet {
                 String lastNameM = row.getCell(2).getStringCellValue();
                 String email = row.getCell(3).getStringCellValue();
                 String rolesStr = row.getCell(4).getStringCellValue();
-                System.out.println(rolesStr);
 
                 if (firstName.isEmpty() || lastNameP.isEmpty() || lastNameM.isEmpty() || email.isEmpty() || rolesStr.isEmpty()) {
                     throw new IllegalArgumentException("nullCamp");
