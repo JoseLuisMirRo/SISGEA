@@ -67,12 +67,14 @@ public class ReserveServlet extends HttpServlet {
                         throw new IllegalArgumentException("overlapsnbd");
                     }
                     reserveDao.insertReserve(reserveBean);
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=registerOk");
-
+                    activeSession.setAttribute("status", "registerOk");
+                    resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                 } catch (Exception e) {
                     e.printStackTrace();
                     String errorMessage = e.getMessage();
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=registerError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+                    activeSession.setAttribute("status", "registerError");
+                    activeSession.setAttribute("errorMessage", errorMessage);
+                    resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                 }
                 break;
 
@@ -107,12 +109,15 @@ public class ReserveServlet extends HttpServlet {
                     }
 
                     reserveDao.updateReserve(reserveBean);
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=updateOk");
+                    activeSession.setAttribute("status", "updateOk");
+                    resp.sendRedirect(req.getContextPath() + "/reserveServlet");
 
                 } catch (Exception e) {
                     e.printStackTrace();
                     String errorMessage = e.getMessage();
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=updateError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+                    activeSession.setAttribute("status", "updateError");
+                    activeSession.setAttribute("errorMessage", errorMessage);
+                    resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                 }
                 break;
 
@@ -148,7 +153,8 @@ public class ReserveServlet extends HttpServlet {
                             status = Status.Canceled;
                         }
                         reserveDao.updateStatus(Integer.parseInt(req.getParameter("cancelReserveId")), status);
-                        resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=deleteOk");
+                        activeSession.setAttribute("status", "deleteOk");
+                        resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                     } else if (reserveDao.getReserve(idC).getStatus() == (Status.Canceled)) {
                         throw new Exception("alreadyCanceled");
                     } else if (reserveDao.getReserve(idC).getStatus() == (Status.Admin_Canceled)) {
@@ -157,7 +163,9 @@ public class ReserveServlet extends HttpServlet {
                 } catch (Exception e) {
                     e.printStackTrace();
                     String errorMessage = e.getMessage();
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=deleteError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+                    activeSession.setAttribute("status", "deleteError");
+                    activeSession.setAttribute("errorMessage", errorMessage);
+                    resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                 }
                 break;
 
@@ -166,11 +174,13 @@ public class ReserveServlet extends HttpServlet {
                     int idA = Integer.parseInt(req.getParameter("reactivateReserveId"));
                     if (user.getRole().getId() == 1) {
                         reserveDao.updateStatus(idA, Status.Active);
-                        resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=reactivateOk");
+                        activeSession.setAttribute("status", "reactivateOk");
+                        resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                     } else if (user.getRole().getId() == 2) {
                         if (reserveDao.getReserve(idA).getStatus() == Status.Canceled) {
                             reserveDao.updateStatus(idA, Status.Active);
-                            resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=reactivateOk");
+                            activeSession.setAttribute("status", "reactivateOk");
+                            resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                         } else if (reserveDao.getReserve(idA).getStatus() == Status.Admin_Canceled) {
                             throw new Exception("adminCanceled");
                         } else {
@@ -180,7 +190,9 @@ public class ReserveServlet extends HttpServlet {
                 } catch (Exception e) {
                     e.printStackTrace();
                     String errorMessage = e.getMessage();
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=reactivateError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+                    activeSession.setAttribute("status", "reactivateError");
+                    activeSession.setAttribute("errorMessage", errorMessage);
+                    resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                 }
                 break;
         }
