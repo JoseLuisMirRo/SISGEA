@@ -80,21 +80,45 @@
                 roomsElement.removeChild(roomsElement.firstChild);
             }
 
-            quarters.forEach((quarter) => {
+            quarters
+                .sort((a, b) => {
+                    if (a.name > b.name) return 1;
+                    if (a.name < b.name) return -1;
+                    return 0;
+                })
+                .forEach((quarter) => {
                 const option = document.createElement("option");
                 option.value = quarter.id;
                 option.textContent = quarter.name;
                 quartersElement.appendChild(option);
             });
 
-            classes.forEach((classe) => {
+            classes
+                .filter((classe) => classe.status === true)
+                .sort((a, b) => {
+                    if (a.name > b.name) return 1;
+                    if (a.name < b.name) return -1;
+                    return 0;
+                })
+                .forEach((classe) => {
                 const option = document.createElement("option");
                 option.value = classe.id;
                 option.textContent = classe.name;
                 classesElement.appendChild(option);
             });
 
-            rooms.forEach((room) => {
+            rooms
+                .filter((room) => room.status === true)
+                .sort((a, b) => {
+                    if (a.roomType.name > b.roomType.name) return 1;
+                    if (a.roomType.name < b.roomType.name) return -1;
+                    if (a.number > b.number) return 1;
+                    if (a.number < b.number) return -1;
+                    if (a.building.name > b.building.name) return 1;
+                    if (a.building.name < b.building.name) return -1;
+                    return 0;
+                })
+                .forEach((room) => {
                 const option = document.createElement("option");
                 option.value = room.id;
                 option.textContent = `\${room.roomType.name} \${room.number} - \${room.building.name}`;

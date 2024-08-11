@@ -77,21 +77,26 @@
                 roomsElement.removeChild(roomsElement.firstChild);
             }
 
-            quarters.forEach((quarter) => {
+            quarters
+                .forEach((quarter) => {
                 const option = document.createElement("option");
                 option.value = quarter.id;
                 option.textContent = quarter.name;
                 quartersElement.appendChild(option);
             });
 
-            classes.forEach((classe) => {
+            classes
+                .filter((classe) => classe.status === true)
+                .forEach((classe) => {
                 const option = document.createElement("option");
                 option.value = classe.id;
                 option.textContent = classe.name;
                 classesElement.appendChild(option);
             });
 
-            rooms.forEach((room) => {
+            rooms
+                .filter((room) => room.status === true)
+                .forEach((room) => {
                 const option = document.createElement("option");
                 option.value = room.id;
                 option.textContent = `\${room.roomType.name} \${room.number} - \${room.building.name}`;

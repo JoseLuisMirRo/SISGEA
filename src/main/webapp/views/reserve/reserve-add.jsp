@@ -62,7 +62,9 @@
                 return 0;
             });
 
-            data.forEach((room) => {
+            data
+                .filter((room) => room.status === true)
+                .forEach((room) => {
                 const option = document.createElement("option");
                 option.value = room.id;
                 option.textContent = `\${room.roomType.name} \${room.number} - \${room.building.name}`;

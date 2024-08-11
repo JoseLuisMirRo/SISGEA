@@ -23,7 +23,7 @@
                     <select class="form-select" id="updateRoomType" name="updateRoomTypeId"></select>
                     <br>
                     <label for="updateNumber">Número:</label>
-                    <input type="number" name="updateNumber" min="0" id="updateNumber" placeholder="Numero de espacio"/>
+                    <input class="form-control" type="number" name="updateNumber" min="1" id="updateNumber" placeholder="Numero de espacio"/>
                     <input type="text" name="action" value="update" hidden/>
                 </form>
             </div>

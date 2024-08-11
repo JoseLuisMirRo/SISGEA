@@ -88,19 +88,15 @@
                     </div>
                     <div class="mb-3 row">
                         <label class="col-sm-4 col-form-label form-label">Tipo de usuario:</label>
-                        <div class="col-sm-8">
-                            <label>
-                                <input type="checkbox" name="updateRoles[]" value='1'> Administrador
-                            </label>
-                            <br>
-                            <label>
-                                <input type="checkbox" name="updateRoles[]" value='2'> Docente
-                            </label>
-                            <br>
-                            <label>
-                                <input type="checkbox" name="updateRoles[]" value='3'> Estudiante
-                            </label>
-                            <br>
+                        <div class="btn-group" role="group">
+                            <input type="checkbox" class="btn-check" id="btnUpdate1" value="1" autocomplete="off" name="updateRoles[]">
+                            <label class="btn btn-outline-primary" for="btnUpdate1">Administrador</label>
+
+                            <input type="checkbox" class="btn-check" id="btnUpdate2" value="2" autocomplete="off" name="updateRoles[]">
+                            <label class="btn btn-outline-primary" for="btnUpdate2">Docente</label>
+
+                            <input type="checkbox" class="btn-check" id="btnUpdate3" value="3" autocomplete="off" name="updateRoles[]">
+                            <label class="btn btn-outline-primary" for="btnUpdate3">Estudiante</label>
                         </div>
                     </div>
                     <input type="text" name="action" value="update" hidden/> <!--VALOR PARA INDICAR AL SERVLET QUE ES UN ACCION DE UPDATE-->
@@ -116,6 +112,33 @@
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const updateAdminCheckbox = document.getElementById('btnUpdate1');
+        const updateTeacherCheckbox = document.getElementById('btnUpdate2');
+        const updateStudentCheckbox = document.getElementById('btnUpdate3');
+
+        function handleCheckboxChange(event) {
+            const target = event.target;
+
+            if (target === updateAdminCheckbox || target === updateTeacherCheckbox) {
+                if (updateStudentCheckbox.checked) {
+                    updateStudentCheckbox.checked = false;
+                }
+            }
+
+            if (target === updateStudentCheckbox) {
+                if (updateAdminCheckbox.checked || updateTeacherCheckbox.checked) {
+                    updateAdminCheckbox.checked = false;
+                    updateTeacherCheckbox.checked = false;
+                }
+            }
+        }
+
+        updateAdminCheckbox.addEventListener('change', handleCheckboxChange);
+        updateTeacherCheckbox.addEventListener('change', handleCheckboxChange);
+        updateStudentCheckbox.addEventListener('change', handleCheckboxChange);
+    });
+
     document.getElementById("submitButtonUpdate").addEventListener("click",function () {
         const form= document.getElementById("updateForm");
         const {updateName,updateLastNameP,updateLastNameM,updateEmail}=form.elements;

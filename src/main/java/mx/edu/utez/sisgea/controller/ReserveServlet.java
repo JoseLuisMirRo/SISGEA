@@ -10,8 +10,6 @@ import jakarta.servlet.http.HttpSession;
 import mx.edu.utez.sisgea.dao.*;
 import mx.edu.utez.sisgea.model.*;
 
-import mx.edu.utez.sisgea.controller.ResendAPI;
-
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;

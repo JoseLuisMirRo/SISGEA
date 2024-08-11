@@ -6,32 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<style>
-    .modal-content {
-        background-color: #fff; /* Fondo blanco para el modal */
-        border-radius: 10px;
-    }
-    .modal-header {
-        background-color: #004d99; /* Azul oscuro para el encabezado del modal */
-        color: #fff; /* Texto blanco */
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-    }
-    .modal-body {
-        color: #333; /* Texto gris oscuro */
-    }
-    .modal-footer {
-        background-color: #004d99; /* Azul oscuro para el pie de página del modal */
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-    }
-    .form-label {
-        color: #004d99; /* Azul oscuro para etiquetas */
-    }
-    .form-control {
-        border-color: #004d99; /* Borde azul oscuro para campos de entrada */
-    }
-</style>
 <!-- Modal -->
 <div class="modal fade" id="userRegisterModal" tabindex="-1" aria-labelledby="userRegisterTitle" aria-hidden="true">
     <div class="modal-dialog">
@@ -70,19 +44,15 @@
                     </div>
                     <div class="mb-3 row">
                         <label class="col-sm-4 col-form-label form-label">Tipo de usuario:</label>
-                        <div class="col-sm-8">
-                            <label>
-                                <input type="checkbox" name="roles[]" value='1'> Administrador
-                            </label>
-                            <br>
-                            <label>
-                                <input type="checkbox" name="roles[]" value='2'> Docente
-                            </label>
-                            <br>
-                            <label>
-                                <input type="checkbox" name="roles[]" value='3'> Estudiante
-                            </label>
-                            <br>
+                        <div class="btn-group" role="group">
+                            <input type="checkbox" class="btn-check" id="btncheck1" value="1" autocomplete="off" name="roles[]">
+                            <label class="btn btn-outline-primary" for="btncheck1">Administrador</label>
+
+                            <input type="checkbox" class="btn-check" id="btncheck2" value="2" autocomplete="off" name="roles[]">
+                            <label class="btn btn-outline-primary" for="btncheck2">Docente</label>
+
+                            <input type="checkbox" class="btn-check" id="btncheck3" value="3" autocomplete="off" name="roles[]">
+                            <label class="btn btn-outline-primary" for="btncheck3">Estudiante</label>
                         </div>
                     </div>
                     <input type="text" name="action" value="add" hidden /> <!--VALOR PARA INDICAR AL SERVLET QUE ES UN ACCION DE AÑADIR-->
@@ -96,6 +66,32 @@
     </div>
 </div>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const adminCheckbox = document.getElementById('btncheck1');
+        const teacherCheckbox = document.getElementById('btncheck2');
+        const studentCheckbox = document.getElementById('btncheck3');
+
+        function handleCheckboxChange(event) {
+            const target = event.target;
+
+            if (target === adminCheckbox || target === teacherCheckbox) {
+                if (studentCheckbox.checked) {
+                    studentCheckbox.checked = false;
+                }
+            }
+
+            if (target === studentCheckbox) {
+                if (adminCheckbox.checked || teacherCheckbox.checked) {
+                    adminCheckbox.checked = false;
+                    teacherCheckbox.checked = false;
+                }
+            }
+        }
+
+        adminCheckbox.addEventListener('change', handleCheckboxChange);
+        teacherCheckbox.addEventListener('change', handleCheckboxChange);
+        studentCheckbox.addEventListener('change', handleCheckboxChange);
+    });
     document.getElementById("submitButtonAdd").addEventListener("click",function () {
         const form= document.getElementById("registerForm");
         const {name,lastNameP,lastNameM,email}=form.elements;

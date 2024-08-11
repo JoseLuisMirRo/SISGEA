@@ -23,7 +23,7 @@
                     <select class="form-select" id="roomType" name="roomTypeId"></select>
                     <br>
                     <label for="number">Número:</label>
-                    <input type="number" name="number" min="0" id="number" placeholder="Numero de espacio"/>
+                    <input class="form-control" type="number" name="number" min="1" id="number" placeholder="Numero de espacio"/>
                     <input type="text" name="action" value="add" hidden/>
                 </form>
             </div>
