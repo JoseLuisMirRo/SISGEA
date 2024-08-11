@@ -75,7 +75,6 @@ $(document).ready(function() {
         const id = $(this).data('id');
         const date = $(this).data('date');
         const name = $(this).data('name');
-        console.log(id,date,name);
 
         $('#nbdUpdateModal').attr('data-id', id);
         $('#nbdUpdateModal').attr('data-date', date);

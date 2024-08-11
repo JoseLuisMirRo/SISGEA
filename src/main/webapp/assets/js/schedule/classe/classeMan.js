@@ -3,7 +3,6 @@ if (status === "registerError") {
     const urlParams = new URLSearchParams(window.location.search);
     const errorMessage = urlParams.get("errorMessage");
     let textShow;
-    console.log(errorMessage);
     if (errorMessage === "repeated") {
         textShow = "Existe un registro con los mismos datos para el programa seleccionado";
     } else {

@@ -192,16 +192,12 @@
 
         let [hour, minute, second] = time.split(':'); //DIVIDIMOS HORAS, MINUTOS Y SEGUNDOS
         hour = parseInt(hour, 10);
-        console.log(period);
 
         if (period === 'p. m.' && hour!==12) {
-            console.log('PM');
             hour += 12;
         } else if (period === 'a. m.' && hour === 12) {
-            console.log('AM');
             hour = 0;
         }
-        console.log(hour);
         return `\${hour.toString().padStart(2, '0')}:\${minute}:\${second}`;
     }
 
@@ -217,7 +213,6 @@
         const day = parseInt(parts[1].replace(',', ''), 10);
         const year = parseInt(parts[2], 10);
         const date = new Date(year, month, day);
-        console.log(date);
         const yearStr = date.getFullYear().toString();
         const monthStr = (date.getMonth() + 1).toString().padStart(2, '0');
         const dayStr = date.getDate().toString().padStart(2, '0');

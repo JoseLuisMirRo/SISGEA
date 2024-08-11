@@ -131,16 +131,12 @@ const hourTo24 = (hour12) => {
 
     let [hour, minute, second] = time.split(':'); //DIVIDIMOS HORAS, MINUTOS Y SEGUNDOS
     hour = parseInt(hour, 10);
-    console.log(period);
 
     if (period === 'p. m.' && hour!==12) {
-        console.log('PM');
         hour += 12;
     } else if (period === 'a. m.' && hour === 12) {
-        console.log('AM');
         hour = 0;
     }
-    console.log(hour);
     return `${hour.toString().padStart(2, '0')}:${minute}:${second}`;
 }
 

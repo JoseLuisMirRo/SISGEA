@@ -51,7 +51,6 @@
         });
     });
     document.getElementById("submitButtonUpdate").addEventListener("click",function (){
-        console.log(updateNbdId);
         const form= document.getElementById("updateNbdForm");
         const {updateName,updateDate}=form.elements;
 

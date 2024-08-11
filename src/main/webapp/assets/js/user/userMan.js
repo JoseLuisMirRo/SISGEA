@@ -1,5 +1,4 @@
 let status = document.getElementById("status").value;
-console.log(status);
 if (status === "registerError") {
     Swal.fire({
         icon: "error",
