@@ -1,7 +1,6 @@
 const status = document.getElementById("status").value;
 if (status === "registerError") {
-    const urlParams = new URLSearchParams(window.location.search);
-    const errorMessage = urlParams.get("errorMessage");
+    const errorMessage = document.getElementById("errorMessage").value;
     let textShow;
     if (errorMessage==="duplicate"){
         textShow = "Existe un feriado registrado en esta fecha"
@@ -14,11 +13,6 @@ if (status === "registerError") {
         text: textShow,
         confirmButtonText: "Reintentar",
         confirmButtonColor: "#dc3545",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/NonBusinessDayServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
     });
 }
 else if (status === "registerOk") {
@@ -27,16 +21,10 @@ else if (status === "registerOk") {
         title: "Registro realizado con éxito",
         confirmButtonText: "Ok",
         confirmButtonColor: "#208c7d",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/NonBusinessDayServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
     });
 }
 else if (status === "updateError"){
-    const urlParams = new URLSearchParams(window.location.search);
-    const errorMessage = urlParams.get("errorMessage");
+    const errorMessage = document.getElementById("errorMessage").value;
     let textShow;
     if (errorMessage==="duplicate"){
         textShow = "Existe un feriado registrado en esta fecha"
@@ -49,11 +37,6 @@ else if (status === "updateError"){
         text: textShow,
         confirmButtonText: "Reintentar",
         confirmButtonColor: "#dc3545",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/NonBusinessDayServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
     });
 }
 else if (status === "updateOk"){
@@ -62,11 +45,6 @@ else if (status === "updateOk"){
         title: "Actualización realizada con éxito",
         confirmButtonText: "Ok",
         confirmButtonColor: "#208c7d",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/NonBusinessDayServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
     });
 }
 else if (status === "deleteError"){
@@ -76,11 +54,6 @@ else if (status === "deleteError"){
         text: "Vuelva a intentarlo",
         confirmButtonText: "Reintentar",
         confirmButtonColor: "#dc3545",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/NonBusinessDayServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
     });
 }
 else if (status === "deleteOk"){
@@ -89,10 +62,5 @@ else if (status === "deleteOk"){
         title: "Feriado eliminado con éxito",
         confirmButtonText: "Ok",
         confirmButtonColor: "#208c7d",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/NonBusinessDayServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
     });
 }

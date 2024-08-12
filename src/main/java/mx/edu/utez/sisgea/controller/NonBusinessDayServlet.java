@@ -22,9 +22,11 @@ public class NonBusinessDayServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action");
         NonBusinessDayDao nbdDao = new NonBusinessDayDao();
         NonBusinessDay nbdBean = new NonBusinessDay();
+
+        String action = req.getParameter("action");
+        HttpSession activeSession = req.getSession();
 
         switch (action){
             case "add":
@@ -32,14 +34,17 @@ public class NonBusinessDayServlet extends HttpServlet {
                     nbdBean.setName(req.getParameter("name"));
                     nbdBean.setDate(Date.valueOf(req.getParameter("date")));
                     nbdDao.insertNonBusinessDay(nbdBean);
-                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=registerOk");
+                    activeSession.setAttribute("status", "registerOk");
+                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet");
                 }catch(Exception e){
                     e.printStackTrace();
                     String errorMsg = e.getMessage();
                     if(errorMsg.contains("Duplicate entry")){
                         errorMsg="duplicate";
                     }
-                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=registerError&errorMessage=" + URLEncoder.encode(errorMsg, StandardCharsets.UTF_8));
+                    activeSession.setAttribute("status", "registerError");
+                    activeSession.setAttribute("errorMessage", errorMsg);
+                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet");
                 }
                 break;
             case "update":
@@ -48,7 +53,8 @@ public class NonBusinessDayServlet extends HttpServlet {
                     nbdBean.setName(req.getParameter("updateName"));
                     nbdBean.setDate(Date.valueOf(req.getParameter("updateDate")));
                     nbdDao.updateNonBusinessDay(nbdBean);
-                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=updateOk");
+                    activeSession.setAttribute("status", "updateOk");
+                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet");
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -56,17 +62,21 @@ public class NonBusinessDayServlet extends HttpServlet {
                     if(errorMsg.contains("Duplicate entry")){
                         errorMsg="duplicate";
                     }
-                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=updateError&errorMessage=" + URLEncoder.encode(errorMsg, StandardCharsets.UTF_8));
+                    activeSession.setAttribute("status", "updateError");
+                    activeSession.setAttribute("errorMessage", errorMsg);
+                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet");
                 }
                 break;
             case "delete":
                 try{
                     int id = Integer.parseInt(req.getParameter("deleteNbdId"));
                     nbdDao.deleteNonBusinessDay(id);
-                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=deleteOk");
+                    activeSession.setAttribute("status", "deleteOk");
+                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet");
                 } catch (Exception e){
                     e.printStackTrace();
-                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet?status=deleteError");
+                    activeSession.setAttribute("status", "deleteError");
+                    resp.sendRedirect(req.getContextPath() + "/NonBusinessDayServlet");
                 }
         }
 
