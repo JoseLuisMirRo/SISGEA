@@ -28,6 +28,7 @@ public class RoomServlet extends HttpServlet {
         BuildingDao buildingDao = new BuildingDao();
 
         String action = req.getParameter("action");
+        HttpSession activeSession = req.getSession();
 
         switch(action){
             case "add":
@@ -37,11 +38,13 @@ public class RoomServlet extends HttpServlet {
                     roomBean.setNumber(Integer.parseInt(req.getParameter("number")));
                     roomBean.setStatus(true);
                     roomDao.insertRoom(roomBean);
-                    resp.sendRedirect(req.getContextPath() + "/roomServlet?status=registerOk");
+                    activeSession.setAttribute("status", "registerOk");
+                    resp.sendRedirect(req.getContextPath() + "/roomServlet");
 
                 }catch(Exception e){
                     e.printStackTrace();
-                    resp.sendRedirect(req.getContextPath() + "/roomServlet?status=registerError");
+                    activeSession.setAttribute("status", "registerError");
+                    resp.sendRedirect(req.getContextPath() + "/roomServlet");
                 }
                 break;
 
@@ -52,11 +55,13 @@ public class RoomServlet extends HttpServlet {
                         roomBean.setBuilding(buildingDao.getBuilding(Integer.parseInt(req.getParameter("updateBuildingId"))));
                         roomBean.setNumber(Integer.parseInt(req.getParameter("updateNumber")));
                         roomDao.updateRoom(roomBean);
-                        resp.sendRedirect(req.getContextPath() + "/roomServlet?status=updateOk");
+                        activeSession.setAttribute("status", "updateOk");
+                        resp.sendRedirect(req.getContextPath() + "/roomServlet");
 
                     }catch(Exception e){
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/roomServlet?status=updateError");
+                        activeSession.setAttribute("status", "updateError");
+                        resp.sendRedirect(req.getContextPath() + "/roomServlet");
                     }
                     break;
 
@@ -64,10 +69,12 @@ public class RoomServlet extends HttpServlet {
                         try{
                             id=(Integer.parseInt(req.getParameter("deleteRoomId")));
                             roomDao.deleteRoom(id);
-                            resp.sendRedirect(req.getContextPath() + "/roomServlet?status=deleteOk");
+                            activeSession.setAttribute("status", "deleteOk");
+                            resp.sendRedirect(req.getContextPath() + "/roomServlet");
                         }catch(Exception e){
                             e.printStackTrace();
-                            resp.sendRedirect(req.getContextPath() + "/roomServlet?status=deleteError");
+                            activeSession.setAttribute("status", "deleteError");
+                            resp.sendRedirect(req.getContextPath() + "/roomServlet");
                         }
                         break;
 
@@ -75,10 +82,12 @@ public class RoomServlet extends HttpServlet {
                 try{
                     id=(Integer.parseInt(req.getParameter("revertDeleteRoomId")));
                     roomDao.revertDeleteRoom(id);
-                    resp.sendRedirect(req.getContextPath() + "/roomServlet?status=revertDeleteOk");
+                    activeSession.setAttribute("status", "revertDeleteOk");
+                    resp.sendRedirect(req.getContextPath() + "/roomServlet");
                 }catch(Exception e){
                     e.printStackTrace();
-                    resp.sendRedirect(req.getContextPath() + "/roomServlet?status=revertDeleteError");
+                    activeSession.setAttribute("status", "revertDeleteError");
+                    resp.sendRedirect(req.getContextPath() + "/roomServlet");
                 }
                 break;
         }
