@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import mx.edu.utez.sisgea.dao.*;
 import mx.edu.utez.sisgea.model.*;
+import mx.edu.utez.sisgea.utility.EmailService;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -128,10 +129,9 @@ public class ReserveServlet extends HttpServlet {
                         if (user.getRole().getId() == 1) {
                             status = Status.Admin_Canceled;
                             if(reserve.getUser().getId() != user.getId()) {
-                               // ResendAPI emailSender = new ResendAPI();
-                               // String from = "Alertas SISGEA <email@sisgea.tech>";
-                               // String to = reserve.getUser().getEmail();
-                               // String subject = "Tu reserva: '" + reserve.getDescription() + "' ha sido cancelada";
+                                EmailService emailService = new EmailService();
+                                String to = reserve.getUser().getEmail();
+                                String subject = "Tu reserva: '" + reserve.getDescription() + "' ha sido cancelada";
                                 String html = "<h2>¡Hola! " + reserve.getUser().getFirstName()
                                         + "</h2><p>Tu reserva ha sido cancelada por un administrador.</p><p>Administrador: "
                                         + user.getFirstName() + " " + user.getLastNameP() + " " + user.getLastNameM()
@@ -144,7 +144,7 @@ public class ReserveServlet extends HttpServlet {
                                         + "</p><p>Hora de inicio: " + reserveDao.getReserve(idC).getStartTime()
                                         + "</p><p>Hora de fin: " + reserveDao.getReserve(idC).getEndTime() + "</p>";
 
-                                //emailSender.sendEmail(from, to, subject, html);
+                                emailService.sendEmail(to, subject, html);
                             }
 
                         } else if (user.getRole().getId() == 2) {
