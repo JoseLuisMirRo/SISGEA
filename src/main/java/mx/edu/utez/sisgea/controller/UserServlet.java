@@ -30,6 +30,7 @@ import mx.edu.utez.sisgea.model.UserroleBean;
             UserroleDao userRoleDao = new UserroleDao();
 
             String action = req.getParameter("action");
+            HttpSession activeSession = req.getSession();
             switch (action) {
                 case "add":
                     try {
@@ -61,10 +62,12 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                           //      "<Utiliza el siguiente hipervínculo para acceder: <a href='sisgea.tech'>SISGEA</a>"+
                           //      "<p>Saludos cordiales,</p><p>Equipo de SISGEA</p>";
                         //emailSender.sendEmail(from, to, subject, html);
-                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=registerOk");
+                        activeSession.setAttribute("status", "registerOk");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=registerError");
+                        activeSession.setAttribute("status", "registerError");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet");
                     }
                     break;
 
@@ -100,11 +103,13 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                             }
                         }
 
-                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=updateOk");
+                        activeSession.setAttribute("status", "updateOk");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet");
 
                     }catch(Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=updateError");
+                        activeSession.setAttribute("status", "updateError");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet");
                     }
                     break;
                 case "updatePswd":
@@ -122,20 +127,24 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                          //       "<h3>¡Tu contraseña ha sido recuperada exitosamente!</h3><p>Nueva contraseña: "+userBean.getPassword()+"</p>"+
                           //      "<p>Saludos cordiales,</p><p>Equipo de SISGEA</p>";
                         //emailSender.sendEmail(from, to, subject, html);
-                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=updatePswdOk");
+                        activeSession.setAttribute("status", "updatePswdOk");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet");
                     }catch (Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=updatePswdError");
+                        activeSession.setAttribute("status", "updatePswdError");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet");
                     }
                     break;
                 case "delete": //Eliminacion logica
                     try{
                         id=(Integer.parseInt(req.getParameter("deleteUserId")));
                         userDao.deleteUser(id);
-                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=deleteOk");
+                        activeSession.setAttribute("status", "deleteOk");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=deleteError");
+                        activeSession.setAttribute("status", "deleteError");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet");
                     }
                     break;
 
@@ -143,10 +152,12 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                     try{
                         id=(Integer.parseInt(req.getParameter("revertDeleteUserId")));
                         userDao.revertDeleteUser(id);
-                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=revertDeleteOk");
+                        activeSession.setAttribute("status", "revertDeleteOk");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        resp.sendRedirect(req.getContextPath() + "/userServlet?status=revertDeleteError");
+                        activeSession.setAttribute("status", "revertDeleteError");
+                        resp.sendRedirect(req.getContextPath() + "/userServlet");
                         //req.setAttribute("usuarios", lista);
                         //req.getRequestDispatcher("jsp").forward(req, resp);
                     }

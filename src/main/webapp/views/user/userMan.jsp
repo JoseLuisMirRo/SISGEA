@@ -39,9 +39,14 @@
 
 <!--STATUS DE LA PAGINA-->
 <%
-    String status = request.getParameter("status");
+    HttpSession activeSession = request.getSession();
+    String status = (String) activeSession.getAttribute("status");
+    String errorMessage = (String) activeSession.getAttribute("errorMessage");
+    activeSession.removeAttribute("status");
+    activeSession.removeAttribute("errorMessage");
 %>
 <input type="hidden" id="status" value="<%=status%>">
+<input type="hidden" id="errorMessage" value="<%=errorMessage%>">
 <script src="${pageContext.request.contextPath}/assets/js/user/userMan.js"> </script>
 </body>
 </html>
