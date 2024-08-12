@@ -65,11 +65,11 @@
                         <% } %>
                     </ul>
                     <% } %>
-                    <div class="navbar-text me-3">
-                        <span class="text-muted d-block"><%=user.getFirstName()%> <%=user.getLastNameP()%> <%=user.getLastNameM()%></span>
-                        <span class="text-muted d-block"><%=user.getRole().getName()%></span>
-                    </div>
                 </div>
+            </div>
+            <div class="navbar-text me-3 ">
+                <span class="text-muted d-block"><%=user.getFirstName()%> <%=user.getLastNameP()%> <%=user.getLastNameM()%></span>
+                <span class="text-muted d-block"><%=user.getRole().getName()%></span>
             </div>
             <form id="logoutButtonForm" action="${pageContext.request.contextPath}/LogoutServlet" method="POST">
             <button type="button" class="btn btn-outline-danger btn-lg" onclick="logoutAlert()">
