@@ -41,6 +41,15 @@ public class UserBulkServlet extends HttpServlet {
 
         try {
             Part part = req.getPart("file");
+            String fileName = part.getSubmittedFileName();
+            if(fileName==null||!fileName.endsWith(".xlsx")) {
+                throw new IllegalArgumentException("invalidFile");
+            }
+            String contentType = part.getContentType();
+            if (!contentType.equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+                throw new IllegalArgumentException("invalidFile");
+            }
+
             InputStream data = part.getInputStream();
             Workbook workbook = WorkbookFactory.create(data);
             Sheet sheet = workbook.getSheetAt(0);

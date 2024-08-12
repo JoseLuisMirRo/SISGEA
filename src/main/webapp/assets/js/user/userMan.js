@@ -103,8 +103,10 @@ else if (status === "bulkError"){
         textShow = "Correo electrónico repetido en el archivo, por favor revise y vuelva a intentarlo"
     }else if(errorMessage === "invalidName"){
         textShow = "Nombre inválido ingresado, por favor revise y vuelva a intentarlo"
-    }else if(errorMessage === "invalidRoles"){
+    }else if(errorMessage === "invalidRoles") {
         textShow = "Rol inválido ingresado, por favor revise y vuelva a intentarlo"
+    }else if(errorMessage === "invalidFile"){
+        textShow = "Archivo inválido, por favor ingrese un archivo .xlsx y vuelva a intentarlo"
     }else{
         textShow = "Error del sistema, por favor contacte al administrador"
     }
