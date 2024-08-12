@@ -3,10 +3,7 @@ package mx.edu.utez.sisgea.controller;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
+import jakarta.servlet.http.*;
 import mx.edu.utez.sisgea.dao.RoleDao;
 import mx.edu.utez.sisgea.dao.UserDao;
 import mx.edu.utez.sisgea.dao.UserroleDao;
@@ -18,8 +15,10 @@ import org.apache.poi.ss.usermodel.WorkbookProvider;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2,
@@ -29,19 +28,24 @@ import java.util.List;
 
 @WebServlet("/userBulkServlet")
 public class UserBulkServlet extends HttpServlet {
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ]*$");
+    private static final Pattern VALID_EMAIL_ADDRESS_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@utez.edu.mx$");
+    private static final Pattern VALID_ROLES_PATTERN =  Pattern.compile("^(Administrador,Docente|Administrador|Docente|Estudiante)$");
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession activeSession = req.getSession();
         UserBean userBean = new UserBean();
         UserDao userDao = new UserDao();
         UserroleDao userRoleDao = new UserroleDao();
 
         try {
             Part part = req.getPart("file");
-
             InputStream data = part.getInputStream();
-
             Workbook workbook = WorkbookFactory.create(data);
             Sheet sheet = workbook.getSheetAt(0);
+
+            List<String> emails = new ArrayList<>();
 
             //Recorremos las filas de la hoja de trabajo
             Iterator<Row> rowIterator = sheet.iterator();
@@ -55,12 +59,38 @@ public class UserBulkServlet extends HttpServlet {
                 String email = row.getCell(3).getStringCellValue();
                 String rolesStr = row.getCell(4).getStringCellValue();
 
-                if (firstName.isEmpty() || lastNameP.isEmpty() || lastNameM.isEmpty() || email.isEmpty() || rolesStr.isEmpty()) {
-                    throw new IllegalArgumentException("nullCamp");
-                }
-                if (!email.endsWith("@utez.edu.mx")) {
+                if (!VALID_EMAIL_ADDRESS_PATTERN.matcher(email).matches()) {
                     throw new IllegalArgumentException("invalidEmail");
                 }
+                if (userDao.getUserByEmail(email) != null) {
+                    throw new IllegalArgumentException("emailExists");
+                }
+                if (emails.contains(email)) {
+                    throw new IllegalArgumentException("emailRepeated");
+                }
+                emails.add(email);
+
+                if (!NAME_PATTERN.matcher(firstName).matches() ||
+                        !NAME_PATTERN.matcher(lastNameP).matches() ||
+                        !NAME_PATTERN.matcher(lastNameM).matches()) {
+                    throw new IllegalArgumentException("invalidName");
+                }
+
+                if (!VALID_ROLES_PATTERN.matcher(rolesStr).matches()) {
+                    throw new IllegalArgumentException("invalidRoles");
+                }
+            }
+
+            rowIterator = sheet.iterator();
+            while(rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                if (row.getRowNum() == 0) continue;
+
+                String firstName = row.getCell(0).getStringCellValue();
+                String lastNameP = row.getCell(1).getStringCellValue();
+                String lastNameM = row.getCell(2).getStringCellValue();
+                String email = row.getCell(3).getStringCellValue();
+                String rolesStr = row.getCell(4).getStringCellValue();
 
                 userBean.setFirstName(firstName);
                 userBean.setLastNameP(lastNameP);
@@ -79,11 +109,15 @@ public class UserBulkServlet extends HttpServlet {
                     userRoleDao.insertUserRole(userrole);
                 }
             }
-            resp.sendRedirect(req.getContextPath() + "/userServlet?status=bulkOk");
+            activeSession.setAttribute("status", "bulkOk");
+            resp.sendRedirect(req.getContextPath() + "/userServlet");
 
         }catch (Exception e) {
             e.printStackTrace();
-            resp.sendRedirect(req.getContextPath() + "/userServlet?status=bulkError");
+            String errorMessage = e.getMessage();
+            activeSession.setAttribute("status", "bulkError");
+            activeSession.setAttribute("message", errorMessage);
+            resp.sendRedirect(req.getContextPath() + "/userServlet");
         }
     }
 }

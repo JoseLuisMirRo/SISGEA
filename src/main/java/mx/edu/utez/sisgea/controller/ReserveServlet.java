@@ -11,8 +11,6 @@ import mx.edu.utez.sisgea.dao.*;
 import mx.edu.utez.sisgea.model.*;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.DayOfWeek;
@@ -52,7 +50,7 @@ public class ReserveServlet extends HttpServlet {
                         throw new IllegalArgumentException("startAfterEnd");
                     }
 
-                    reserveBean = new ReserveBean(userDao.getUser(userId), roomDao.getRoom(roomId), description, date, startTime, endTime, status);
+                    reserveBean = new ReserveBean(userDao.getUserById(userId), roomDao.getRoom(roomId), description, date, startTime, endTime, status);
 
                     ScheduleDao scheduleDao = new ScheduleDao();
                     List<ScheduleBean> schedules = scheduleDao.getAllRoomSchedules(roomId);

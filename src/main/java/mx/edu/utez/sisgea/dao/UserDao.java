@@ -3,7 +3,6 @@ package mx.edu.utez.sisgea.dao;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import mx.edu.utez.sisgea.model.UserBean;
-import mx.edu.utez.sisgea.model.UserroleBean;
 import mx.edu.utez.sisgea.utility.DataBaseConnection;
 
 import java.sql.*;
@@ -49,7 +48,7 @@ public class UserDao extends DataBaseConnection {
         return 0;
     }
 
-    public UserBean getUser(int id) throws SQLException {
+    public UserBean getUserById(int id) throws SQLException {
         UserBean user = null;
         try {
             con = createConnection();
@@ -65,6 +64,31 @@ public class UserDao extends DataBaseConnection {
                 String lastNameM = rs.getString("lastnamem");
                 boolean status = rs.getBoolean("status");
                 user = new UserBean(idE, email, firstname, lastNameP, lastNameM, status);
+            }
+        }catch (Exception e){
+            throw new SQLException(e.getMessage());
+        }finally {
+            closeConnection();
+        }
+        return user;
+    }
+
+    public UserBean getUserByEmail(String email) throws SQLException {
+        UserBean user = null;
+        try {
+            con = createConnection();
+            ps = con.prepareStatement("SELECT * FROM user WHERE email=?");
+            ps.setString(1, email);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                String emailE = rs.getString("email");
+                String firstname = rs.getString("firstname");
+                String lastNameP = rs.getString("lastnamep");
+                String lastNameM = rs.getString("lastnamem");
+                boolean status = rs.getBoolean("status");
+                user = new UserBean(id, emailE, firstname, lastNameP, lastNameM, status);
             }
         }catch (Exception e){
             throw new SQLException(e.getMessage());

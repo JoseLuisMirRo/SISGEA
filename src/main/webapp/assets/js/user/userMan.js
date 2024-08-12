@@ -93,10 +93,25 @@ else if (status === "bulkOk"){
     });
 }
 else if (status === "bulkError"){
+    const errorMessage = document.getElementById("errorMessage").value;
+    let textShow;
+    if(errorMessage === "invalidEmail"){
+        textShow = "Correo electrónico inválido ingresado, por favor revise el formato y dominio y vuelva a intentarlo"
+    }else if(errroMessage === "emailExists"){
+        textShow = "Correo electrónico ya registrado, por favor revise y vuelva a intentarlo"
+    }else if(errorMessage === "emailRepeated"){
+        textShow = "Correo electrónico repetido en el archivo, por favor revise y vuelva a intentarlo"
+    }else if(errorMessage === "invalidName"){
+        textShow = "Nombre inválido ingresado, por favor revise y vuelva a intentarlo"
+    }else if(errorMessage === "invalidRoles"){
+        textShow = "Rol inválido ingresado, por favor revise y vuelva a intentarlo"
+    }else{
+        textShow = "Error del sistema, por favor contacte al administrador"
+    }
     Swal.fire({
         icon: "error",
-        title: "Error, no se agregaron los usuarios",
-        text: "Vuelva a intentarlo",
+        title: "Error, no se realizó ningún registro",
+        text: textShow,
         confirmButtonText: "Reintentar",
         confirmButtonColor: "#dc3545",
     });

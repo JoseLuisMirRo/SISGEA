@@ -118,7 +118,7 @@ import mx.edu.utez.sisgea.model.UserroleBean;
                         userBean.setEmail(req.getParameter("email"));
                         userBean.setPassword(GeneratePassword.generatePassword(2, 2, 2));
                         userDao.updateUserPassword(userBean);
-                        UserBean targetUser = userDao.getUser(userBean.getId());
+                        UserBean targetUser = userDao.getUserById(userBean.getId());
                         //ResendAPI emailSender = new ResendAPI();
                         //String from = "SISGEA <email@sisgea.tech>";
                         //String to = targetUser.getEmail();
