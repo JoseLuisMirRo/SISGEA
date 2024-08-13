@@ -19,7 +19,7 @@
     <link href="${pageContext.request.contextPath}/assets/css/bootstrap-5-3-3/bootstrap-icons.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container my-6"> <!--Contenedor de una tabla con margen de 6 unidades-->
+<div class="main-container-table">
     <div>
         <h2 style="color: black">Gestión de usuarios</h2>
     </div>
@@ -31,7 +31,7 @@
     </div>
     <div class="row"> <!--Fila de la tabla-->
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"><!--Columna de la tabla que va a ser de 12 en todos los tamaños de pantallas-->
-            <table id="datatable_users" class="table table-striped w-100" style="width: 100%;">
+            <table id="datatable_users" class="table table-striped" style="width: 100%;">
                 <thead> <!--Encabezado de la tabla-->
                 <tr> <!--Fila de la tabla-->
                     <th>Rol</th>

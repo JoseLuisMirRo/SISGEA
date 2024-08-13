@@ -11,7 +11,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de usuarios</title>
-    <link href="${pageContext.request.contextPath}/assets/css/styles-admin-profile.css" rel="stylesheet">
     <!--DataTables CSS-->
     <link href="${pageContext.request.contextPath}/assets/css/datatables-2-1-3/datatables.min.css" rel="stylesheet">
     <!--Bootstrap CSS-->
@@ -20,7 +19,7 @@
     <link href="${pageContext.request.contextPath}/assets/css/bootstrap-5-3-3/bootstrap-icons.min.css" rel="stylesheet">
 
 </head>
-<jsp:include page="/views/layout/banner.jsp"></jsp:include>
+<jsp:include page="/views/layout/navbar.jsp"></jsp:include>
 
 <body>
 <jsp:include page="/views/user/data-table-user.jsp"></jsp:include>

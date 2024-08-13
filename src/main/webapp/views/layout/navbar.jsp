@@ -41,7 +41,7 @@
                     <% if(1==userRole || 2==userRole){ %>
                     <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link mx-lg-2 active" aria-current="page" href="${pageContext.request.contextPath}/">Inicio</a>
+                            <a class="nav-link mx-lg-2" aria-current="page" href="${pageContext.request.contextPath}/calendar">Inicio</a>
                         </li>
                         <% if(1==userRole){ %>
                         <li class="nav-item">
@@ -67,23 +67,27 @@
                     <% } %>
                 </div>
             </div>
-            <div class="navbar-text me-3 ">
-                <span class="text-muted d-block"><%=user.getFirstName()%> <%=user.getLastNameP()%> <%=user.getLastNameM()%></span>
-                <span class="text-muted d-block"><%=user.getRole().getName()%></span>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style="width: 250px;">
+                    <li><a class="dropdown-item-text text-end"><%=user.getFirstName()%> <%=user.getLastNameP()%> <%=user.getLastNameM()%></a></li>
+                    <li><a class="dropdown-item-text text-end"><%=user.getRole().getName()%></a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                    <form id="logoutButtonForm" action="${pageContext.request.contextPath}/LogoutServlet" method="POST">
+                        <button type="button" class="dropdown-item text-danger" onclick="logoutAlert()">Cerrar sesión</button>
+                    </li>
+                </ul>
             </div>
-            <form id="logoutButtonForm" action="${pageContext.request.contextPath}/LogoutServlet" method="POST">
-            <button type="button" class="btn btn-outline-danger btn-lg" onclick="logoutAlert()">
-                <i class="bi bi-box-arrow-right"></i>
-            </button>
-            </form>
             <button
                     class="navbar-toggler pe-0"
                     type="button"
                     data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasNavbar"
                     aria-controls="offcanvasNavbar"
-                    aria-label="Toggle navigation"
-            >
+                    aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
         </div>
@@ -105,6 +109,17 @@
             }
         });
     }
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link');
+        console.log(currentPath);
+
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            }
+        });
+    });
 </script>
 <script src="${pageContext.request.contextPath}/assets/js/sweetalert2-11-12-4/sweetalert2.all.min.js"></script>
 </body>

@@ -10,21 +10,22 @@
     font-family: "Mulish", sans-serif;
 }
 
-.navbar {
+header .navbar {
     background-color: #002e60;
     height: 80px;
     margin: 5px;
     border-radius: 16px;
     padding: 0.2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-.navbar-text{
+header .navbar-text{
     margin-right: 1rem;
     text-align: right;
     width: 200px;
     color: white;
 }
 
-.navbar-brand {
+header .navbar-brand {
     font-weight: 500;
     color: #009475;
     font-size: 24px;
@@ -32,28 +33,33 @@
     margin-right: auto;
 }
 
-.navbar-toggler{
+header .navbar-toggler{
     border: none;
     font-size: 1.25rem;
 }
 
-.navbar-toggler:focus, .btn-close:focus{
+header .navbar-toggler:focus, .btn-close:focus{
     box-shadow: none;
     outline: none;
 }
 
-.nav-link{
-    color: white;
-    font-weight: 500;
+header .nav-link{
+    color: #c3c3c3;
     position: relative;
+    font-size: 16px;
+    font-weight: 600;
 }
 
-.nav-link:hover, .nav-link.active{
-    color: #009475;
+header .nav-link:hover, .nav-link.active{
+    color: #009475 ;
 }
+header .navbar-nav .nav-link.active {
+    color: white;
+}
+
 
 @media (min-width: 991px){
-    .nav-link::before{
+    header .nav-link::before{
         content:"";
         position: absolute;
         bottom: 0;
@@ -66,22 +72,29 @@
         transition: 0.3s ease-in-out;
     }
 
-    .nav-link:hover::before, .nav-link.active::before{
+    header .nav-link:hover::before, .nav-link.active::before{
         width: 100%;
         visibility: visible;
+        color: #009970;
     }
 }
 
 body{
-    background-color: #009475;
-    background-size: cover;
     width: 100%;
     height: 100vh;
 
 }
 .main-container{
-    background-color: white;
-    padding: 20px;
+    padding: 15px;
     border-radius: 16px;
     margin: 70px 5px 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.main-container-table{
+    padding: 15px;
+    border-radius: 16px;
+    margin: 100px 5px 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }

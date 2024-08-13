@@ -67,8 +67,9 @@
 </head>
 <body>
 <br>
-<div class="container-fluid main-container">
+<div class="main-container">
     <div id='calendar'></div>
+</div>
 </div>
 </body>
 </html>

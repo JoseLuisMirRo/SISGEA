@@ -10,7 +10,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de horarios</title>
-    <link href="${pageContext.request.contextPath}/assets/css/styles-admin-profile.css" rel="stylesheet">
     <!--Bootstrap CSS-->
     <link href="${pageContext.request.contextPath}/assets/css/bootstrap-5-3-3/bootstrap.min.css" rel="stylesheet">
     <!--DataTables CSS-->
@@ -20,7 +19,7 @@
 
 </head>
 <body>
-<div class="container my-6"> <!--Contenedor de una tabla con margen de 6 unidades-->
+<div class="main-container-table"> <!--Contenedor de una tabla con margen de 6 unidades-->
     <div>
         <h2 style="color: black">Gestión de horarios</h2>
     </div>

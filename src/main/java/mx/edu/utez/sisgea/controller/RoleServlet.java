@@ -33,7 +33,7 @@ public class RoleServlet extends HttpServlet {
 
         for (int i = 0; i < roles.length; i++) {
             if (roles[i].equals(role.getId())) {
-                req.getRequestDispatcher("/calendar").forward(req, resp);
+                resp.sendRedirect(req.getContextPath() + "/calendar");
             }
         }
     }
