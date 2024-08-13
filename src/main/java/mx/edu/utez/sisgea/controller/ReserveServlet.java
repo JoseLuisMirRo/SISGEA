@@ -80,6 +80,7 @@ public class ReserveServlet extends HttpServlet {
             case "update":
                 try {
                     int updateReserveId = Integer.parseInt(req.getParameter("updateReserveId"));
+                    ReserveBean reserve = reserveDao.getReserve(updateReserveId);
                     int roomId = Integer.parseInt(req.getParameter("updateRoomId"));
                     String description = req.getParameter("updateDescription");
                     Date date = Date.valueOf(req.getParameter("updateDate"));
@@ -105,6 +106,24 @@ public class ReserveServlet extends HttpServlet {
 
                     if(isNbd) {
                         throw new IllegalArgumentException("overlapsnbd");
+                    }
+                    if(reserve.getUser().getId() != user.getId() && user.getRole().getId() == 1) {
+                        EmailService emailService = new EmailService();
+                        String to = reserve.getUser().getEmail();
+                        String subject = "Tu reserva: '" + reserve.getDescription() + "' ha sido actualizada";
+                        String html = "<h2>¡Hola! " + reserve.getUser().getFirstName()
+                                + "</h2><p>Tu reserva ha sido actualizada por un administrador.</p><p>Administrador: "
+                                + user.getFirstName() + " " + user.getLastNameP() + " " + user.getLastNameM()
+                                + "</p><p>Motivo: " + req.getParameter("updateReason")
+                                + "</p><h3><b>Detalles de la reserva cancelada:</b></h3>" +
+                                "<p>Nuevos detalles de la reserva: " + reserveBean.getDescription() + "</p><p>Espacio: "
+                                + reserveBean.getRoom().getRoomType().getAbbreviation() + reserveBean.getRoom().getNumber()
+                                + " - " + reserveBean.getRoom().getBuilding().getName()
+                                + "<p>Fecha: " + reserveBean.getDate()
+                                + "</p><p>Hora de inicio: " + reserveBean.getStartTime()
+                                + "</p><p>Hora de fin: " + reserveBean.getEndTime() + "</p>";
+
+                        emailService.sendEmail(to, subject, html);
                     }
 
                     reserveDao.updateReserve(reserveBean);
@@ -170,9 +189,28 @@ public class ReserveServlet extends HttpServlet {
             case "reactivate": //TODAS LAS VERIFICACIONES OK
                 try {
                     int idA = Integer.parseInt(req.getParameter("reactivateReserveId"));
+                    ReserveBean reserve = reserveDao.getReserve(idA);
                     if (user.getRole().getId() == 1) {
                         reserveDao.updateStatus(idA, Status.Active);
                         activeSession.setAttribute("status", "reactivateOk");
+                        if(reserve.getUser().getId() != user.getId()) {
+                            EmailService emailService = new EmailService();
+                            String to = reserve.getUser().getEmail();
+                            String subject = "Tu reserva: '" + reserve.getDescription() + "' ha sido reactivada";
+                            String html = "<h2>¡Hola! " + reserve.getUser().getFirstName()
+                                    + "</h2><p>Tu reserva ha sido reactivada por un administrador.</p><p>Administrador: "
+                                    + user.getFirstName() + " " + user.getLastNameP() + " " + user.getLastNameM()
+                                    + "</p><p>Motivo: " + req.getParameter("reactivateReason")
+                                    + "</p><h3><b>Detalles de la reserva reactivada:</b></h3>" +
+                                    "<p>Descripcion de la reserva: " + reserve.getDescription() + "</p><p>Espacio: "
+                                    + reserve.getRoom().getRoomType().getAbbreviation() + reserve.getRoom().getNumber()
+                                    + " - " + reserve.getRoom().getBuilding().getName()
+                                    + "<p>Fecha: " + reserveDao.getReserve(idA).getDate()
+                                    + "</p><p>Hora de inicio: " + reserveDao.getReserve(idA).getStartTime()
+                                    + "</p><p>Hora de fin: " + reserveDao.getReserve(idA).getEndTime() + "</p>";
+
+                            emailService.sendEmail(to, subject, html);
+                        }
                         resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                     } else if (user.getRole().getId() == 2) {
                         if (reserveDao.getReserve(idA).getStatus() == Status.Canceled) {

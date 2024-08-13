@@ -72,6 +72,7 @@ const listReserves=async(filterStatus)=>{
                     <button class="btn ${isPast ? 'btn-outline-secondary' : 'btn-primary'} btn-sm edit-btn" 
                     data-id="${rse.id}"
                     data-roomid="${rse.room.id}"
+                    data-userid="${rse.user.id}"
                     data-date="${rse.date}"
                     data-description="${rse.description}"
                     data-startime="${rse.startTime}"
@@ -130,6 +131,7 @@ $(document).ready(function () {
         }
         const id = $(this).data('id');
         const roomId = $(this).data('roomid');
+        const userId = $(this).data('userid');
         const date = $(this).data('date');
         const description = $(this).data('description');
         const startTime = $(this).data('startime');
@@ -141,6 +143,7 @@ $(document).ready(function () {
         $('#reserveUpdateModal').attr('data-description', description);
         $('#reserveUpdateModal').attr('data-starttime', startTime);
         $('#reserveUpdateModal').attr('data-endtime', endTime);
+        $('#reserveUpdateModal').attr('data-userid', userId);
 
         $('#reserveUpdateModal').modal('show');
     });

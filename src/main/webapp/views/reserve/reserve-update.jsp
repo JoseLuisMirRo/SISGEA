@@ -1,4 +1,4 @@
-<%--
+<%@ page import="mx.edu.utez.sisgea.model.LoginBean" %><%--
   Created by IntelliJ IDEA.
   User: JLuis
   Date: 19/07/2024
@@ -6,6 +6,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    HttpSession activeSession = request.getSession();
+    LoginBean user = (LoginBean)activeSession.getAttribute("activeUser");
+    int activeUserId = user.getId();
+%>
 <div class="modal fade" id="reserveUpdateModal" tabindex="-1" aria-labelledby="reserveUpdateTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -29,6 +34,12 @@
                     <br>
                     <label for="updateEndtime">Hora de fin:</label>
                     <input type="time" name="updateEndtime" class="form-control" id="updateEndtime" min="08:00" max="21:00"/>
+                    <%if(user.getRole().getId()==1){%>
+                    <div id="adminReasonContainer" style="display: none;">
+                        <label for="updateReason">Motivo de la actualización:</label>
+                        <textarea class="form-control" name="updateReason" id="updateReason" required></textarea>
+                    </div>
+                    <%}%>
                     <input type="text" name="action" value="update" hidden/>
                 </form>
             </div>
@@ -72,12 +83,17 @@
                 roomsElement.appendChild(option);
             });
 
+            const sessionUserId = parseInt(<%=activeUserId%>);
+            console.log(sessionUserId);
+
             const id = reserveUpdateModal.getAttribute('data-id');
             const roomId = reserveUpdateModal.getAttribute('data-roomid');
+            const userId = parseInt(reserveUpdateModal.getAttribute('data-userid'));
             const description = reserveUpdateModal.getAttribute('data-description');
             const date = reserveUpdateModal.getAttribute('data-date');
             const starttime = reserveUpdateModal.getAttribute('data-starttime');
             const endtime = reserveUpdateModal.getAttribute('data-endtime');
+            console.log(userId);
 
             const starttime24 = hourTo24(starttime);
             const endtime24 = hourTo24(endtime);
@@ -88,6 +104,12 @@
             document.getElementById('updateDate').value = date;
             document.getElementById('updateStarttime').value = starttime24;
             document.getElementById('updateEndtime').value = endtime24;
+
+            if(sessionUserId !== userId){
+                document.getElementById('adminReasonContainer').style.display = 'block';
+            }else{
+                document.getElementById('adminReasonContainer').style.display = 'none';
+            }
 
         });
     });

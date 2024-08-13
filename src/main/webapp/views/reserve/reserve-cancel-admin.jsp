@@ -16,8 +16,8 @@
                 <h3>¿Desea cancelar reserva?</h3>
                 <form id="cancelForm" action="<%=request.getContextPath()%>/reserveServlet" method="post">
                     <input id="cancelReserveId" name="cancelReserveId" type="text" hidden/>
-                    <label for="cancelReason">Motivo de cancelación: </label>
-                    <input class="form-control" name="cancelReason" id="cancelReason" type="text" required/>
+                    <span class>Motivo de cancelación: </span>
+                    <textarea class="form-control" name="cancelReason" id="cancelReason" type="text" required></textarea>
                     <input type="text" name="action" value="cancel" hidden/>
                 </form>
             </div>
@@ -46,6 +46,8 @@
                 <h3>¿Desea reactivar reserva?</h3>
                 <form id="reactivateForm" action="<%=request.getContextPath()%>/reserveServlet" method="post" style="display: none">
                     <input id="reactivateReserveId" name="reactivateReserveId" type="text" />
+                    <span class>Motivo de reactivación: </span>
+                    <textarea class="form-control" name="cancelReason" id="reactivateReason" type="text" required></textarea>
                     <input type="text" name="action" value="reactivate" />
                 </form>
             </div>
