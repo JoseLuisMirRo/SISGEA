@@ -14,13 +14,16 @@
 
 <html>
 <head>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/navbar-styles.css" />
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand me-auto" href="#">SISGEA</a>
+            <a class="navbar-brand me-auto" href="#">
+                <img src="${pageContext.request.contextPath}/assets/img/LogoSisgea.png" alt="logoSisgea" width=auto height="70">
+            </a>
             <div
                     class="offcanvas offcanvas-end"
                     tabindex="-1"
