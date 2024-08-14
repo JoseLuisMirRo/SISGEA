@@ -106,9 +106,9 @@ public class RoomDao extends DataBaseConnection {
         try{
             con = createConnection();
             ps = con.prepareStatement("UPDATE room SET status=? WHERE id=?");
-            cs.setBoolean(1,false);
-            cs.setInt(2,id);
-            cs.execute();
+            ps.setBoolean(1,false);
+            ps.setInt(2,id);
+            ps.execute();
         }catch (SQLException e){
             e.printStackTrace();
             throw new SQLException(e.getMessage());
@@ -121,9 +121,9 @@ public class RoomDao extends DataBaseConnection {
         try{
             con = createConnection();
             ps = con.prepareStatement("UPDATE room SET status=? WHERE id=?");
-            cs.setBoolean(1,true);
-            cs.setInt(2,id);
-            cs.execute();
+            ps.setBoolean(1,true);
+            ps.setInt(2,id);
+            ps.execute();
         }catch (SQLException e){
             e.printStackTrace();
             throw new SQLException(e.getMessage());
