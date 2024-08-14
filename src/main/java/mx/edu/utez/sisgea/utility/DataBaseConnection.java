@@ -8,14 +8,14 @@ import java.util.logging.Logger;
 
 public class DataBaseConnection {
     //LOCALHOST
-    private static final String URL = "jdbc:mysql://localhost:3306/sisgea_dev";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
+    //private static final String URL = "jdbc:mysql://localhost:3306/sisgea_dev";
+    //private static final String USER = "root";
+    //private static final String PASSWORD = "root";
 
     //AWS RDS
-    //private static final String URL = "jdbc:mysql://sisgea.cva1cb77g6fg.us-east-1.rds.amazonaws.com:3306/sisgea_prod";
-    //private static final String USER = "admin";
-    //private static final String PASSWORD = "estudi4nteut3z";
+    private static final String URL = "jdbc:mysql://sisgea.cva1cb77g6fg.us-east-1.rds.amazonaws.com:3306/sisgea_prod";
+    private static final String USER = "admin";
+    private static final String PASSWORD = "estudi4nteut3z";
 
     public static Connection createConnection() throws SQLException{
         Connection con = null;

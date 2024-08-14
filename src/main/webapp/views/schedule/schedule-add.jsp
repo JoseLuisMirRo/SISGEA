@@ -134,7 +134,7 @@
                 .forEach((classe) => {
                 const option = document.createElement("option");
                 option.value = classe.id;
-                option.textContent = classe.name;
+                option.textContent = `\${classe.name} - \${classe.program.name}`;
                 classesElement.appendChild(option);
             });
 
