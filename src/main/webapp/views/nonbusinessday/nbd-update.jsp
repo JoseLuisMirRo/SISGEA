@@ -18,7 +18,7 @@
                     <div class="form-group mb-3 row">
                         <label for="updateName" class="col-4 col-form-label form-label">Nombre:</label>
                         <div class="col-8">
-                        <input type="text" class="form-control" name="updateName" id="updateName" placeholder="Nombre del feriado" required pattern="^([A-ZÁÉÍÓÚÑ]{1}[a-záéíóúñ]+\s*)*$">
+                        <input type="text" class="form-control" name="updateName" id="updateName" placeholder="Nombre del feriado" required pattern="^[A-ZÁÉÍÓÚÜÑ0-9][a-záéíóúüñA-ZÁÉÍÓÚÜÑ0-9]*(?:\s+[a-záéíóúüñA-ZÁÉÍÓÚÜÑ0-9]+)*$">
                             <span class="valid-feedback">El dato es correcto</span>
                             <span class="invalid-feedback">Introduce un nombre válido</span>
                         </div>
@@ -43,6 +43,8 @@
 </div>
 
 <script>
+    document.getElementById("updateDate").setAttribute('min', today);
+
     document.addEventListener("DOMContentLoaded" , () => {
         const nbdUpdateModal = document.getElementById('nbdUpdateModal');
 
@@ -62,7 +64,9 @@
         const {updateName,updateDate}=form.elements;
 
         if(updateName.value && updateDate.value){
-            form.submit();
+            if(form.checkValidity()) {
+                form.submit();
+            }
         } else {
             Swal.fire({
                 icon: "error",
