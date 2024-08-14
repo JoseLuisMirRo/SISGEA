@@ -18,7 +18,7 @@
     <!--Bootstrap ICONS-->
     <link href="${pageContext.request.contextPath}/assets/css/bootstrap-5-3-3/bootstrap-icons.min.css" rel="stylesheet">
 </head>
-<jsp:include page="/views/layout/banner.jsp"></jsp:include>
+<jsp:include page="/views/layout/navbar.jsp"></jsp:include>
 
 <body>
 <jsp:include page="/views/schedule/classe/data-table-classe.jsp"></jsp:include>

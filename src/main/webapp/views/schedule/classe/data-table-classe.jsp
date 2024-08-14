@@ -20,7 +20,7 @@
 
 </head>
 <body>
-<div class="container my-6"> <!--Contenedor de una tabla con margen de 6 unidades-->
+<div class="main-container-table"> <!--Contenedor de una tabla con margen de 6 unidades-->
     <div>
         <h2 style="color: black">Gestión de clases</h2>
     </div>
