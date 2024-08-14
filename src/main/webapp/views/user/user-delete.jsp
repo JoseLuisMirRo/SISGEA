@@ -70,7 +70,7 @@
                     <div class="mb-3">
                     <i class="bi bi-question-circle animated-icon"></i>
                     </div>
-                    <h3>¿Desea eliminar usuario?</h3>
+                    <h3>¿Desea inhabilitar usuario?</h3>
                 </div>
                 <form id="deleteForm" action="<%=request.getContextPath()%>/userServlet" method="post" style="display:none">
                     <input id="deleteUserId" name="deleteUserId" type="text"/>

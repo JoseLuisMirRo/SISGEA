@@ -116,7 +116,9 @@
         if(updateName.value && updateLastNameP.value && updateLastNameM.value && updateEmail.value) {
             if (updateEmail.value.substring(updateEmail.value.lastIndexOf("@") + 1) === "utez.edu.mx") {
                     if(rolesSelected){
-                        form.submit();
+                        if(form.checkValidity()) {
+                            form.submit();
+                        }
                     } else {
                         Swal.fire({
                             icon: "error",
