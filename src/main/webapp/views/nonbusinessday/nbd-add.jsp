@@ -1,43 +1,51 @@
-<%@ page import="mx.edu.utez.sisgea.model.NonBusinessDay" %><%--
+<%--
   Created by IntelliJ IDEA.
-  User: luisi
-  Date: 01/08/2024
-  Time: 09:43 a. m.
+  User: JLuis
+  Date: 13/08/2024
+  Time: 09:10 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
 <!-- Modal -->
-<div class="modal fade" id="nbdRegisterModal" tabindex="-1" aria-labelledby="nbdRegisterTitle" aria-hidden="true">
+<html>
+<div class="modal fade" id="nbdRegisterModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="nbdRegTit" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="nbdRegisterTitle">Registrar nuevo feriado</h1>
-            </div>
             <div class="modal-body">
-                <form action="<%= request.getContextPath() %>/NonBusinessDayServlet " id="registerNbdForm" method="POST" class="mb-4">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Nombre del feriado</label>
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Nombre del feriado" required>
+                <h1 class="modal-title fs-5" id="nbdRegTit">Registrar feriado</h1>
+                <hr>
+                <form action="<%= request.getContextPath() %>/NonBusinessDayServlet " id="registerNbdForm" method="POST" novalidate>
+                    <div class="form-group mb-3 row">
+                        <label for="name" class="col-4 col-form-label form-label">Nombre:</label>
+                        <div class="col-8">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Nombre del feriado" required pattern="^([A-ZÁÉÍÓÚÑ]{1}[a-záéíóúñ]+\s*)*$">
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Introduce un nombre válido</span>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="date" class="form-label">Fecha del feriado</label>
-                        <input type="date" class="form-control" name="date" id="date" required>
-                        <input type="text" name="action" value="add" hidden/>
+                    <div class="form-group mb-3 row">
+                        <label for="date" class="col-4 col-form-label form-label">Fecha:</label>
+                        <div class="col-8">
+                            <input type="date" class="form-control" name="date" id="date" required>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Introduce un nombre válido</span>
+                        </div>
+                    </div>
+                    <input type="text" name="action" value="add" hidden/>
+                    <div class="col-12 text-end mt-4">
+                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="submitButtonRegister" type="button" class="btn btn-success">Registrar</button>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button id="submitButtonAdd" type="button" class="btn btn-success">Registrar</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    document.getElementById("submitButtonAdd").addEventListener("click",function (){
-        const form= document.getElementById("registerNbdForm");
+    document.getElementById("submitButtonRegister").addEventListener("click",function (){
+        const form= document.getElementById("RegisterNbdForm");
+        form.classList.add('was-validated');
         const {name,date}=form.elements;
 
         if(name.value && date.value){
@@ -53,3 +61,4 @@
         }
     });
 </script>
+</html>

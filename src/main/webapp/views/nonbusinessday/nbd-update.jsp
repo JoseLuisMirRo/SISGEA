@@ -6,31 +6,37 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
 <!-- Modal -->
-<div class="modal fade" id="nbdUpdateModal" tabindex="-1" aria-labelledby="nbdUpdateTitle" aria-hidden="true">
+<div class="modal fade" id="nbdUpdateModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="nbdUpdateTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="nbdRegisterTitle">Actualizar feriado</h1>
-            </div>
             <div class="modal-body">
-                <form action="<%= request.getContextPath() %>/NonBusinessDayServlet " id="updateNbdForm" method="POST" class="mb-4">
-                    <div class="mb-3">
-                        <input type="text" name="updateNbdId" id="updateNbdId" hidden/>
-                        <label for="updateName" class="form-label">Nombre del feriado</label>
-                        <input type="text" class="form-control" name="updateName" id="updateName" placeholder="Nombre del feriado" required>
+                <h1 class="modal-title fs-5" id="nbdRegisterTitle">Actualizar feriado</h1>
+                <hr>
+                <form action="<%= request.getContextPath() %>/NonBusinessDayServlet " id="updateNbdForm" method="POST" novalidate>
+                    <input type="text" name="updateNbdId" id="updateNbdId" hidden/>
+                    <div class="form-group mb-3 row">
+                        <label for="updateName" class="col-4 col-form-label form-label">Nombre:</label>
+                        <div class="col-8">
+                        <input type="text" class="form-control" name="updateName" id="updateName" placeholder="Nombre del feriado" required pattern="^([A-ZÁÉÍÓÚÑ]{1}[a-záéíóúñ]+\s*)*$">
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Introduce un nombre válido</span>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="updateDate" class="form-label">Fecha del feriado</label>
-                        <input type="date" class="form-control" name="updateDate" id="updateDate" required>
-                        <input type="text" name="action" value="update" hidden/>
+                    <div class="form-group mb-3 row">
+                        <label for="updateDate" class="col-4 col-form-label form-label">Fecha:</label>
+                        <div class="col-8">
+                            <input type="date" class="form-control" name="updateDate" id="updateDate" required>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Introduce un nombre válido</span>
+                        </div>
+                    </div>
+                    <input type="text" name="action" value="update" hidden/>
+                    <div class="col-12 text-end mt-4">
+                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="submitButtonUpdate" type="button" class="btn btn-success">Registrar</button>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button id="submitButtonUpdate" type="button" class="btn btn-success">Registrar</button>
             </div>
         </div>
     </div>
@@ -52,6 +58,7 @@
     });
     document.getElementById("submitButtonUpdate").addEventListener("click",function (){
         const form= document.getElementById("updateNbdForm");
+        form.classList.add('was-validated');
         const {updateName,updateDate}=form.elements;
 
         if(updateName.value && updateDate.value){
