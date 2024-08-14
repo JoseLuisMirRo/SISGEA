@@ -7,32 +7,45 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!-- Modal -->
-<div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="updateUserTitle" aria-hidden="true">
+<div class="modal fade" id="updateUserModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="updateUserTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="updateUserTitle">Actualizar usuario</h1>
-            </div>
             <div class="modal-body">
-                <form id="updateForm" action="<%=request.getContextPath()%>/userServlet" method="post">
-                    <div class="form-group">
-                        <input id="updateUserId" type="hidden" name="updateUserId" class="form-control" />
+                <h1 class="modal-title fs-5" id="updateUserTitle">Actualizar usuario</h1>
+                <hr>
+                <form id="updateForm" action="<%=request.getContextPath()%>/userServlet" method="post" novalidate>
+                    <input id="updateUserId" type="hidden" name="updateUserId" class="form-control" />
+                    <div class="form-group mb-3 row">
+                        <label for="updateName" class="col-4 col-form-label form-label">Nombre:</label>
+                        <div class="col-8">
+                            <input id="updateName" type="text" name="name" class="form-control" required pattern="^([A-ZÁÉÍÓÚÑ]{1}[a-záéíóúñ]+\s*)*$"/>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Introduce un nombre válido</span>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="updateName" class="form-label">Nombre:</label>
-                        <input id="updateName" type="text" name="name" class="form-control" required/>
+                    <div class="form-group mb-3 row">
+                        <label for="updateLastNameP" class="col-4 col-form-label form-label">Apellido Paterno:</label>
+                        <div class="col-8">
+                            <input id="updateLastNameP" type="text" name="lastNameP" class="form-control" required pattern="^([A-ZÁÉÍÓÚÑ]{1}[a-záéíóúñ]+\s*)*$"/>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Introduce un apellido válido</span>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="updateLastNameP" class="form-label">Apellido Paterno:</label>
-                        <input id="updateLastNameP" type="text" name="lastNameP" class="form-control" required/>
+                    <div class="form-group mb-3 row">
+                        <label for="updateLastNameM" class="col-4 col-form-label form-label">Apellido Materno:</label>
+                        <div class="col-8">
+                            <input id="updateLastNameM" type="text" name="lastNameM" class="form-control" required pattern="^([A-ZÁÉÍÓÚÑ]{1}[a-záéíóúñ]+\s*)*$"/>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Introduce un apellido válido</span>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="updateLastNameM" class="form-label">Apellido Materno:</label>
-                        <input id="updateLastNameM" type="text" name="lastNameM" class="form-control" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="updateEmail" class="form-label">Correo Institucional:</label>
-                        <input id="updateEmail" type="email" name="email" class="form-control" required/>
+                    <div class="form-group mb-3 row">
+                        <label for="updateEmail" class="col-4 col-form-label form-label">Correo Electrónico:</label>
+                        <div class="col-8">
+                            <input id="updateEmail" type="email" name="email" class="form-control" required pattern="^([a-z0-9._%+-]+@utez\.edu\.mx)*$"/>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Introduce un correo institucional válido</span>
+                        </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-sm-4 col-form-label form-label">Tipo de usuario:</label>
@@ -48,12 +61,12 @@
                         </div>
                     </div>
                     <input type="text" name="action" value="update" hidden/> <!--VALOR PARA INDICAR AL SERVLET QUE ES UN ACCION DE UPDATE-->
+                    <div class="col-12 text-end mt-4">
+                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="updatePswdBtn" type="button" class="btn btn-warning">Regenerar contraseña</button>
+                        <button id="submitButtonUpdate" type="button" class="btn btn-success">Actualizar</button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button id="updatePswdBtn" type="button" class="btn btn-warning">Regenerar contraseña</button>
-                <button id="submitButtonUpdate" type="button" class="btn btn-success">Actualizar</button>
             </div>
         </div>
     </div>
@@ -88,6 +101,7 @@
     });
 
     document.getElementById("submitButtonUpdate").addEventListener("click",function () {
+        document.getElementById("updateForm").classList.add('was-validated');
         const form= document.getElementById("updateForm");
         const {updateName,updateLastNameP,updateLastNameM,updateEmail}=form.elements;
         const roles = form.querySelectorAll('input[name="updateRoles[]"]');
