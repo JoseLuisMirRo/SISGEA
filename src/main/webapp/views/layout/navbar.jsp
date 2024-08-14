@@ -78,6 +78,7 @@
                     <li>
                     <form id="logoutButtonForm" action="${pageContext.request.contextPath}/LogoutServlet" method="POST">
                         <button type="button" class="dropdown-item text-danger" onclick="logoutAlert()">Cerrar sesión</button>
+                    </form>
                     </li>
                 </ul>
             </div>
