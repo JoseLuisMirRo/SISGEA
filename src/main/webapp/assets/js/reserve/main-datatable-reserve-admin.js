@@ -88,6 +88,7 @@ const listReserves=async(filterStatus)=>{
                     rse.status === 'Canceled' ? (isPast ? 'btn btn-outline-secondary btn-sm enable-btn' : 'btn btn-success btn-sm enable-btn') :
                     rse.status === 'Admin_Canceled' ? (isPast ? 'btn btn-outline-secondary btn-sm enable-btn' : 'btn btn-success btn-sm enable-btn') : ''}"
                     data-id="${rse.id}"
+                    data-userid="${rse.user.id}"
                     data-past="${isPast}"
                     ${isPast ? 'disabled' : ''}
                     ><i class="${rse.status === 'Active' ? 'bi bi-trash3-fill' :
@@ -152,6 +153,8 @@ $(document).ready(function () {
             return;
         }
         const id = $(this).data('id');
+        const userId = $(this).data('userid');
+        $('#cancelUserId').val(userId);
         $('#cancelReserveId').val(id);
         $('#reserveCancelModal').modal('show');
     });
@@ -162,6 +165,8 @@ $(document).ready(function () {
             return;
         }
         const id = $(this).data('id');
+        const userId = $(this).data('userid');
+        $('#reactivateUserId').val(userId);
         $('#reactivateReserveId').val(id);
         $('#reactivateReserveModal').modal('show');
     });
