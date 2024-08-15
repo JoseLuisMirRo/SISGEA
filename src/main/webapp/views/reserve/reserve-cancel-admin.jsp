@@ -1,11 +1,16 @@
-<%--
+<%@ page import="mx.edu.utez.sisgea.model.LoginBean" %><%--
   Created by IntelliJ IDEA.
   User: JLuis
   Date: 22/07/2024
   Time: 12:03 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    HttpSession activeSession = request.getSession();
+    LoginBean user = (LoginBean)activeSession.getAttribute("activeUser");
+    int activeUserId = user.getId();
+%>
 <style>
     .animated-icon {
         font-size: 6rem;
@@ -75,11 +80,12 @@
                 </div>
                 <form id="cancelForm" action="<%=request.getContextPath()%>/reserveServlet" method="post" novalidate>
                     <input id="cancelReserveId" name="cancelReserveId" type="text" hidden/>
-                    <span class>Motivo de cancelación: </span>
-                    <div class="form-group">
-                    <textarea class="form-control" name="cancelReason" id="cancelReason" type="text" required></textarea>
-                    <span class="valid-feedback">Información con formato correcto</span>
-                    <span class="invalid-feedback">Ingrese razón de cancelación</span>
+                    <input id="cancelUserId" name="cancelUserId" type="text" hidden/>
+                    <div class="form-group" id="cancelReasonContainer" style="display: none;">
+                        <label for="cancelReason">Motivo de cancelación: </label>
+                        <textarea class="form-control" name="cancelReason" id="cancelReason" type="text" required></textarea>
+                        <span class="valid-feedback">Información con formato correcto</span>
+                        <span class="invalid-feedback">Ingrese razón de cancelación</span>
                     </div>
                     <input type="text" name="action" value="cancel" hidden/>
                     <div class="col-12 text-center mt-4">
@@ -114,9 +120,10 @@
                 </div>
                 <form id="reactivateForm" action="<%=request.getContextPath()%>/reserveServlet" method="post" novalidate>
                     <input id="reactivateReserveId" name="reactivateReserveId" type="text" hidden/>
-                    <span class>Motivo de reactivación: </span>
-                    <div class="form-group">
-                        <textarea class="form-control" name="cancelReason" id="reactivateReason" type="text" required></textarea>
+                    <input id="reactivateUserId" name="reactivateUserId" type="text" hidden/>
+                    <div class="form-group" id="reactivateReasonContainer" style="display: none;">
+                        <label for="cancelReason">Motivo de reactivación: </label>
+                        <textarea class="form-control" name="reactivateReason" id="reactivateReason" type="text" required></textarea>
                         <span class="valid-feedback">Información con formato correcto</span>
                         <span class="invalid-feedback">Ingrese razón de cancelación</span>
                     </div>
@@ -137,5 +144,30 @@
         if (reactForm.checkValidity()) {
             reactForm.submit();
         }
+    });
+    document.addEventListener("DOMContentLoaded", ()=>{
+        document.getElementById('reserveCancelModal').addEventListener('shown.bs.modal', async ()=> {
+            const sessionUserId = parseInt(<%=activeUserId%>);
+            const userId = parseInt(document.getElementById('cancelUserId').value);
+            if(sessionUserId !== userId){
+                document.getElementById('cancelReasonContainer').style.display = 'block';
+                document.getElementById('cancelReason').required = true;
+            }else{
+                document.getElementById('cancelReasonContainer').style.display = 'none';
+                document.getElementById('cancelReason').required = false;
+            }
+        });
+        document.getElementById('reactivateReserveModal').addEventListener('shown.bs.modal', async ()=> {
+            const sessionUserIdR = parseInt(<%=activeUserId%>);
+            const userIdR = parseInt(document.getElementById('reactivateUserId').value);
+            console.log(sessionUserIdR, userIdR);
+            if (sessionUserIdR !== userIdR) {
+                document.getElementById('reactivateReasonContainer').style.display = 'block';
+                document.getElementById('reactivateReason').required = true;
+            } else {
+                document.getElementById('reactivateReasonContainer').style.display = 'none';
+                document.getElementById('reactivateReason').required = false;
+            }
+        });
     });
 </script>

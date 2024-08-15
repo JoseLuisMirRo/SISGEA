@@ -135,8 +135,10 @@
 
             if(sessionUserId !== userId){
                 document.getElementById('adminReasonContainer').style.display = 'block';
+                document.getElementById('updateReason').required = true;
             }else{
                 document.getElementById('adminReasonContainer').style.display = 'none';
+                document.getElementById('updateReason').required = false;
             }
 
         });
