@@ -6,7 +6,9 @@ const fetchRooms = async () => {
         const response = await fetch(`${cleanBasePath}data/rooms`);
         const rooms = await response.json();
 
-        return rooms.map(room => ({
+        const activeRooms = rooms.filter(room => room.status === true);
+
+        return activeRooms.map(room => ({
             id: room.id,
             title: `${room.roomType.abbreviation}${room.number}${room.building.abbreviation}`,
             //eventColor: getEventColor(room.roomType.abbreviation)
@@ -30,7 +32,9 @@ const fetchReserves = async () => {
         const response = await fetch (`${cleanBasePath}data/reserves`);
         const reserves = await response.json();
 
-        return reserves.map(reserve => ({
+        return reserves
+            .filter(reserve => reserve.status === 'Active')
+            .map(reserve => ({
             id: `R${reserve.id}`,
             resourceId: reserve.room.id,
             title: `Reserva: ${reserve.description} - Autor: ${reserve.user.firstName} ${reserve.user.lastNameP} ${reserve.user.lastNameM}`,
