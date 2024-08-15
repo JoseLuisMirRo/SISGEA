@@ -19,6 +19,11 @@ const dataTableOptions={
     }
 };
 const initDataTable=async()=>{
+    const loadingAnimation = document.getElementById('loading-animation');
+    const scheduleTable = document.getElementById('schedule-table');
+    loadingAnimation.style.display = 'block';
+    scheduleTable.style.display = 'none';
+
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
@@ -29,6 +34,8 @@ const initDataTable=async()=>{
     dataTable=$('#datatable_schedules').DataTable(dataTableOptions);
 
     dataTableInitiated=true;
+    loadingAnimation.style.display = 'none';
+    scheduleTable.style.display = 'block';
 };
 
 

@@ -19,7 +19,12 @@
 
 </head>
 <body>
+
 <div class="main-container-table"> <!--Contenedor de una tabla con margen de 6 unidades-->
+    <div id="loading-animation" style="display: none; text-align: center;">
+        <img src="${pageContext.request.contextPath}/assets/img/preloader.gif" alt="Cargando..." />
+    </div>
+    <div id="schedule-table">
     <div>
         <h2 style="color: black">Gestión de horarios</h2>
     </div>
@@ -45,6 +50,7 @@
             </table>
         </div>
     </div>
+</div>
 </div>
 <!--Bootstrap SCRIPT-->
 <script src="${pageContext.request.contextPath}/assets/js/bootstrap-5-5-3/bootstrap.bundle.min.js"></script>
