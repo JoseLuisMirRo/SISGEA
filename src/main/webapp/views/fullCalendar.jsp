@@ -32,15 +32,15 @@
     <script>
 
         document.addEventListener('DOMContentLoaded', async function () {
-            const roomResources = await fetchRooms();
-            const [reserveResources, scheduleResources, nbdResources] = await Promise.all([
-                fetchReserves(),
-                fetchSchedules(),
-                fetchNonBusinessDays()
-            ]);
-
-            const eventResources = roomResources.concat(reserveResources, scheduleResources, nbdResources);
-
+            const loadingAnimation = document.getElementById('loading-animation');
+            loadingAnimation.style.display = 'block';
+                const roomResources = await fetchRooms();
+                const [reserveResources, scheduleResources, nbdResources] = await Promise.all([
+                    fetchReserves(),
+                    fetchSchedules(),
+                    fetchNonBusinessDays()
+                ]);
+                const eventResources = roomResources.concat(reserveResources, scheduleResources, nbdResources);
             const calendarEl = document.getElementById('calendar');
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives', //Licencia Creative Commons
@@ -86,8 +86,8 @@
                 hiddenDays: [7]
 
             });
+            loadingAnimation.style.display = 'none';
             calendar.render();
-
             const dateInput = document.getElementById('date-input');
             dateInput.addEventListener('change', function () {
                 const selectedDate = dateInput.value;
@@ -112,6 +112,9 @@
 <body>
 <br>
 <div class="main-container">
+    <div id="loading-animation" style="display: none; text-align: center;">
+        <img src="${pageContext.request.contextPath}/assets/img/preloader.gif" alt="Cargando..." />
+    </div>
     <div id='calendar'></div>
     <div class="dropdown">
         <div id="date-dropdown" class="dropdown-menu">
