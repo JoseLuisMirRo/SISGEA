@@ -59,7 +59,6 @@ import mx.edu.utez.sisgea.utility.EmailService;
                         String html = "<h2>¡Hola! "+userBean.getFirstName()+" "+userBean.getLastNameP()+" "+userBean.getLastNameM()+"</h2>"+
                                 "<h3>Bienvenido a SISGEA</h3><p>Tu contraseña es: "+userBean.getPassword()+"</p>"+
                                 "<p>Utiliza tu correo electrónico y contraseña para iniciar sesión en SISGEA.</p>"+
-                                "<Utiliza el siguiente hipervínculo para acceder: <a href='sisgea.tech'>SISGEA</a>"+
                                 "<p>Saludos cordiales,</p><p>Equipo de SISGEA</p>";
                         emailService.sendEmail(to, subject, html);
                         activeSession.setAttribute("status", "registerOk");
