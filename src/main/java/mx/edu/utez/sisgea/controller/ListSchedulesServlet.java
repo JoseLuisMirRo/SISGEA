@@ -36,7 +36,6 @@ public class ListSchedulesServlet extends HttpServlet {
                         return jsonDay;
                     }
                 })
-                .setPrettyPrinting()
                 .create();
 
         String jsonArray = gson.toJson(schList);
