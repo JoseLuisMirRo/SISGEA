@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 
 @WebServlet("/userBulkServlet")
 public class UserBulkServlet extends HttpServlet {
-    private static final Pattern NAME_PATTERN = Pattern.compile("^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ]*$");
+    private static final Pattern NAME_PATTERN = Pattern.compile("^([A-ZÁÉÍÓÚÑ]{1}[a-záéíóúñ]+\\s*)*$");
     private static final Pattern VALID_EMAIL_ADDRESS_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@utez.edu.mx$");
     private static final Pattern VALID_ROLES_PATTERN =  Pattern.compile("^(Administrador,Docente|Administrador|Docente|Estudiante)$");
 
@@ -125,7 +125,7 @@ public class UserBulkServlet extends HttpServlet {
             e.printStackTrace();
             String errorMessage = e.getMessage();
             activeSession.setAttribute("status", "bulkError");
-            activeSession.setAttribute("message", errorMessage);
+            activeSession.setAttribute("errorMessage", errorMessage);
             resp.sendRedirect(req.getContextPath() + "/userServlet");
         }
     }

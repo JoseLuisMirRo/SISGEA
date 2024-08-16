@@ -94,10 +94,11 @@ else if (status === "bulkOk"){
 }
 else if (status === "bulkError"){
     const errorMessage = document.getElementById("errorMessage").value;
+    console.log(errorMessage);
     let textShow;
     if(errorMessage === "invalidEmail"){
         textShow = "Correo electrónico inválido ingresado, por favor revise el formato y dominio y vuelva a intentarlo"
-    }else if(errroMessage === "emailExists"){
+    }else if(errorMessage === "emailExists"){
         textShow = "Correo electrónico ya registrado, por favor revise y vuelva a intentarlo"
     }else if(errorMessage === "emailRepeated"){
         textShow = "Correo electrónico repetido en el archivo, por favor revise y vuelva a intentarlo"
