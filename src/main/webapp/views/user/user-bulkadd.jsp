@@ -14,6 +14,12 @@
                 <h1 class="modal-title fs-5" id="userRegisterTitle">Registro masivo de usuarios</h1>
                 <hr>
                 <form id="usrBulkAdd" action="<%=request.getContextPath()%>/userBulkServlet" method="post" enctype="multipart/form-data">
+                    <div class="form-group mb-3 row">
+                        <label for="downloadFile" class="col-5 col-form-label form-label">Descarga la plantilla: </label>
+                        <div class="col-7 text-start">
+                            <a href="<%=request.getContextPath()%>/assets/docs/plantilla_usuarios.xlsx" class="btn btn-outline-primary w-75" id="downloadFile" download="plantilla_usuarios.xlsx">Descargar</a>
+                        </div>
+                    </div>
                     <div CLASS="form-group mb-3 row">
                         <label for="file" class="col-form-label form-label">Archivo .XLSX:</label>
                         <div>

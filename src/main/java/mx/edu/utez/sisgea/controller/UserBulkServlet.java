@@ -10,6 +10,7 @@ import mx.edu.utez.sisgea.dao.UserroleDao;
 import mx.edu.utez.sisgea.model.RoleBean;
 import mx.edu.utez.sisgea.model.UserBean;
 import mx.edu.utez.sisgea.model.UserroleBean;
+import mx.edu.utez.sisgea.utility.EmailService;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.WorkbookProvider;
 
@@ -28,9 +29,9 @@ import java.util.regex.Pattern;
 
 @WebServlet("/userBulkServlet")
 public class UserBulkServlet extends HttpServlet {
-    private static final Pattern NAME_PATTERN = Pattern.compile("^([A-ZÁÉÍÓÚÑ]{1}[a-záéíóúñ]+\\s*)*$");
-    private static final Pattern VALID_EMAIL_ADDRESS_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@utez.edu.mx$");
-    private static final Pattern VALID_ROLES_PATTERN =  Pattern.compile("^(Administrador,Docente|Administrador|Docente|Estudiante)$");
+    private static final Pattern NAME_PATTERN = Pattern.compile("^^([A-ZÁÉÍÓÚÑ][a-záéíóúñ]*\\s?)+$");
+    private static final Pattern VALID_EMAIL_ADDRESS_PATTERN = Pattern.compile("^[a-z0-9._%+-]+@utez\\.edu\\.mx$");
+    private static final Pattern VALID_ROLES_PATTERN =  Pattern.compile("^(Administrador,Docente|Administrador|Docente|Alumno)$");
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -60,13 +61,14 @@ public class UserBulkServlet extends HttpServlet {
             Iterator<Row> rowIterator = sheet.iterator();
             while(rowIterator.hasNext()) {
                 Row row = rowIterator.next();
-                if (row.getRowNum() == 0) continue;
+                if (row.getRowNum() < 3) continue;
 
                 String firstName = row.getCell(0).getStringCellValue();
                 String lastNameP = row.getCell(1).getStringCellValue();
                 String lastNameM = row.getCell(2).getStringCellValue();
                 String email = row.getCell(3).getStringCellValue();
                 String rolesStr = row.getCell(4).getStringCellValue();
+                System.out.println(email);
 
                 if (!VALID_EMAIL_ADDRESS_PATTERN.matcher(email).matches()) {
                     throw new IllegalArgumentException("invalidEmail");
@@ -93,7 +95,7 @@ public class UserBulkServlet extends HttpServlet {
             rowIterator = sheet.iterator();
             while(rowIterator.hasNext()) {
                 Row row = rowIterator.next();
-                if (row.getRowNum() == 0) continue;
+                if (row.getRowNum() < 3) continue;
 
                 String firstName = row.getCell(0).getStringCellValue();
                 String lastNameP = row.getCell(1).getStringCellValue();
@@ -118,6 +120,14 @@ public class UserBulkServlet extends HttpServlet {
                     userRoleDao.insertUserRole(userrole);
                 }
             }
+            EmailService emailService = new EmailService();
+            String to = userBean.getEmail();
+            String subject = "Bienvenido a SISGEA";
+            String html = "<h2>¡Hola! "+userBean.getFirstName()+" "+userBean.getLastNameP()+" "+userBean.getLastNameM()+"</h2>"+
+                    "<h3>Bienvenido a SISGEA</h3><p>Tu contraseña es: "+userBean.getPassword()+"</p>"+
+                    "<p>Utiliza tu correo electrónico y contraseña para iniciar sesión en SISGEA.</p>"+
+                    "<p>Saludos cordiales,</p><p>Equipo de SISGEA</p>";
+            emailService.sendEmail(to, subject, html);
             activeSession.setAttribute("status", "bulkOk");
             resp.sendRedirect(req.getContextPath() + "/userServlet");
 
