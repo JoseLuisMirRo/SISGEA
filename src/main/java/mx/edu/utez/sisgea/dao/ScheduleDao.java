@@ -98,21 +98,36 @@ public class ScheduleDao extends DataBaseConnection {
 
         try{
             con = createConnection();
-            ps = con.prepareStatement("SELECT * FROM schedule");
+            ps = con.prepareCall("call GetAllSchedules()");
             rs = ps.executeQuery();
 
             while(rs.next()){
-                int id=rs.getInt("id");
-                int class_id = rs.getInt("class_id");
-                int quarter_id = rs.getInt("quarter_id");
-                int room_id = rs.getInt("room_id");
+                //
+                int id=rs.getInt("schedule_id");
                 Day day = Day.valueOf(rs.getString("day"));
                 Time starttime = rs.getTime("starttime");
                 Time endtime = rs.getTime("endtime");
 
-                ClassBean classBean = classCache.get(class_id);
-                QuarterBean quarterBean = quarterCache.get(quarter_id);
-                RoomBean roomBean = roomCache.get(room_id);
+                //Clase
+                ClassBean classBean = new ClassBean();
+                classBean.setId(rs.getInt("class_id"));
+                classBean.setName(rs.getString("class_name"));
+                classBean.setProgram(new ProgramBean(rs.getInt("program_id"), rs.getString("program_name")));
+                classBean.setStatus(rs.getBoolean("class_status"));
+                //Cuatrimestre
+                QuarterBean quarterBean = new QuarterBean();
+                quarterBean.setId(rs.getInt("quarter_id"));
+                quarterBean.setName(rs.getString("quarter_name"));
+                quarterBean.setStartDate(rs.getDate("quarter_startdate"));
+                quarterBean.setEndDate(rs.getDate("quarter_enddate"));
+                //Sala
+                RoomBean roomBean = new RoomBean();
+                roomBean.setId(rs.getInt("room_id"));
+                roomBean.setRoomType(new RoomtypeBean(rs.getInt("roomtype_id"), rs.getString("roomtype_name"), rs.getString("roomtype_abb")));
+                roomBean.setBuilding(new BuildingBean(rs.getInt("building_id"), rs.getString("building_name"), rs.getString("building_abb")));
+                roomBean.setNumber(rs.getInt("room_number"));
+                roomBean.setStatus(rs.getBoolean("room_status"));
+
                 schList.add(new ScheduleBean(id,classBean,quarterBean,roomBean,day,starttime,endtime));
             }
             return schList;
