@@ -68,12 +68,8 @@
                     datepickerButton: {
                         text: 'Buscar por fecha',
                         click: function () {
-                            const dateDropdown = document.getElementById('date-dropdown');
-                            if (dateDropdown.classList.contains('show')) {
-                                dateDropdown.classList.remove('show');
-                            } else {
-                                dateDropdown.classList.add('show');
-                            }
+                            const dateModal = new bootstrap.Modal(document.getElementById('dateModal'));
+                            dateModal.show();
                         }
                     }
                 },
@@ -93,7 +89,8 @@
                 const selectedDate = dateInput.value;
                 if(selectedDate){
                     calendar.gotoDate(selectedDate);
-                    document.getElementById('date-dropdown').classList.remove('show');
+                    const dateModal = bootstrap.Modal.getInstance(document.getElementById('dateModal'));
+                    dateModal.hide();
                 }
             });
 
@@ -116,9 +113,20 @@
         <img src="${pageContext.request.contextPath}/assets/img/preloader.gif" alt="Cargando..." />
     </div>
     <div id='calendar'></div>
-    <div class="dropdown">
-        <div id="date-dropdown" class="dropdown-menu">
-            <input type="date" id="date-input" class="form-control"/>
+</div>
+<div class="modal fade" id="dateModal" tabindex="-1" aria-labelledby="dateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dateModalLabel">Selecciona una fecha</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="date" id="date-input" class="form-control">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
         </div>
     </div>
 </div>

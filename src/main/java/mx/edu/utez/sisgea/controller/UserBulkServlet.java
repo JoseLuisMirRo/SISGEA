@@ -68,7 +68,6 @@ public class UserBulkServlet extends HttpServlet {
                 String lastNameM = row.getCell(2).getStringCellValue();
                 String email = row.getCell(3).getStringCellValue();
                 String rolesStr = row.getCell(4).getStringCellValue();
-                System.out.println(email);
 
                 if (!VALID_EMAIL_ADDRESS_PATTERN.matcher(email).matches()) {
                     throw new IllegalArgumentException("invalidEmail");
