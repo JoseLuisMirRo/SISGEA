@@ -52,6 +52,8 @@ const listSchedules=async()=>{
             content+=`
             <tr>
                 <td>${sch.classe.name}</td>
+                <td>${sch.grade.number}</td>
+                <td>${sch.group.name}</td>
                 <td>${sch.room.roomType.abbreviation}${sch.room.number} - ${sch.room.building.name}</td>
                 <td>${sch.day.name}</td>
                 <td>${startTime}</td>

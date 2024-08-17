@@ -45,13 +45,15 @@ public class ScheduleDao extends DataBaseConnection {
     public void insertSchedule(ScheduleBean sch)throws SQLException {
         try{
             con = createConnection();
-            cs = con.prepareCall("call insert_schedule(?,?,?,?,?,?)");
+            cs = con.prepareCall("call insert_schedule(?,?,?,?,?,?,?,?)");
             cs.setInt(1, sch.getClasse().getId());
             cs.setInt(2, sch.getQuarter().getId());
             cs.setInt(3, sch.getRoom().getId());
             cs.setString(4,sch.getDay().name());
             cs.setTime(5, sch.getStartTime());
             cs.setTime(6, sch.getEndTime());
+            cs.setInt(7, sch.getGroup().getId());
+            cs.setInt(8, sch.getGrade().getId());
             cs.execute();
         }catch (Exception e) {
             e.printStackTrace();
@@ -65,6 +67,8 @@ public class ScheduleDao extends DataBaseConnection {
         ClassDao classDao = new ClassDao();
         QuarterDao quarterDao = new QuarterDao();
         RoomDao roomDao = new RoomDao();
+        GroupDao groupDao = new GroupDao();
+        GradeDao gradeDao = new GradeDao();
         ScheduleBean sch = null;
         try {
             con = createConnection();
@@ -80,7 +84,9 @@ public class ScheduleDao extends DataBaseConnection {
                 Day day = Day.valueOf(rs.getString("day"));
                 Time starttime = rs.getTime("starttime");
                 Time endtime = rs.getTime("endtime");
-                sch = new ScheduleBean(idE,classDao.getClass(class_id),quarterDao.getQuarter(quarter_id),roomDao.getRoom(room_id),day,starttime,endtime);
+                int grade_id = rs.getInt("grade_id");
+                int group_id = rs.getInt("group_id");
+                sch = new ScheduleBean(idE,classDao.getClass(class_id),quarterDao.getQuarter(quarter_id),roomDao.getRoom(room_id),day,starttime,endtime,groupDao.getGroupById(group_id),gradeDao.getGradeById(grade_id));
             }
         }catch (SQLException e) {
             throw new SQLException(e.getMessage());
@@ -127,8 +133,16 @@ public class ScheduleDao extends DataBaseConnection {
                 roomBean.setBuilding(new BuildingBean(rs.getInt("building_id"), rs.getString("building_name"), rs.getString("building_abb")));
                 roomBean.setNumber(rs.getInt("room_number"));
                 roomBean.setStatus(rs.getBoolean("room_status"));
+                //Grupo
+                GroupBean groupBean = new GroupBean();
+                groupBean.setId(rs.getInt("group_id"));
+                groupBean.setName(rs.getString("group_name").charAt(0));
+                //Grado
+                GradeBean gradeBean = new GradeBean();
+                gradeBean.setId(rs.getInt("grade_id"));
+                gradeBean.setNumber(rs.getInt("grade_number"));
 
-                schList.add(new ScheduleBean(id,classBean,quarterBean,roomBean,day,starttime,endtime));
+                schList.add(new ScheduleBean(id,classBean,quarterBean,roomBean,day,starttime,endtime,groupBean,gradeBean));
             }
             return schList;
         }catch (SQLException e) {
@@ -143,6 +157,8 @@ public class ScheduleDao extends DataBaseConnection {
         ClassDao classDao = new ClassDao();
         QuarterDao quarterDao = new QuarterDao();
         RoomDao roomDao = new RoomDao();
+        GroupDao groupDao = new GroupDao();
+        GradeDao gradeDao = new GradeDao();
         List<ScheduleBean> schList = new ArrayList<ScheduleBean>();
         try{
             con = createConnection();
@@ -158,7 +174,9 @@ public class ScheduleDao extends DataBaseConnection {
                 Day day = Day.valueOf(rs.getString("day"));
                 Time starttime = rs.getTime("starttime");
                 Time endtime = rs.getTime("endtime");
-                schList.add(new ScheduleBean(id,classDao.getClass(class_id),quarterDao.getQuarter(quarter_id),roomDao.getRoom(room_id),day,starttime,endtime));
+                int grade_id = rs.getInt("grade_id");
+                int group_id = rs.getInt("group_id");
+                schList.add(new ScheduleBean(id,classDao.getClass(class_id),quarterDao.getQuarter(quarter_id),roomDao.getRoom(room_id),day,starttime,endtime,groupDao.getGroupById(group_id),gradeDao.getGradeById(grade_id)));
             }
             return schList;
         }catch (SQLException e) {

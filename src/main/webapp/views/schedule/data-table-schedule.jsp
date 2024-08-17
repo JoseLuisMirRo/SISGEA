@@ -39,6 +39,8 @@
                 <thead> <!--Encabezado de la tabla-->
                 <tr> <!--Fila de la tabla-->
                     <th>Clase</th>
+                    <th>Grado</th>
+                    <th>Grupo</th>
                     <th>Espacio</th>
                     <th>Dia</th>
                     <th>Hora de inicio</th>
