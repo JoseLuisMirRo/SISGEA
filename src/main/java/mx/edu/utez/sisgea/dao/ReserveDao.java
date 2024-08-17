@@ -2,7 +2,6 @@ package mx.edu.utez.sisgea.dao;
 
 import mx.edu.utez.sisgea.model.ReserveBean;
 import mx.edu.utez.sisgea.model.Status;
-import mx.edu.utez.sisgea.model.UserBean;
 import mx.edu.utez.sisgea.utility.DataBaseConnection;
 
 import java.sql.*;
@@ -55,7 +54,7 @@ public class ReserveDao extends DataBaseConnection {
                 Time startTime = rs.getTime("starttime");
                 Time endTime = rs.getTime("endtime");
                 Status status = Status.valueOf(rs.getString("status"));
-                reserve = new ReserveBean(idE,userDao.getUser(userId),roomDao.getRoom(roomId),description,date,startTime,endTime,status);
+                reserve = new ReserveBean(idE,userDao.getUserById(userId),roomDao.getRoom(roomId),description,date,startTime,endTime,status);
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -83,7 +82,7 @@ public class ReserveDao extends DataBaseConnection {
                 Time startTime = rs.getTime("starttime");
                 Time endTime = rs.getTime("endtime");
                 Status status = Status.valueOf(rs.getString("status"));
-                reservesList.add(new ReserveBean(id,userDao.getUser(userId),roomDao.getRoom(roomId),description,date,startTime,endTime,status));
+                reservesList.add(new ReserveBean(id,userDao.getUserById(userId),roomDao.getRoom(roomId),description,date,startTime,endTime,status));
             }
             return reservesList;
         }catch (SQLException e) {
@@ -111,7 +110,7 @@ public class ReserveDao extends DataBaseConnection {
                 Time startTime = rs.getTime("starttime");
                 Time endTime = rs.getTime("endtime");
                 Status status = Status.valueOf(rs.getString("status"));
-                reservesList.add(new ReserveBean(id,userDao.getUser(userId),roomDao.getRoom(roomId),description,date,startTime,endTime,status));
+                reservesList.add(new ReserveBean(id,userDao.getUserById(userId),roomDao.getRoom(roomId),description,date,startTime,endTime,status));
             }
             return reservesList;
         }catch (SQLException e) {

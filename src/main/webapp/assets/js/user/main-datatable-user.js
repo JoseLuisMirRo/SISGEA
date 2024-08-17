@@ -1,28 +1,30 @@
 let dataTable;
 let dataTableInitiated=false;
+const basePath = `${window.location.origin}${window.location.pathname}`;
+const lastSlashIndex = basePath.lastIndexOf('/');
+const cleanBasePath = basePath.substring(0, lastSlashIndex + 1);
 
 const dataTableOptions={
     //scrollX: "2000px"
     lengthMenu:[5,10,25],
     scrollX: true,
     columnDefs: [
-        {className: "text-center",targets:[0,1,2,3,4,5,6]},
+        {className: "text-center",targets:[2,3,4,5,6]},
         {orderable: false,targets:[4,5,6]},
         {searchable:false,targets:[4,5,6]},
-        {width:"",targets:[]}
     ],
     pageLength:10,
     language:{
-        url:'https://cdn.datatables.net/plug-ins/2.0.8/i18n/es-ES.json'
+        url:`${cleanBasePath}assets/js/datatables-2-1-3/spanishMX.json`
     }
 };
-const initDataTable=async()=>{
+const initDataTable=async(showMode)=>{
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
     }
 
-    await listUsers();
+    await listUsers(showMode);
 
     dataTable=$('#datatable_users').DataTable(dataTableOptions);
 
@@ -31,22 +33,18 @@ const initDataTable=async()=>{
 
 
 
-const listUsers=async(showActive = true)=>{
+const listUsers=async(filterStatus)=>{
     try{
-        const response=await fetch('http://localhost:8080/SISGEA_war_exploded/data/users');
+        const response=await fetch(`${cleanBasePath}data/users`);
         const users=await response.json();
 
         let content= ``;
-        users.forEach((user,index) => {
+        users
+            .filter(user => user.status === filterStatus)
+            .forEach((user,index) => {
             let rolesNames = user.roles.map(role => role.name).join(', ');
             let rolesIds = user.roles.map(role => role.id).join(',');
 
-            if(showActive && !user.status){
-                return;
-            }
-            if(!showActive && user.status){
-                return;
-            }
             content+=`
             <tr>
                 <td>${rolesNames}</td>
@@ -84,9 +82,7 @@ const listUsers=async(showActive = true)=>{
 };
 
 window.addEventListener('load',async()=>{
-    await initDataTable();
-    await listUsers(true);
-    document.getElementById('historyBtn').setAttribute('data-showActive',true);
+    await initDataTable(true);
 });
 
 //UTILIZANDO JQUERY OBTENEMOS EL DATOS DEL USUARIO CUANDO SE PULSA EL BOTÓN DE EDITAR, PARA DESPUES ENVIARLO AL MODAL. (se podría obtener solo id y lo demás con un select).
@@ -135,11 +131,10 @@ $(document).ready(function() {
     });
 });
 
-document.getElementById('historyBtn').addEventListener('click',async()=>{
-    const button = document.getElementById('historyBtn');
-    const showActive = button.getAttribute('data-showActive') === 'true';
-
-    await listUsers(!showActive);
-    button.setAttribute('data-showActive', !showActive);
-    button.textContent = showActive ? 'Ver usuarios activos' : 'Ver usuarios inactivos';
+document.getElementById('showBtn').addEventListener('click', async () => {
+    const button = document.getElementById('showBtn');
+    const showActive = button.getAttribute('data-showActive') === 'false';
+    button.setAttribute('data-showActive', showActive);
+    button.textContent = !showActive ? 'Ver usuarios activos' : 'Ver usuarios inactivos';
+    await initDataTable(showActive);
 });

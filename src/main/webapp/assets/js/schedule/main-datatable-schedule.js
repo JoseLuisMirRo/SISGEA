@@ -1,6 +1,8 @@
 let dataTable;
 let dataTableInitiated=false;
-
+const basePath = `${window.location.origin}${window.location.pathname}`;
+const lastSlashIndex = basePath.lastIndexOf('/');
+const cleanBasePath = basePath.substring(0, lastSlashIndex + 1);
 const dataTableOptions={
     //scrollX: "2000px"
     lengthMenu:[5,10,25],
@@ -13,10 +15,15 @@ const dataTableOptions={
     ],
     pageLength:10,
     language:{
-        url:'https://cdn.datatables.net/plug-ins/2.0.8/i18n/es-ES.json'
+        url:`${cleanBasePath}assets/js/datatables-2-1-3/spanishMX.json`
     }
 };
 const initDataTable=async()=>{
+    const loadingAnimation = document.getElementById('loading-animation');
+    const scheduleTable = document.getElementById('schedule-table');
+    loadingAnimation.style.display = 'block';
+    scheduleTable.style.display = 'none';
+
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
@@ -27,13 +34,15 @@ const initDataTable=async()=>{
     dataTable=$('#datatable_schedules').DataTable(dataTableOptions);
 
     dataTableInitiated=true;
+    loadingAnimation.style.display = 'none';
+    scheduleTable.style.display = 'block';
 };
 
 
 
 const listSchedules=async()=>{
     try{
-        const response=await fetch('http://localhost:8080/SISGEA_war_exploded/data/schedules');
+        const response=await fetch(`${cleanBasePath}data/schedules`);
         const schedules=await response.json();
 
         let content= ``;

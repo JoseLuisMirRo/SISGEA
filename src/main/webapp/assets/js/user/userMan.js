@@ -1,5 +1,4 @@
 let status = document.getElementById("status").value;
-console.log(status);
 if (status === "registerError") {
     Swal.fire({
         icon: "error",
@@ -7,11 +6,6 @@ if (status === "registerError") {
         text: "Verifique si el usuario ya se encuentra registrado y vuelva a intentarlo",
         confirmButtonText: "Reintentar",
         confirmButtonColor: "#dc3545",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/userServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
     });
 }
 else if (status === "registerOk") {
@@ -20,11 +14,6 @@ else if (status === "registerOk") {
         title: "Registro realizado con éxito",
         confirmButtonText: "Ok",
         confirmButtonColor: "#208c7d",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/userServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
     });
 }
 else if (status === "updateError"){
@@ -34,11 +23,6 @@ else if (status === "updateError"){
         text: "Vuelva a intentarlo",
         confirmButtonText: "Reintentar",
         confirmButtonColor: "#dc3545",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/userServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
     });
 }
 else if (status === "updateOk"){
@@ -47,11 +31,23 @@ else if (status === "updateOk"){
         title: "Actualización realizada con éxito",
         confirmButtonText: "Ok",
         confirmButtonColor: "#208c7d",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/userServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
+    });
+}
+else if (status==="updatePswdOk"){
+    Swal.fire({
+        icon: "success",
+        title: "Contraseña actualizada con éxito",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#208c7d",
+    });
+}
+else if(status==="updatePswdError"){
+    Swal.fire({
+        icon: "error",
+        title: "Error, no se actualizó la contraseña",
+        text: "Vuelva a intentarlo",
+        confirmButtonText: "Reintentar",
+        confirmButtonColor: "#dc3545",
     });
 }
 else if (status === "deleteError"){
@@ -61,11 +57,6 @@ else if (status === "deleteError"){
         text: "Vuelva a intentarlo",
         confirmButtonText: "Reintentar",
         confirmButtonColor: "#dc3545",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/userServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
     });
 }
 else if (status === "deleteOk"){
@@ -74,11 +65,6 @@ else if (status === "deleteOk"){
         title: "Usuario eliminado con éxito",
         confirmButtonText: "Ok",
         confirmButtonColor: "#208c7d",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/userServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
     });
 }
 else if (status === "revertDeleteError"){
@@ -88,11 +74,6 @@ else if (status === "revertDeleteError"){
         text: "Vuelva a intentarlo",
         confirmButtonText: "Reintentar",
         confirmButtonColor: "#dc3545",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/userServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
     });
 }
 else if (status === "revertDeleteOk"){
@@ -101,10 +82,40 @@ else if (status === "revertDeleteOk"){
         title: "Usuario reactivado con éxito",
         confirmButtonText: "Ok",
         confirmButtonColor: "#208c7d",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-            window.location.href = contextPath + "/userServlet"; //Redireccionamos a la página principal. Previene que se muestre el SweetAlert si se recarga la página
-        }
+    });
+}
+else if (status === "bulkOk"){
+    Swal.fire({
+        icon: "success",
+        title: "Usuarios agregados con éxito",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#208c7d",
+    });
+}
+else if (status === "bulkError"){
+    const errorMessage = document.getElementById("errorMessage").value;
+    console.log(errorMessage);
+    let textShow;
+    if(errorMessage === "invalidEmail"){
+        textShow = "Correo electrónico inválido ingresado, por favor revise el formato y dominio y vuelva a intentarlo"
+    }else if(errorMessage === "emailExists"){
+        textShow = "Correo electrónico ya registrado, por favor revise y vuelva a intentarlo"
+    }else if(errorMessage === "emailRepeated"){
+        textShow = "Correo electrónico repetido en el archivo, por favor revise y vuelva a intentarlo"
+    }else if(errorMessage === "invalidName"){
+        textShow = "Nombre inválido ingresado, por favor revise y vuelva a intentarlo"
+    }else if(errorMessage === "invalidRoles") {
+        textShow = "Rol inválido ingresado, por favor revise y vuelva a intentarlo"
+    }else if(errorMessage === "invalidFile"){
+        textShow = "Archivo inválido, por favor ingrese un archivo .xlsx y vuelva a intentarlo"
+    }else{
+        textShow = "Error del sistema, por favor contacte al administrador"
+    }
+    Swal.fire({
+        icon: "error",
+        title: "Error, no se realizó ningún registro",
+        text: textShow,
+        confirmButtonText: "Reintentar",
+        confirmButtonColor: "#dc3545",
     });
 }

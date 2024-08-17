@@ -1,5 +1,8 @@
 let dataTable;
 let dataTableInitiated=false;
+const basePath = `${window.location.origin}${window.location.pathname}`;
+const lastSlashIndex = basePath.lastIndexOf('/');
+const cleanBasePath = basePath.substring(0, lastSlashIndex + 1);
 
 const dataTableOptions= {
     //scrollX: "2000px"
@@ -13,17 +16,17 @@ const dataTableOptions= {
     ],
     pageLength: 10,
     language: {
-        url: 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/es-ES.json'
+        url: `${cleanBasePath}assets/js/datatables-2-1-3/spanishMX.json`
     },
 };
 
-const initDataTable=async()=>{
+const initDataTable=async(showMode)=>{
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
     }
 
-    await listReserves();
+    await listReserves(showMode);
 
     dataTable=$('#datatable_reserves').DataTable(dataTableOptions);
 
@@ -32,21 +35,21 @@ const initDataTable=async()=>{
 
 
 
-const listReserves=async(showAll = false)=>{
+const listReserves=async(filterStatus)=>{
     try{
-        const response=await fetch('http://localhost:8080/SISGEA_war_exploded/data/reserves');
+        const response=await fetch(`${cleanBasePath}data/reserves`);
         const reserves=await response.json();
 
         let content= ``;
         const currentDate = new Date().toISOString().split('T')[0];
 
-        reserves.forEach((rse,index) => {
+        reserves
+            .filter(filterStatus ? rse => rse.date === rse.date: rse => rse.date >= currentDate)
+            .forEach((rse,index) => {
             const startTime = deleteSeconds(rse.startTime);
             const endTime = deleteSeconds(rse.endTime);
-            const isPast = isPastDateTime(manageDate(rse.date), hourTo24(rse.startTime));
-            if(!showAll && manageDate(rse.date) < currentDate){
-                return;
-            }
+            const isPast = isPastDateTime((rse.date), hourTo24(rse.startTime));
+
             content+=`
             <tr>
                 <td>${rse.user.firstName} ${rse.user.lastNameP} ${rse.user.lastNameM}</td>
@@ -72,6 +75,7 @@ const listReserves=async(showAll = false)=>{
                     <button class="btn ${isPast ? 'btn-outline-secondary' : 'btn-primary'} btn-sm edit-btn" 
                     data-id="${rse.id}"
                     data-roomid="${rse.room.id}"
+                    data-userid="${rse.user.id}"
                     data-date="${rse.date}" //CUIDADO: NO USAR MAYUSCULAS EN DATA
                     data-description="${rse.description}"
                     data-startime="${rse.startTime}"
@@ -84,6 +88,7 @@ const listReserves=async(showAll = false)=>{
                     rse.status === 'Canceled' ? (isPast ? 'btn btn-outline-secondary btn-sm enable-btn' : 'btn btn-success btn-sm enable-btn') :
                     rse.status === 'Admin_Canceled' ? (isPast ? 'btn btn-outline-secondary btn-sm enable-btn' : 'btn btn-success btn-sm enable-btn') : ''}"
                     data-id="${rse.id}"
+                    data-userid="${rse.user.id}"
                     data-past="${isPast}"
                     ${isPast ? 'disabled' : ''}
                     ><i class="${rse.status === 'Active' ? 'bi bi-trash3-fill' :
@@ -101,6 +106,7 @@ const listReserves=async(showAll = false)=>{
         alert(ex);
     }
 };
+
 const isPastDateTime = (date, time) => {
     const reserveDateTime = new Date(`${date}T${time}`);
     const currentDateTime = new Date();
@@ -108,9 +114,7 @@ const isPastDateTime = (date, time) => {
 };
 
 window.addEventListener('load',async()=>{
-    await initDataTable();
-    await listReserves(false);
-    document.getElementById('historyBtn').setAttribute('data-showAll', false);
+    await initDataTable(false);
 });
 
 function deleteSeconds(timeS) {
@@ -126,6 +130,7 @@ $(document).ready(function () {
     $('#datatable_reserves').on('click', '.edit-btn', function () {
         const id = $(this).data('id');
         const roomId = $(this).data('roomid');
+        const userId = $(this).data('userid');
         const date = $(this).data('date');
         const description = $(this).data('description');
         const startTime = $(this).data('startime');
@@ -133,6 +138,7 @@ $(document).ready(function () {
 
         $('#reserveUpdateModal').attr('data-id', id);
         $('#reserveUpdateModal').attr('data-roomid', roomId);
+        $('#reserveUpdateModal').attr('data-userid', userId);
         $('#reserveUpdateModal').attr('data-date', date);
         $('#reserveUpdateModal').attr('data-description', description);
         $('#reserveUpdateModal').attr('data-starttime', startTime);
@@ -147,6 +153,8 @@ $(document).ready(function () {
             return;
         }
         const id = $(this).data('id');
+        const userId = $(this).data('userid');
+        $('#cancelUserId').val(userId);
         $('#cancelReserveId').val(id);
         $('#reserveCancelModal').modal('show');
     });
@@ -157,6 +165,8 @@ $(document).ready(function () {
             return;
         }
         const id = $(this).data('id');
+        const userId = $(this).data('userid');
+        $('#reactivateUserId').val(userId);
         $('#reactivateReserveId').val(id);
         $('#reactivateReserveModal').modal('show');
     });
@@ -164,11 +174,10 @@ $(document).ready(function () {
 });
 document.getElementById('historyBtn').addEventListener('click',async()=>{
     const button = document.getElementById('historyBtn');
-    const showAll = button.getAttribute('data-showAll') === 'true';
-
-    await listReserves(!showAll);
-    button.setAttribute('data-showAll', !showAll);
+    const showAll = button.getAttribute('data-showActive') === 'true';
+    button.setAttribute('data-showActive', !showAll);
     button.textContent = !showAll ? 'Ver reservas vigentes' : 'Ver historial completo';
+    await initDataTable(!showAll);
 });
 
 

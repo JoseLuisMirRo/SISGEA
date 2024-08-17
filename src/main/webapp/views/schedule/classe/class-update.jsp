@@ -7,26 +7,36 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<div class="modal fade" id="classeUpdateModal" tabindex="-1" aria-labelledby="clUpadteTitle" aria-hidden="true">
+<div class="modal fade" id="classeUpdateModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="clUpadteTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="clUpdateTitle">Actualizar clase</h1>
-            </div>
             <div class="modal-body">
-                <form id ="updateClasseForm" action="<%=request.getContextPath()%>/classServlet" method="post">
+                <h1 class="modal-title fs-5" id="clUpdateTitle">Actualizar clase</h1>
+                <hr>
+                <form class="needsValidation" id ="updateClasseForm" action="<%=request.getContextPath()%>/classServlet" method="post" novalidate>
                     <input id="updateClasseId" name="updateClasseId" type="text" hidden/>
-                    <label for="updateName">Nombre:</label>
-                    <input class="form-control" type="text" id="updateName" name="updateName">
-                    <br>
-                    <label for="updateProgram">Programa:</label>
-                    <select class="form-select" id="updateProgram" name="updateProgramId"></select>
+                    <div class="form-group mb-3 row">
+                    <label for="updateName" class="col-4 col-form-label form-label">Nombre:</label>
+                        <div class="col-8">
+                            <input class="form-control" type="text" id="updateName" name="updateName" required pattern="^[A-ZÁÉÍÓÚÜÑ0-9][a-záéíóúüñA-ZÁÉÍÓÚÜÑ0-9]*(?:\s+[a-záéíóúüñA-ZÁÉÍÓÚÜÑ0-9]+)*$"/>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Introduce un nombre válido</span>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                    <label for="updateProgram" class="col-4 col-form-label form-label">Programa:</label>
+                        <div class="col-8">
+                            <select class="form-select" id="updateProgram" name="updateProgramId" required></select>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Selecciona un programa</span>
+                        </div>
+                    </div>
                     <input type="text" name="action" value="update" hidden/>
+                    <div class="col-12 text-end mt-4">
+                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="submitButtonUpdate" type="button" class="btn btn-success">Registrar</button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button id="submitButtonUpdate" type="button" class="btn btn-success">Registrar</button>
             </div>
         </div>
     </div>
@@ -37,7 +47,7 @@
         const classeUpdateModal = document.getElementById('classeUpdateModal');
 
         classeUpdateModal.addEventListener('shown.bs.modal', async ()=> {
-            const response = await fetch('http://localhost:8080/SISGEA_war_exploded/data/classes');
+            const response = await fetch(`\${cleanBasePath}data/classes`);
             const data = await response.json();
 
             const programSelect = document.getElementById('updateProgram');
@@ -65,10 +75,13 @@
 
     document.getElementById('submitButtonUpdate').addEventListener("click", () => {
         const form = document.getElementById('updateClasseForm');
+        form.classList.add('was-validated');
         const {updateName, updateProgram} = form.elements;
 
         if(updateName.value && updateProgram.value) {
-            form.submit();
+            if(form.checkValidity()) {
+                form.submit();
+            }
         } else {
             Swal.fire({
                 icon: "error",

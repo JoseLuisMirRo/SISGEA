@@ -25,7 +25,7 @@ public class ListQuartersServlet extends HttpServlet {
 
         List<QuarterBean> quartersList = quarterDao.getAllQuarters();
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create();
         String jsonArray = gson.toJson(quartersList);
 
         PrintWriter out = resp.getWriter();

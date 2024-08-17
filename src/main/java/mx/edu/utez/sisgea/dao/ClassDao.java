@@ -10,16 +10,17 @@ import java.util.List;
 public class ClassDao extends DataBaseConnection {
     private Connection con = null;
     private PreparedStatement ps = null;
+    private CallableStatement cs = null;
     private ResultSet rs = null;
 
     public void insertClass(ClassBean classe) throws SQLException {
         try{
             con = createConnection();
-            ps = con.prepareStatement("INSERT INTO class (name, program_id, status) VALUES (?,?,?)");
-            ps.setString(1, classe.getName());
-            ps.setInt(2, classe.getProgram().getId());
-            ps.setBoolean(3,true);
-            ps.execute();
+            cs = con.prepareCall("{CALL insert_class(?,?,?)}");
+            cs.setString(1, classe.getName());
+            cs.setInt(2, classe.getProgram().getId());
+            cs.setBoolean(3,true);
+            cs.execute();
         }catch(SQLException e){
             e.printStackTrace();
             throw new SQLException(e.getMessage());
@@ -79,11 +80,11 @@ public class ClassDao extends DataBaseConnection {
     public void updateClass(ClassBean classe) throws SQLException {
         try{
             con = createConnection();
-            ps = con.prepareStatement("UPDATE class SET name=?, program_id=? WHERE id = ?");
-            ps.setString(1, classe.getName());
-            ps.setInt(2, classe.getProgram().getId());
-            ps.setInt(3, classe.getId());
-            ps.execute();
+            cs = con.prepareCall("{CALL update_class(?,?,?)}");
+            cs.setString(1, classe.getName());
+            cs.setInt(2, classe.getProgram().getId());
+            cs.setInt(3, classe.getId());
+            cs.execute();
         }catch(SQLException e){
             e.printStackTrace();
             throw new SQLException(e.getMessage());
@@ -126,6 +127,7 @@ public class ClassDao extends DataBaseConnection {
     private void closeConnection() {
         try {
             if (ps != null) ps.close();
+            if (cs != null) cs.close();
             if (rs != null) rs.close();
             if (con != null) con.close();
         } catch (SQLException e) {

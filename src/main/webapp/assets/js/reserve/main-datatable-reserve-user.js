@@ -1,5 +1,8 @@
 let dataTable;
 let dataTableInitiated=false;
+const basePath = `${window.location.origin}${window.location.pathname}`;
+const lastSlashIndex = basePath.lastIndexOf('/');
+const cleanBasePath = basePath.substring(0, lastSlashIndex + 1);
 
 const dataTableOptions={
     //scrollX: "2000px"
@@ -13,37 +16,37 @@ const dataTableOptions={
     ],
     pageLength:10,
     language:{
-        url:'https://cdn.datatables.net/plug-ins/2.0.8/i18n/es-ES.json'
+        url:`${cleanBasePath}assets/js/datatables-2-1-3/spanishMX.json`
     }
 };
-const initDataTable=async()=>{
+
+const initDataTable=async(showMode)=>{
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
     }
 
-    await listReserves();
+    await listReserves(showMode);
 
     dataTable=$('#datatable_reserves').DataTable(dataTableOptions);
 
     dataTableInitiated=true;
 };
 
-const listReserves=async(showAll = false)=>{
+const listReserves=async(filterStatus)=>{
     try{
-        const response=await fetch(`http://localhost:8080/SISGEA_war_exploded/data/userReserves?userId=${userId}`);
+        const response=await fetch(`${cleanBasePath}/data/userReserves?userId=${userId}`);
         const reserves=await response.json();
 
         let content= ``;
         const currentDate = new Date().toISOString().split('T')[0];
 
-        reserves.forEach((rse,index) => {
+        reserves
+            .filter(filterStatus ? rse => rse.date === rse.date: rse => rse.date >= currentDate)
+            .forEach((rse,index) => {
             const startTime = deleteSeconds(rse.startTime);
             const endTime = deleteSeconds(rse.endTime);
-            const isPast = isPastDateTime(manageDate(rse.date), hourTo24(rse.startTime));
-            if(!showAll && manageDate(rse.date) < currentDate){
-                return;
-            }
+            const isPast = isPastDateTime((rse.date), hourTo24(rse.startTime));
 
             content+=`
             <tr>
@@ -69,6 +72,7 @@ const listReserves=async(showAll = false)=>{
                     <button class="btn ${isPast ? 'btn-outline-secondary' : 'btn-primary'} btn-sm edit-btn" 
                     data-id="${rse.id}"
                     data-roomid="${rse.room.id}"
+                    data-userid="${rse.user.id}"
                     data-date="${rse.date}"
                     data-description="${rse.description}"
                     data-startime="${rse.startTime}"
@@ -107,9 +111,7 @@ const isPastDateTime = (date, time) => {
 
 
 window.addEventListener('load',async()=>{
-    await initDataTable();
-    await listReserves(false);
-    document.getElementById('historyBtn').setAttribute('data-showAll', false);
+    await initDataTable(false);
 });
 
 function deleteSeconds(timeS) {
@@ -129,6 +131,7 @@ $(document).ready(function () {
         }
         const id = $(this).data('id');
         const roomId = $(this).data('roomid');
+        const userId = $(this).data('userid');
         const date = $(this).data('date');
         const description = $(this).data('description');
         const startTime = $(this).data('startime');
@@ -140,6 +143,7 @@ $(document).ready(function () {
         $('#reserveUpdateModal').attr('data-description', description);
         $('#reserveUpdateModal').attr('data-starttime', startTime);
         $('#reserveUpdateModal').attr('data-endtime', endTime);
+        $('#reserveUpdateModal').attr('data-userid', userId);
 
         $('#reserveUpdateModal').modal('show');
     });
@@ -166,9 +170,9 @@ $(document).ready(function () {
 });
 document.getElementById('historyBtn').addEventListener('click',async()=>{
     const button = document.getElementById('historyBtn');
-    const showAll = button.getAttribute('data-showAll') === 'true';
-
-    await listReserves(!showAll);
-    button.setAttribute('data-showAll', !showAll);
+    const showAll = button.getAttribute('data-showActive') === 'true';
+    button.setAttribute('data-showActive', !showAll);
     button.textContent = !showAll ? 'Ver reservas vigentes' : 'Ver historial completo';
+    await initDataTable(!showAll);
 });
+

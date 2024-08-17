@@ -7,10 +7,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DataBaseConnection {
-    private static final String URL = "jdbc:mysql://localhost:3306/sisgea_dev";
+    //LOCALHOST
+    private static final String URL = "jdbc:mysql://localhost:3306/sisgea_prod";
     private static final String USER = "root";
     private static final String PASSWORD = "root";
 
+    //AWS RDS
+    //private static final String URL = "jdbc:mysql://sisgea.cva1cb77g6fg.us-east-1.rds.amazonaws.com:3306/sisgea_prod";
+    //private static final String USER = "admin";
+    //private static final String PASSWORD = "estudi4nteut3z";
+
+    //AWS RDS DIRECTA
+    //private static final String URL = "jdbc:mysql://sisgea2.cva1cb77g6fg.us-east-1.rds.amazonaws.com:3306/sisgea_prod";
+    //private static final String USER = "admin";
+    //private static final String PASSWORD = "estudi4nteut3z";
 
     public static Connection createConnection() throws SQLException{
         Connection con = null;
@@ -21,7 +31,7 @@ public class DataBaseConnection {
             //Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
         }catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         con = DriverManager.getConnection(URL,USER,PASSWORD);
         return con;

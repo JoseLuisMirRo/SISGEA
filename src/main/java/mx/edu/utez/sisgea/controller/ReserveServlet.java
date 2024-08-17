@@ -9,12 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import mx.edu.utez.sisgea.dao.*;
 import mx.edu.utez.sisgea.model.*;
-
-import mx.edu.utez.sisgea.controller.ResendAPI;
+import mx.edu.utez.sisgea.utility.EmailService;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.DayOfWeek;
@@ -30,6 +27,7 @@ public class ReserveServlet extends HttpServlet {
 
         ReserveBean reserveBean = new ReserveBean();
         ReserveDao reserveDao = new ReserveDao();
+        NonBusinessDayDao nbdDao = new NonBusinessDayDao();
         UserDao userDao = new UserDao();
         RoomDao roomDao = new RoomDao();
 
@@ -53,28 +51,36 @@ public class ReserveServlet extends HttpServlet {
                         throw new IllegalArgumentException("startAfterEnd");
                     }
 
-                    reserveBean = new ReserveBean(userDao.getUser(userId), roomDao.getRoom(roomId), description, date, startTime, endTime, status);
+                    reserveBean = new ReserveBean(userDao.getUserById(userId), roomDao.getRoom(roomId), description, date, startTime, endTime, status);
 
                     ScheduleDao scheduleDao = new ScheduleDao();
                     List<ScheduleBean> schedules = scheduleDao.getAllRoomSchedules(roomId);
+                    List<NonBusinessDay> nbds = nbdDao.getNonBusinessDays();
                     boolean isValid = validateOverlap(reserveBean, schedules);
+                    boolean isNbd = validateNbd(reserveBean, nbds);
 
                     if (!isValid) {
                         throw new IllegalArgumentException("overlaps");
                     }
+                    if(isNbd){
+                        throw new IllegalArgumentException("overlapsnbd");
+                    }
                     reserveDao.insertReserve(reserveBean);
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=registerOk");
-
+                    activeSession.setAttribute("status", "registerOk");
+                    resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                 } catch (Exception e) {
                     e.printStackTrace();
                     String errorMessage = e.getMessage();
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=registerError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+                    activeSession.setAttribute("status", "registerError");
+                    activeSession.setAttribute("errorMessage", errorMessage);
+                    resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                 }
                 break;
 
             case "update":
                 try {
                     int updateReserveId = Integer.parseInt(req.getParameter("updateReserveId"));
+                    ReserveBean reserve = reserveDao.getReserve(updateReserveId);
                     int roomId = Integer.parseInt(req.getParameter("updateRoomId"));
                     String description = req.getParameter("updateDescription");
                     Date date = Date.valueOf(req.getParameter("updateDate"));
@@ -90,19 +96,46 @@ public class ReserveServlet extends HttpServlet {
 
                     ScheduleDao scheduleDao = new ScheduleDao();
                     List<ScheduleBean> schedules = scheduleDao.getAllRoomSchedules(roomId);
+                    List<NonBusinessDay> nbds = nbdDao.getNonBusinessDays();
                     boolean isValid = validateOverlap(reserveBean, schedules);
+                    boolean isNbd = validateNbd(reserveBean, nbds);
 
                     if (!isValid) {
                         throw new IllegalArgumentException("overlaps");
                     }
 
+                    if(isNbd) {
+                        throw new IllegalArgumentException("overlapsnbd");
+                    }
+                    if(reserve.getUser().getId() != user.getId() && user.getRole().getId() == 1) {
+                        EmailService emailService = new EmailService();
+                        String to = reserve.getUser().getEmail();
+                        String subject = "Tu reserva: '" + reserve.getDescription() + "' ha sido actualizada";
+                        String html = "<h2>¡Hola! " + reserve.getUser().getFirstName()
+                                + "</h2><p>Tu reserva ha sido actualizada por un administrador.</p><p>Administrador: "
+                                + user.getFirstName() + " " + user.getLastNameP() + " " + user.getLastNameM()
+                                + "</p><p>Motivo: " + req.getParameter("updateReason")
+                                + "</p><h3><b>Detalles de la reserva cancelada:</b></h3>" +
+                                "<p>Nuevos detalles de la reserva: " + reserveBean.getDescription() + "</p><p>Espacio: "
+                                + reserveBean.getRoom().getRoomType().getAbbreviation() + reserveBean.getRoom().getNumber()
+                                + " - " + reserveBean.getRoom().getBuilding().getName()
+                                + "<p>Fecha: " + reserveBean.getDate()
+                                + "</p><p>Hora de inicio: " + reserveBean.getStartTime()
+                                + "</p><p>Hora de fin: " + reserveBean.getEndTime() + "</p>";
+
+                        emailService.sendEmail(to, subject, html);
+                    }
+
                     reserveDao.updateReserve(reserveBean);
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=updateOk");
+                    activeSession.setAttribute("status", "updateOk");
+                    resp.sendRedirect(req.getContextPath() + "/reserveServlet");
 
                 } catch (Exception e) {
                     e.printStackTrace();
                     String errorMessage = e.getMessage();
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=updateError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+                    activeSession.setAttribute("status", "updateError");
+                    activeSession.setAttribute("errorMessage", errorMessage);
+                    resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                 }
                 break;
 
@@ -115,8 +148,7 @@ public class ReserveServlet extends HttpServlet {
                         if (user.getRole().getId() == 1) {
                             status = Status.Admin_Canceled;
                             if(reserve.getUser().getId() != user.getId()) {
-                                ResendAPI emailSender = new ResendAPI();
-                                String from = "Alertas SISGEA <sisgea@resend.dev>";
+                                EmailService emailService = new EmailService();
                                 String to = reserve.getUser().getEmail();
                                 String subject = "Tu reserva: '" + reserve.getDescription() + "' ha sido cancelada";
                                 String html = "<h2>¡Hola! " + reserve.getUser().getFirstName()
@@ -131,14 +163,15 @@ public class ReserveServlet extends HttpServlet {
                                         + "</p><p>Hora de inicio: " + reserveDao.getReserve(idC).getStartTime()
                                         + "</p><p>Hora de fin: " + reserveDao.getReserve(idC).getEndTime() + "</p>";
 
-                                emailSender.sendEmail(from, to, subject, html);
+                                emailService.sendEmail(to, subject, html);
                             }
 
                         } else if (user.getRole().getId() == 2) {
                             status = Status.Canceled;
                         }
                         reserveDao.updateStatus(Integer.parseInt(req.getParameter("cancelReserveId")), status);
-                        resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=deleteOk");
+                        activeSession.setAttribute("status", "deleteOk");
+                        resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                     } else if (reserveDao.getReserve(idC).getStatus() == (Status.Canceled)) {
                         throw new Exception("alreadyCanceled");
                     } else if (reserveDao.getReserve(idC).getStatus() == (Status.Admin_Canceled)) {
@@ -147,20 +180,43 @@ public class ReserveServlet extends HttpServlet {
                 } catch (Exception e) {
                     e.printStackTrace();
                     String errorMessage = e.getMessage();
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=deleteError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+                    activeSession.setAttribute("status", "deleteError");
+                    activeSession.setAttribute("errorMessage", errorMessage);
+                    resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                 }
                 break;
 
             case "reactivate": //TODAS LAS VERIFICACIONES OK
                 try {
                     int idA = Integer.parseInt(req.getParameter("reactivateReserveId"));
+                    ReserveBean reserve = reserveDao.getReserve(idA);
                     if (user.getRole().getId() == 1) {
                         reserveDao.updateStatus(idA, Status.Active);
-                        resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=reactivateOk");
+                        activeSession.setAttribute("status", "reactivateOk");
+                        if(reserve.getUser().getId() != user.getId()) {
+                            EmailService emailService = new EmailService();
+                            String to = reserve.getUser().getEmail();
+                            String subject = "Tu reserva: '" + reserve.getDescription() + "' ha sido reactivada";
+                            String html = "<h2>¡Hola! " + reserve.getUser().getFirstName()
+                                    + "</h2><p>Tu reserva ha sido reactivada por un administrador.</p><p>Administrador: "
+                                    + user.getFirstName() + " " + user.getLastNameP() + " " + user.getLastNameM()
+                                    + "</p><p>Motivo: " + req.getParameter("reactivateReason")
+                                    + "</p><h3><b>Detalles de la reserva reactivada:</b></h3>" +
+                                    "<p>Descripcion de la reserva: " + reserve.getDescription() + "</p><p>Espacio: "
+                                    + reserve.getRoom().getRoomType().getAbbreviation() + reserve.getRoom().getNumber()
+                                    + " - " + reserve.getRoom().getBuilding().getName()
+                                    + "<p>Fecha: " + reserveDao.getReserve(idA).getDate()
+                                    + "</p><p>Hora de inicio: " + reserveDao.getReserve(idA).getStartTime()
+                                    + "</p><p>Hora de fin: " + reserveDao.getReserve(idA).getEndTime() + "</p>";
+
+                            emailService.sendEmail(to, subject, html);
+                        }
+                        resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                     } else if (user.getRole().getId() == 2) {
                         if (reserveDao.getReserve(idA).getStatus() == Status.Canceled) {
                             reserveDao.updateStatus(idA, Status.Active);
-                            resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=reactivateOk");
+                            activeSession.setAttribute("status", "reactivateOk");
+                            resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                         } else if (reserveDao.getReserve(idA).getStatus() == Status.Admin_Canceled) {
                             throw new Exception("adminCanceled");
                         } else {
@@ -170,7 +226,9 @@ public class ReserveServlet extends HttpServlet {
                 } catch (Exception e) {
                     e.printStackTrace();
                     String errorMessage = e.getMessage();
-                    resp.sendRedirect(req.getContextPath() + "/reserveServlet?status=reactivateError&errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+                    activeSession.setAttribute("status", "reactivateError");
+                    activeSession.setAttribute("errorMessage", errorMessage);
+                    resp.sendRedirect(req.getContextPath() + "/reserveServlet");
                 }
                 break;
         }
@@ -216,5 +274,19 @@ public class ReserveServlet extends HttpServlet {
             }
         }
         return true;
+    }
+    private boolean validateNbd(ReserveBean reserve, List<NonBusinessDay> nbds) {
+        LocalDate reserveDate = reserve.getDate().toLocalDate();
+        boolean status = false;
+
+        for (NonBusinessDay nbd : nbds) {
+            //MEJORAR PARA QUE EN LUGAR DE QUE RECORRAR EL ARREGLO, PONER UNA FUNCION EN EL DAO PARA CONSULTAR LA FECHA
+            if (nbd.getDate().toLocalDate().equals(reserveDate)) {
+                status = true;
+            } else {
+                status = false;
+            }
+        }
+        return status;
     }
 }

@@ -52,7 +52,7 @@
                         <li><a class="dropdown-item" href="${pageContext.request.contextPath}/roomServlet">Gestionar espacios</a></li>
                         <li><a class="dropdown-item" href="${pageContext.request.contextPath}/scheduleServlet">Gestionar horarios</a></li>
                         <li><a class="dropdown-item" href="${pageContext.request.contextPath}/reserveServlet">Gestionar reservas</a></li>
-                        <li><a class="dropdown-item" href="#">Gestionar feriados</a></li>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/NonBusinessDayServlet">Gestionar feriados</a></li>
                         <% } else if (2==userRole) {%>
                         <li><a class="dropdown-item" href="${pageContext.request.contextPath}/reserveServlet">Gestionar reservas</a></li>
                         <% } %>
@@ -87,8 +87,7 @@
             });
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="sweetalert2.all.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/sweetalert2-11-12-4/sweetalert2.all.min.js"></script>
 </body>
 
 </html>

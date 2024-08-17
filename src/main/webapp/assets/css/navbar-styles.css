@@ -1,0 +1,100 @@
+@font-face {
+    font-family: 'Mulish';
+    src: url('fonts/Mulish-VariableFont_wght.ttf') format('truetype');
+    font-weight: 200 1000;
+    font-style: normal;
+}
+
+
+*{
+    font-family: "Mulish", sans-serif;
+}
+
+header .navbar {
+    background-color: #002e60;
+    height: 80px;
+    margin: 5px;
+    border-radius: 16px;
+    padding: 0.2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+header .navbar-text{
+    margin-right: 1rem;
+    text-align: right;
+    width: 200px;
+    color: white;
+}
+
+header .navbar-brand {
+    font-weight: 500;
+    color: #009475;
+    font-size: 24px;
+    transition: 0.3s color;
+    margin-right: auto;
+}
+
+header .navbar-toggler{
+    border: none;
+    font-size: 1.25rem;
+}
+
+header .navbar-toggler:focus, .btn-close:focus{
+    box-shadow: none;
+    outline: none;
+}
+
+header .nav-link{
+    color: #c3c3c3;
+    position: relative;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+header .nav-link:hover, .nav-link.active{
+    color: #009475 ;
+}
+header .navbar-nav .nav-link.active {
+    color: white;
+}
+
+
+@media (min-width: 991px){
+    header .nav-link::before{
+        content:"";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        height: 2px;
+        background-color: #009970;
+        visibility: hidden;
+        transition: 0.3s ease-in-out;
+    }
+
+    header .nav-link:hover::before, .nav-link.active::before{
+        width: 100%;
+        visibility: visible;
+        color: #009970;
+    }
+}
+
+body{
+    width: 100%;
+    height: 100vh;
+
+}
+.main-container{
+    padding: 15px;
+    border-radius: 16px;
+    margin: 70px 5px 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.main-container-table{
+    padding: 15px 40px 15px;
+    border-radius: 16px;
+    margin: 94px 5px 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}

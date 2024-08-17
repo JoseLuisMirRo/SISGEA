@@ -1,5 +1,8 @@
 let dataTable;
 let dataTableInitiated=false;
+const basePath = `${window.location.origin}${window.location.pathname}`;
+const lastSlashIndex = basePath.lastIndexOf('/');
+const cleanBasePath = basePath.substring(0, lastSlashIndex + 1);
 
 const dataTableOptions={
     //scrollX: "2000px"
@@ -13,16 +16,16 @@ const dataTableOptions={
     ],
     pageLength:10,
     language:{
-        url:'https://cdn.datatables.net/plug-ins/2.0.8/i18n/es-ES.json'
+        url:`${cleanBasePath}assets/js/datatables-2-1-3/spanishMX.json`
     }
 };
-const initDataTable=async()=>{
+const initDataTable=async(showMode)=>{
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
     }
 
-    await listRooms();
+    await listRooms(showMode);
 
     dataTable=$('#datatable_rooms').DataTable(dataTableOptions);
 
@@ -31,19 +34,15 @@ const initDataTable=async()=>{
 
 
 
-const listRooms=async(showActive = true)=>{
+const listRooms=async(filterStatus)=>{
     try{
-        const response=await fetch('http://localhost:8080/SISGEA_war_exploded/data/rooms');
+        const response=await fetch(`${cleanBasePath}data/rooms`);
         const rooms=await response.json();
 
         let content= ``;
-        rooms.forEach((room,index) => {
-            if(showActive && !room.status){
-                return;
-            }
-            if(!showActive && room.status){
-                return;
-            }
+        rooms
+            .filter(room => room.status === filterStatus)
+            .forEach((room,index) => {
             content+=`
             <tr>
                 <td>${room.roomType.abbreviation}${room.number}${room.building.abbreviation}</td>
@@ -78,9 +77,7 @@ const listRooms=async(showActive = true)=>{
 };
 
 window.addEventListener('load',async()=>{
-    await initDataTable();
-    await listRooms(true);
-    document.getElementById('historyBtn').setAttribute('data-showActive',true);
+    await initDataTable(true);
 });
 
 //UTILIZANDO JQUERY OBTENEMOS DATOS DEL USUARIO CUANDO SE PULSA EL BOTÓN DE EDITAR, PARA DESPUES ENVIARLO AL MODAL. (se podría obtener solo id y lo demás con un select).
@@ -115,11 +112,10 @@ $(document).ready(function() {
 
 
 });
-document.getElementById('historyBtn').addEventListener('click',async()=>{
-    const button = document.getElementById('historyBtn');
-    const showActive = button.getAttribute('data-showActive')==='true';
-
-    await listRooms(!showActive);
-    button.setAttribute('data-showActive',!showActive);
-    button.textContent = showActive ? 'Ver espacios activos' : 'Ver espacios inactivos';
+document.getElementById('showBtn').addEventListener('click', async () => {
+    const button = document.getElementById('showBtn');
+    const showActive = button.getAttribute('data-showActive') === 'false';
+    button.setAttribute('data-showActive', showActive);
+    button.textContent = !showActive ? 'Ver espacios activos' : 'Ver espacios inactivos';
+    await initDataTable(showActive);
 });

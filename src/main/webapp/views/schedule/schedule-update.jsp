@@ -6,45 +6,75 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="modal fade" id="scheduleUpdateModal" tabindex="-1" aria-labelledby="schUpdateTitle" aria-hidden="true">
+<div class="modal fade" id="scheduleUpdateModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="schUpdateTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="schUpdateTitle">Actualizar horario</h1>
-            </div>
             <div class="modal-body">
-                <form id ="updateScheduleForm" action="<%=request.getContextPath()%>/scheduleServlet" method="post">
+                <h1 class="modal-title fs-5" id="schUpdateTitle">Actualizar horario</h1>
+                <hr>
+                <form id ="updateScheduleForm" action="<%=request.getContextPath()%>/scheduleServlet" method="post" novalidate>
                     <input id="updateScheduleId" type="hidden" name="updateScheduleId" />
-                    <label for="updateQuarter">Cuatrimestre:</label>
-                    <select class="form-select" id="updateQuarter" name="updateQuarterId"></select>
-                    <br>
-                    <label for="updateClass">Clase:</label>
-                    <select class="form-select" id="updateClass" name="updateClassId"></select>
-                    <br>
-                    <label for="updateRoom">Espacio:</label>
-                    <select class="form-select" id="updateRoom" name="updateRoomId"></select>
-                    <br>
-                    <label for="updateDay">Día:</label>
-                    <select class="form-select" id="updateDay" name="updateDayId">
-                        <option value="1">Lunes</option>
-                        <option value="2">Martes</option>
-                        <option value="3">Miércoles</option>
-                        <option value="4">Jueves</option>
-                        <option value="5">Viernes</option>
-                        <option value="6">Sábado</option>
-                    </select>
-                    <br>
-                    <label for="updateStarttime">Hora de inicio:</label>
-                    <input type="time" name="updateStarttime" id="updateStarttime" min="07:00" max="20:00"/>
-                    <br><br>
-                    <label for="updateEndtime">Hora de fin:</label>
-                    <input type="time" name="updateEndtime" id="updateEndtime" min="08:00" max="21:00"/>
+                    <div class="form-group mb-3 row">
+                    <label for="updateQuarter" class="col-4 col-form-label form-label">Cuatrimestre:</label>
+                        <div class="col-8">
+                            <select class="form-select" id="updateQuarter" name="updateQuarterId" required></select>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Selecciona un cuatrimestre</span>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                    <label for="updateClass" class="col-4 col-form-label form-label">Clase:</label>
+                        <div class="col-8">
+                            <select class="form-select" id="updateClass" name="updateClassId" required></select>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Selecciona una clase</span>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                    <label for="updateRoom" class="col-4 col-form-label form-label">Espacio:</label>
+                        <div class="col-8">
+                            <select class="form-select" id="updateRoom" name="updateRoomId" required></select>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Selecciona un espacio</span>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                    <label for="updateDay" class="col-4 col-form-label form-label">Día:</label>
+                        <div class="col-8">
+                            <select class="form-select" id="updateDay" name="updateDayId" required>
+                                <option value="1">Lunes</option>
+                                <option value="2">Martes</option>
+                                <option value="3">Miércoles</option>
+                                <option value="4">Jueves</option>
+                                <option value="5">Viernes</option>
+                                <option value="6">Sábado</option>
+                            </select>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Selecciona un día</span>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                    <label for="updateStarttime" class="col-4 col-form-label form-label">Hora de inicio:</label>
+                        <div class="col-8">
+                            <input class="form-control" type="time" name="updateStarttime" id="updateStarttime" min="07:00" max="20:00" required/>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Ingresa una hora válida</span>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                    <label for="updateEndtime" class="col-4 col-form-label form-label">Hora de fin:</label>
+                        <div class="col-8">
+                            <input class="form-control" type="time" name="updateEndtime" id="updateEndtime" min="08:00" max="21:00" required/>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Ingresa una hora válida</span>
+                        </div>
+                    </div>
+                    <div class="col-12 text-end mt-4">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                        <button id="submitButtonUpdate" type="button" class="btn btn-success">Registrar</button>
+                    </div>
                     <input type="text" name="action" value="update" hidden/>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button id="submitButtonUpdate" type="button" class="btn btn-success">Registrar</button>
             </div>
         </div>
     </div>
@@ -54,9 +84,9 @@
         const updateScheduleModal = document.getElementById('scheduleUpdateModal');
         updateScheduleModal.addEventListener('shown.bs.modal', async ()=> {
             const [response1, response2, response3] = await Promise.all([
-                fetch('http://localhost:8080/SISGEA_war_exploded/data/quarters'),
-                fetch('http://localhost:8080/SISGEA_war_exploded/data/classes'),
-                fetch('http://localhost:8080/SISGEA_war_exploded/data/rooms')
+                fetch(`\${cleanBasePath}data/quarters`),
+                fetch(`\${cleanBasePath}data/classes`),
+                fetch(`\${cleanBasePath}data/rooms`)
             ]);
 
             const quarters = await response1.json();
@@ -77,21 +107,26 @@
                 roomsElement.removeChild(roomsElement.firstChild);
             }
 
-            quarters.forEach((quarter) => {
+            quarters
+                .forEach((quarter) => {
                 const option = document.createElement("option");
                 option.value = quarter.id;
                 option.textContent = quarter.name;
                 quartersElement.appendChild(option);
             });
 
-            classes.forEach((classe) => {
+            classes
+                .filter((classe) => classe.status === true)
+                .forEach((classe) => {
                 const option = document.createElement("option");
                 option.value = classe.id;
                 option.textContent = classe.name;
                 classesElement.appendChild(option);
             });
 
-            rooms.forEach((room) => {
+            rooms
+                .filter((room) => room.status === true)
+                .forEach((room) => {
                 const option = document.createElement("option");
                 option.value = room.id;
                 option.textContent = `\${room.roomType.name} \${room.number} - \${room.building.name}`;
@@ -122,6 +157,7 @@
 
     document.getElementById("submitButtonUpdate").addEventListener("click", () =>{
         const form = document.getElementById("updateScheduleForm");
+        form.classList.add('was-validated');
         const {updateQuarter, updateClass, updateRoom, updateDay, updateStarttime, updateEndtime} = form.elements;
 
         if(updateStarttime.value.split(":").length === 2){
@@ -146,7 +182,9 @@
             if (updateDay.value !== 6) {
                 if (updateStarttime.value >= initialStartTime && updateStarttime.value <= finalStartTime) {
                     if (updateEndtime.value >= initialEndTime && updateEndtime.value <= finalEndTime) {
-                        form.submit();
+                        if(form.checkValidity()) {
+                            form.submit();
+                        }
                     } else {
                         Swal.fire({
                             icon: "error",
@@ -168,7 +206,9 @@
             } else {
                 if (updateStarttime.value >= initialStartTime && updateStarttime.value <= wfinalStartTime) {
                     if (updateEndtime.value >= initialEndTime && updateEndtime.value <= wfinalEndTime) {
-                        form.submit();
+                        if(form.checkValidity()) {
+                            form.submit();
+                        }
                     } else {
                         Swal.fire({
                             icon: "error",
@@ -206,17 +246,13 @@
 
         let [hour, minute, second] = time.split(':'); //DIVIDIMOS HORAS, MINUTOS Y SEGUNDOS
         hour = parseInt(hour,10);
-        console.log(period);
 
         if(period === 'p. m.'){
-            console.log('PM');
             hour +=12;
         }
         else if (period === 'a. m.' && hour === 12){
-            console.log('AM');
             hour = 0;
         }
-        console.log(hour);
         return `\${hour.toString().padStart(2, '0')}:\${minute}:\${second}`;
 
     }

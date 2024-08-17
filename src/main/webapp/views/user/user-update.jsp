@@ -6,126 +6,104 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<style>
-    @keyframes modalFadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-50px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    .modal-content {
-        background-color: #fff; /* Fondo blanco para el modal */
-        border-radius: 10px;
-        animation: modalFadeIn 0.5s;
-    }
-    .modal-header {
-        background-color: #004d99; /* Azul oscuro para el encabezado del modal */
-        color: #fff; /* Texto blanco */
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-    }
-    .modal-body {
-        color: #333; /* Texto gris oscuro */
-    }
-    .modal-footer {
-        background-color: #004d99; /* Azul oscuro para el pie de página del modal */
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-    }
-    .form-label {
-        color: #004d99; /* Azul oscuro para etiquetas */
-    }
-    .form-control {
-        border-color: #004d99; /* Borde azul oscuro para campos de entrada */
-    }
-    .form-group {
-        display: flex;
-        align-items: center;
-        margin-bottom: 1rem;
-    }
-    .form-group label {
-        flex: 1;
-        margin-bottom: 0; /* Remove default margin of the label */
-    }
-    .form-group input,
-    .form-group select {
-        flex: 2;
-    }
-</style>
-
-<body>
 <!-- Modal -->
-<div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="updateUserTitle" aria-hidden="true">
+<div class="modal fade" id="updateUserModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="updateUserTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="updateUserTitle">Actualizar usuario</h1>
-            </div>
             <div class="modal-body">
-                <form id="updateForm" action="<%=request.getContextPath()%>/userServlet" method="post">
-                    <div class="form-group">
-                        <input id="updateUserId" type="hidden" name="updateUserId" class="form-control" />
+                <h1 class="modal-title fs-5" id="updateUserTitle">Actualizar usuario</h1>
+                <hr>
+                <form id="updateForm" action="<%=request.getContextPath()%>/userServlet" method="post" novalidate>
+                    <input id="updateUserId" type="hidden" name="updateUserId" class="form-control" />
+                    <div class="form-group mb-3 row">
+                        <label for="updateName" class="col-4 col-form-label form-label">Nombre:</label>
+                        <div class="col-8">
+                            <input id="updateName" type="text" name="name" class="form-control" required pattern="^([A-ZÁÉÍÓÚÑ]{1}[a-záéíóúñ]+\s*)*$"/>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Introduce un nombre válido</span>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="updateName" class="form-label">Nombre:</label>
-                        <input id="updateName" type="text" name="name" class="form-control" required/>
+                    <div class="form-group mb-3 row">
+                        <label for="updateLastNameP" class="col-4 col-form-label form-label">Apellido Paterno:</label>
+                        <div class="col-8">
+                            <input id="updateLastNameP" type="text" name="lastNameP" class="form-control" required pattern="^([A-ZÁÉÍÓÚÑ]{1}[a-záéíóúñ]+\s*)*$"/>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Introduce un apellido válido</span>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="updateLastNameP" class="form-label">Apellido Paterno:</label>
-                        <input id="updateLastNameP" type="text" name="lastNameP" class="form-control" required/>
+                    <div class="form-group mb-3 row">
+                        <label for="updateLastNameM" class="col-4 col-form-label form-label">Apellido Materno:</label>
+                        <div class="col-8">
+                            <input id="updateLastNameM" type="text" name="lastNameM" class="form-control" required pattern="^([A-ZÁÉÍÓÚÑ]{1}[a-záéíóúñ]+\s*)*$"/>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Introduce un apellido válido</span>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="updateLastNameM" class="form-label">Apellido Materno:</label>
-                        <input id="updateLastNameM" type="text" name="lastNameM" class="form-control" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="updateEmail" class="form-label">Correo Institucional:</label>
-                        <input id="updateEmail" type="email" name="email" class="form-control" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="updatePassword" class="form-label">Contraseña:</label>
-                        <input id="updatePassword" type="password" name="password" class="form-control" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="updateConfirmPassword" class="form-label">Confirmar contraseña:</label>
-                        <input id="updateConfirmPassword" type="password" name="confirmPassword" class="form-control" required/>
+                    <div class="form-group mb-3 row">
+                        <label for="updateEmail" class="col-4 col-form-label form-label">Correo Electrónico:</label>
+                        <div class="col-8">
+                            <input id="updateEmail" type="email" name="email" class="form-control" required pattern="^([a-z0-9._%+-]+@utez\.edu\.mx)*$"/>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Introduce un correo institucional válido</span>
+                        </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-sm-4 col-form-label form-label">Tipo de usuario:</label>
-                        <div class="col-sm-8">
-                            <label>
-                                <input type="checkbox" name="updateRoles[]" value='1'> Administrador
-                            </label>
-                            <br>
-                            <label>
-                                <input type="checkbox" name="updateRoles[]" value='2'> Docente
-                            </label>
-                            <br>
-                            <label>
-                                <input type="checkbox" name="updateRoles[]" value='3'> Estudiante
-                            </label>
-                            <br>
+                        <div class="btn-group" role="group">
+                            <input type="checkbox" class="btn-check" id="btnUpdate1" value="1" autocomplete="off" name="updateRoles[]">
+                            <label class="btn btn-outline-primary" for="btnUpdate1">Administrador</label>
+
+                            <input type="checkbox" class="btn-check" id="btnUpdate2" value="2" autocomplete="off" name="updateRoles[]">
+                            <label class="btn btn-outline-primary" for="btnUpdate2">Docente</label>
+
+                            <input type="checkbox" class="btn-check" id="btnUpdate3" value="3" autocomplete="off" name="updateRoles[]">
+                            <label class="btn btn-outline-primary" for="btnUpdate3">Estudiante</label>
                         </div>
                     </div>
                     <input type="text" name="action" value="update" hidden/> <!--VALOR PARA INDICAR AL SERVLET QUE ES UN ACCION DE UPDATE-->
+                    <div class="col-12 text-end mt-4">
+                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="updatePswdBtn" type="button" class="btn btn-warning">Regenerar contraseña</button>
+                        <button id="submitButtonUpdate" type="button" class="btn btn-success">Actualizar</button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button id="submitButtonUpdate" type="button" class="btn btn-success">Actualizar</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const updateAdminCheckbox = document.getElementById('btnUpdate1');
+        const updateTeacherCheckbox = document.getElementById('btnUpdate2');
+        const updateStudentCheckbox = document.getElementById('btnUpdate3');
+
+        function handleCheckboxChange(event) {
+            const target = event.target;
+
+            if (target === updateAdminCheckbox || target === updateTeacherCheckbox) {
+                if (updateStudentCheckbox.checked) {
+                    updateStudentCheckbox.checked = false;
+                }
+            }
+
+            if (target === updateStudentCheckbox) {
+                if (updateAdminCheckbox.checked || updateTeacherCheckbox.checked) {
+                    updateAdminCheckbox.checked = false;
+                    updateTeacherCheckbox.checked = false;
+                }
+            }
+        }
+
+        updateAdminCheckbox.addEventListener('change', handleCheckboxChange);
+        updateTeacherCheckbox.addEventListener('change', handleCheckboxChange);
+        updateStudentCheckbox.addEventListener('change', handleCheckboxChange);
+    });
+
     document.getElementById("submitButtonUpdate").addEventListener("click",function () {
+        document.getElementById("updateForm").classList.add('was-validated');
         const form= document.getElementById("updateForm");
-        const {updateName,updateLastNameP,updateLastNameM,updateEmail,updatePassword,updateConfirmPassword}=form.elements;
+        const {updateName,updateLastNameP,updateLastNameM,updateEmail}=form.elements;
         const roles = form.querySelectorAll('input[name="updateRoles[]"]');
         let rolesSelected = false;
         for (let role of roles){
@@ -135,11 +113,12 @@
             }
         }
 
-        if(updateName.value && updateLastNameP.value && updateLastNameM.value && updateEmail.value && updatePassword.value && updateConfirmPassword.value) {
+        if(updateName.value && updateLastNameP.value && updateLastNameM.value && updateEmail.value) {
             if (updateEmail.value.substring(updateEmail.value.lastIndexOf("@") + 1) === "utez.edu.mx") {
-                if (updatePassword.value === updateConfirmPassword.value) {
                     if(rolesSelected){
-                        form.submit();
+                        if(form.checkValidity()) {
+                            form.submit();
+                        }
                     } else {
                         Swal.fire({
                             icon: "error",
@@ -149,16 +128,6 @@
                             confirmButtonColor: "#dc3545",
                         });
                     }
-                }
-                else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "Las contraseñas no coinciden",
-                        confirmButtonText: "Revisar",
-                        confirmButtonColor: "#dc3545",
-                    });
-                }
             }
             else {
                 Swal.fire({
@@ -179,5 +148,29 @@
                 confirmButtonColor: "#dc3545",
             });
         }
+    });
+    document.getElementById("updatePswdBtn").addEventListener("click",function() {
+       const form = document.createElement("form");
+       form.id = "updatePswdForm";
+       form.action = "<%=request.getContextPath()%>/userServlet";
+       form.method = "post";
+
+       const actionField = document.createElement("input");
+       actionField.type = "hidden";
+       actionField.name = "action";
+       actionField.value = "updatePswd";
+
+       const userIdField = document.createElement("input");
+         userIdField.type = "hidden";
+         userIdField.name = "updatePswdUserId";
+         userIdField.value = document.getElementById("updateUserId").value;
+
+        form.appendChild(actionField);
+        form.appendChild(userIdField);
+
+        document.body.appendChild(form);
+
+        form.submit();
+
     });
 </script>

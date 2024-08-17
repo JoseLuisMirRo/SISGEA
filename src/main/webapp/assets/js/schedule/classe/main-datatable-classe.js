@@ -1,6 +1,8 @@
 let dataTable;
 let dataTableInitiated=false;
-
+const basePath = `${window.location.origin}${window.location.pathname}`;
+const lastSlashIndex = basePath.lastIndexOf('/');
+const cleanBasePath = basePath.substring(0, lastSlashIndex + 1);
 const dataTableOptions={
     //scrollX: "2000px"
     lengthMenu:[5,10,25],
@@ -13,16 +15,16 @@ const dataTableOptions={
     ],
     pageLength:10,
     language:{
-        url:'https://cdn.datatables.net/plug-ins/2.0.8/i18n/es-ES.json'
+        url:`${cleanBasePath}assets/js/datatables-2-1-3/spanishMX.json`
     }
 };
-const initDataTable=async()=>{
+const initDataTable=async(showMode)=>{
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
     }
 
-    await listClasses();
+    await listClasses(showMode);
 
     dataTable=$('#datatable_classes').DataTable(dataTableOptions);
 
@@ -31,13 +33,15 @@ const initDataTable=async()=>{
 
 
 
-const listClasses=async()=>{
+const listClasses=async(filterStatus)=>{
     try{
-        const response=await fetch('http://localhost:8080/SISGEA_war_exploded/data/classes');
+        const response=await fetch(`${cleanBasePath}data/classes`);
         const data=await response.json();
 
         let content= ``;
-        data.classes.forEach((cl,index) => {
+        data.classes
+            .filter(cl => cl.status === filterStatus)
+            .forEach((cl,index) => {
             content+=`
             <tr>
                 <td>${cl.name}</td>
@@ -48,15 +52,17 @@ const listClasses=async()=>{
                     </i>
                 </td>
                 <td>
-                    <button class="btn btn-primary btn-sm edit-btn" 
-                    data-id="${cl.id}"
-                    data-name="${cl.name}"
-                    data-programid="${cl.program.id}" //CUIDADO: NO USAR MAYUSCULAS EN DATA
-                    ><i class="bi bi-pencil-square"></i></button>
+                      <button class="btn ${!cl.status ? 'btn-outline-secondary' : 'btn-primary'} btn-sm edit-btn" 
+                        data-id="${cl.id}"
+                        data-name="${cl.name}"
+                        data-programid="${cl.program.id}" 
+                        ${cl.status ? '' : 'disabled'} //CUIDADO: NO USAR MAYUSCULAS EN DATA
+                        ><i class="bi bi-pencil-square"></i></button>
                     
-                    <button class="btn btn-danger btn-sm delete-btn"
+                     <button class="${cl.status ? 'btn btn-danger btn-sm delete-btn' : 'btn btn-success btn-sm enable-btn'}"
                     data-id="${cl.id}"
-                    ><i class="bi bi-trash3-fill"></i></button>
+                    data-status="${cl.status}"
+                    ><i class="${cl.status ? 'bi bi-trash3-fill' : 'bi bi-check-square-fill'}"></i></button>
                 </td>
             </tr>`;
         });
@@ -68,7 +74,7 @@ const listClasses=async()=>{
 };
 
 window.addEventListener('load',async()=>{
-    await initDataTable();
+    await initDataTable(true);
 });
 
 $(document).ready(function() {
@@ -86,8 +92,20 @@ $(document).ready(function() {
 
     $('#datatable_classes').on('click', '.delete-btn', function() {
         const id = $(this).data('id');
-        $('deleteClasseId').val(id);
-        $('#classeDeleteModal').modal('show');
+        $('#deleteClassId').val(id);
+        $('#deleteClasseModal').modal('show');
     });
 
+    $('#datatable_classes').on('click', '.enable-btn', function() {
+        const id = $(this).data('id');
+        $('#revertDeleteClassId').val(id);
+        $('#revertDeleteClasseModal').modal('show');
+    });
+});
+document.getElementById('showBtn').addEventListener('click', async () => {
+    const button = document.getElementById('showBtn');
+    const showActive = button.getAttribute('data-showActive') === 'false';
+    button.setAttribute('data-showActive', showActive);
+    button.textContent = !showActive ? 'Ver clases activas' : 'Ver clases inactivas';
+    await initDataTable(showActive);
 });

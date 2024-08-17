@@ -7,29 +7,44 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!-- Modal -->
-<div class="modal fade" id="updateRoomModal" tabindex="-1" aria-labelledby="updateRoomTitle" aria-hidden="true">
+<div class="modal fade" id="updateRoomModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="updateRoomTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="updateRoomTitle">Actualizar usuario</h1>
-            </div>
             <div class="modal-body">
-                <form id="updateRoomForm" action="<%=request.getContextPath()%>/roomServlet" method="post">
+                <h1 class="modal-title fs-5" id="updateRoomTitle">Actualizar espacio</h1>
+                <hr>
+                <form class="needs-validation" id="updateRoomForm" action="<%=request.getContextPath()%>/roomServlet" method="post" novalidate>
                     <input id="updateRoomId" type="hidden" name="updateRoomId" class="form-control" />
-                    <label for="updateBuilding">Edificio:</label>
-                    <select class="form-select" id="updateBuilding" name="updateBuildingId"></select>
-                    <br><
-                    <label for="updateRoomType">Tipo de espacio:</label>
-                    <select class="form-select" id="updateRoomType" name="updateRoomTypeId"></select>
-                    <br>
-                    <label for="updateNumber">Número:</label>
-                    <input type="number" name="updateNumber" min="0" id="updateNumber" placeholder="Numero de espacio"/>
+                    <div class="form-group mb-3 row">
+                    <label for="updateBuilding" class="col-sm-4 col-form-label form-label">Edificio:</label>
+                        <div class="col-sm-8">
+                            <select class="form-select" id="updateBuilding" name="updateBuildingId"></select>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Realiza una selección</span>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                    <label for="updateRoomType" class="col-sm-4 col-form-label form-label">Tipo de espacio:</label>
+                        <div class="col-sm-8">
+                            <select class="form-select" id="updateRoomType" name="updateRoomTypeId"></select>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Realiza una selección</span>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                    <label class="col-sm-4 col-form-label col-label" for="updateNumber">Número:</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="number" name="updateNumber" min="1" max="19" id="updateNumber" placeholder="Numero de espacio" required/>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Introduce un número válido</span>
+                        </div>
+                    </div>
                     <input type="text" name="action" value="update" hidden/>
+                    <div class="col-12 text-end mt-4">
+                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="submitButtonUpdate" type="button" class="btn btn-success">Actualizar</button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button id="submitButtonUpdate" type="button" class="btn btn-success">Actualizar</button>
             </div>
         </div>
     </div>
@@ -40,7 +55,7 @@
         const updateRoomModal = document.getElementById('updateRoomModal');
 
         updateRoomModal.addEventListener('shown.bs.modal', async ()=> {
-            const response = await fetch('http://localhost:8080/SISGEA_war_exploded/select/rooms');
+            const response = await fetch(`\${cleanBasePath}select/rooms`);
             const data = await response.json();
 
             const roomTypesElement = document.getElementById("updateRoomType");
@@ -79,6 +94,9 @@
 
         });
     });
+    document.getElementById('submitButtonUpdate').addEventListener("click", () => {
+        document.getElementById('updateRoomForm').classList.add('was-validated');
+    })
 
     document.getElementById("submitButtonUpdate").addEventListener("click", () => {
         const form= document.getElementById("updateRoomForm");
@@ -86,7 +104,9 @@
 
         if(updateRoomId.value && updateRoomTypeId.value && updateBuildingId.value && updateNumber.value) {
             if(updateNumber.value>0 && !updateNumber.value.includes('.')){
-                form.submit();
+                if(form.checkValidity()) {
+                    form.submit();
+                }
             }else{
                 Swal.fire({
                     icon: "error",

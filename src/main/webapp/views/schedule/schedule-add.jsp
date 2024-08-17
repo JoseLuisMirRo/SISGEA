@@ -8,44 +8,75 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <!-- Modal -->
-<div class="modal fade" id="scheduleRegisterModal" tabindex="-1" aria-labelledby="schRegisterTitle" aria-hidden="true">
+<div class="modal fade" id="scheduleRegisterModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="schRegisterTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="schRegisterTitle">Registrar nuevo horario</h1>
-            </div>
             <div class="modal-body">
-                <form id ="registerScheduleForm" action="<%=request.getContextPath()%>/scheduleServlet" method="post">
-                    <label for="quarter">Cuatrimestre:</label>
-                    <select class="form-select" id="quarter" name="quarterId"></select>
-                    <br>
-                    <label for="classe">Clase:</label>
-                    <select class="form-select" id="classe" name="classId"></select>
-                    <br>
-                    <label for="room">Espacio:</label>
-                    <select class="form-select" id="room" name="roomId"></select>
-                    <br>
-                    <label for="day">Día:</label>
-                    <select class="form-select" id="day" name="dayId">
-                        <option value="1">Lunes</option>
-                        <option value="2">Martes</option>
-                        <option value="3">Miércoles</option>
-                        <option value="4">Jueves</option>
-                        <option value="5">Viernes</option>
-                        <option value="6">Sábado</option>
-                    </select>
-                    <br>
-                    <label for="starttime">Hora de inicio:</label>
-                    <input class="form-control" type="time" name="starttime" id="starttime" min="07:00" max="20:00"/>
-                    <br><br>
-                    <label for="endtime">Hora de fin:</label>
-                    <input class="form-control" type="time" name="endtime" id="endtime" min="08:00" max="21:00"/>
+                <h1 class="modal-title fs-5" id="schRegisterTitle">Registrar nuevo horario</h1>
+                <hr>
+                <form class="needs-validation" id ="registerScheduleForm" action="<%=request.getContextPath()%>/scheduleServlet" method="post" novalidate>
+                    <div class="form-group mb-3 row">
+                    <label for="quarter" class="col-4 col-form-label form-label">Cuatrimestre:</label>
+                        <div class="col-8">
+                            <select class="form-select" id="quarter" name="quarterId" required></select>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Selecciona un cuatrimestre</span>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                    <label for="classe" class="col-4 col-form-label form-label">Clase:</label>
+                        <div class="col-8">
+                            <select class="form-select" id="classe" name="classId" required></select>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Selecciona una clase</span>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label for="room" class="col-4 col-form-label form-label">Espacio:</label>
+                        <div class="col-8">
+                            <select class="form-select" id="room" name="roomId" required></select>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Selecciona un espacio</span>
+
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                    <label for="day" class="col-4 col-form-label form-label">Día:</label>
+                        <div class="col-8">
+                            <select class="form-select" id="day" name="dayId" required>
+                                <option value="1">Lunes</option>
+                                <option value="2">Martes</option>
+                                <option value="3">Miércoles</option>
+                                <option value="4">Jueves</option>
+                                <option value="5">Viernes</option>
+                                <option value="6">Sábado</option>
+                            </select>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Selecciona un día</span>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                    <label for="starttime" class="col-4 col-form-label form-label">Hora de inicio:</label>
+                        <div class="col-8">
+                            <input class="form-control" type="time" name="starttime" id="starttime" min="07:00" max="20:00" required/>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Ingresa una hora válida</span>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                    <label for="endtime" class="col-4 col-form-label form-label">Hora de fin:</label>
+                        <div class="col-8">
+                            <input class="form-control" type="time" name="endtime" id="endtime" min="08:00" max="21:00" required/>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Ingresa una hora válida</span>
+                        </div>
+                    </div>
+                    <div class="col-12 text-end mt-4">
+                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                        <button id="submitButtonAdd" type="button" class="btn btn-success">Registrar</button>
+                    </div>
                     <input type="text" name="action" value="add" hidden/>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button id="submitButtonAdd" type="button" class="btn btn-success">Registrar</button>
             </div>
         </div>
     </div>
@@ -57,9 +88,9 @@
 
         scheduleRegisterModal.addEventListener('shown.bs.modal', async ()=> {
             const [response1, response2, response3] = await Promise.all([
-                fetch('http://localhost:8080/SISGEA_war_exploded/data/quarters'),
-                fetch('http://localhost:8080/SISGEA_war_exploded/data/classes'),
-                fetch('http://localhost:8080/SISGEA_war_exploded/data/rooms')
+                fetch(`\${cleanBasePath}data/quarters`),
+                fetch(`\${cleanBasePath}data/classes`),
+                fetch(`\${cleanBasePath}data/rooms`)
             ]);
 
             const quarters = await response1.json();
@@ -80,21 +111,45 @@
                 roomsElement.removeChild(roomsElement.firstChild);
             }
 
-            quarters.forEach((quarter) => {
+            quarters
+                .sort((a, b) => {
+                    if (a.name > b.name) return 1;
+                    if (a.name < b.name) return -1;
+                    return 0;
+                })
+                .forEach((quarter) => {
                 const option = document.createElement("option");
                 option.value = quarter.id;
                 option.textContent = quarter.name;
                 quartersElement.appendChild(option);
             });
 
-            classes.forEach((classe) => {
+            classes
+                .filter((classe) => classe.status === true)
+                .sort((a, b) => {
+                    if (a.name > b.name) return 1;
+                    if (a.name < b.name) return -1;
+                    return 0;
+                })
+                .forEach((classe) => {
                 const option = document.createElement("option");
                 option.value = classe.id;
-                option.textContent = classe.name;
+                option.textContent = `\${classe.name} - \${classe.program.name}`;
                 classesElement.appendChild(option);
             });
 
-            rooms.forEach((room) => {
+            rooms
+                .filter((room) => room.status === true)
+                .sort((a, b) => {
+                    if (a.roomType.name > b.roomType.name) return 1;
+                    if (a.roomType.name < b.roomType.name) return -1;
+                    if (a.number > b.number) return 1;
+                    if (a.number < b.number) return -1;
+                    if (a.building.name > b.building.name) return 1;
+                    if (a.building.name < b.building.name) return -1;
+                    return 0;
+                })
+                .forEach((room) => {
                 const option = document.createElement("option");
                 option.value = room.id;
                 option.textContent = `\${room.roomType.name} \${room.number} - \${room.building.name}`;
@@ -105,6 +160,7 @@
 
     document.getElementById("submitButtonAdd").addEventListener("click", () => {
         const form = document.getElementById("registerScheduleForm");
+        form.classList.add('was-validated');
         const {quarter, classe, room, day, starttime, endtime} = form.elements;
 
         if(starttime.value.split(":").length === 2){
@@ -129,7 +185,9 @@
             if (day.value != 6) {
                 if (starttime.value >= initialStartTime && starttime.value <= finalStartTime) {
                     if (endtime.value >= initialEndTime && endtime.value <= finalEndTime) {
-                        form.submit();
+                        if(form.checkValidity()) {
+                            form.submit();
+                        }
                     } else {
                         Swal.fire({
                             icon: "error",
@@ -151,7 +209,9 @@
             } else {
                 if (starttime.value >= initialStartTime && starttime.value <= wfinalStartTime) {
                     if (endtime.value >= initialEndTime && endtime.value <= wfinalEndTime) {
-                        form.submit();
+                        if(form.checkValidity()) {
+                            form.submit();
+                        }
                     } else {
                         Swal.fire({
                             icon: "error",
