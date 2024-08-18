@@ -74,7 +74,7 @@ const fetchSchedules = async () => {
                     formattedEvents.push({
                         id: `S${schedule.id}`,
                         resourceId: schedule.room.id,
-                        title: `Clase: ${schedule.classe.name}`,
+                        title: `Clase: ${schedule.classe.name} - Grupo: ${schedule.group.name}`,
                         start: `${formattedDate}T${startTime24}`,
                         end: `${formattedDate}T${endTime24}`,
                         color: '#d30505'
