@@ -12,13 +12,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FullCalendar</title>
     <style>
-        /* Estilo para posicionar el dropdown */
-        .dropdown-menu {
-            padding: 0;
-            border: none;
-            box-shadow: none;
-        }
-
         #date-input {
             border: none;
             outline: none;
@@ -75,6 +68,9 @@
                 },
                 selectable: false,
                 editable: false,
+                height: 'auto',
+                slotDuration: '00:30:00',
+                dayMinWidth: 200,
                 nowIndicator: true,
                 slotMinTime: "07:00:00",
                 slotMaxTime: "22:00:00",
