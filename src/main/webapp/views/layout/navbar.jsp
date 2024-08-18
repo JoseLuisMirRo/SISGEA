@@ -71,9 +71,9 @@
                 </div>
             </div>
             <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle"></i>
-                </button>
+                <a class="nav-link dropdown-toggle" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="bi bi-person-circle" style="font-size: 2rem";></i>
+                </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style="width: 250px;">
                     <li><a class="dropdown-item-text text-end"><%=user.getFirstName()%> <%=user.getLastNameP()%> <%=user.getLastNameM()%></a></li>
                     <li><a class="dropdown-item-text text-end"><%=user.getRole().getName()%></a></li>
