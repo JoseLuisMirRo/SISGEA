@@ -8,9 +8,9 @@ const dataTableOptions={
     lengthMenu:[5,10,25],
     scrollX: true,
     columnDefs: [
-        {className: "text-center",targets:[0,1,2,3]},
-        {orderable: false,targets:[3]},
-        {searchable:false,targets:[3]},
+        {className: "text-center",targets:[0,1,2,3,4]},
+        {orderable: false,targets:[3,4]},
+        {searchable:false,targets:[3,4]},
         {width:"",targets:[]}
     ],
     pageLength:10,
@@ -45,6 +45,7 @@ const listClasses=async(filterStatus)=>{
             content+=`
             <tr>
                 <td>${cl.name}</td>
+                <td>${cl.grade.number}</td>
                 <td>${cl.program.name}</td>
                 <td>
                     <i class="${cl.status ? 'bi bi-check-circle' : 'bi bi-x-circle'}" 
@@ -55,7 +56,8 @@ const listClasses=async(filterStatus)=>{
                       <button class="btn ${!cl.status ? 'btn-outline-secondary' : 'btn-primary'} btn-sm edit-btn" 
                         data-id="${cl.id}"
                         data-name="${cl.name}"
-                        data-programid="${cl.program.id}" 
+                        data-programid="${cl.program.id}" }
+                        data-gradeid="${cl.grade.id}"
                         ${cl.status ? '' : 'disabled'} //CUIDADO: NO USAR MAYUSCULAS EN DATA
                         ><i class="bi bi-pencil-square"></i></button>
                     
@@ -82,10 +84,12 @@ $(document).ready(function() {
         const id = $(this).data('id');
         const name = $(this).data('name');
         const programId = $(this).data('programid');
+        const gradeId = $(this).data('gradeid');
 
         $('#classeUpdateModal').attr('data-id', id);
         $('#classeUpdateModal').attr('data-name', name);
         $('#classeUpdateModal').attr('data-programid', programId);
+        $('#classeUpdateModal').attr('data-gradeid', gradeId);
 
         $('#classeUpdateModal').modal('show');
     });

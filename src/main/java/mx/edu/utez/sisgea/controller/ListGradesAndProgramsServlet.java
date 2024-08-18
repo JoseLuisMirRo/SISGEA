@@ -8,9 +8,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import mx.edu.utez.sisgea.dao.GradeDao;
-import mx.edu.utez.sisgea.dao.GroupDao;
+import mx.edu.utez.sisgea.dao.ProgramDao;
 import mx.edu.utez.sisgea.model.GradeBean;
 import mx.edu.utez.sisgea.model.GroupBean;
+import mx.edu.utez.sisgea.model.ProgramBean;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,21 +19,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/data/gradesAndGroups")
-public class ListGradesAndGroups extends HttpServlet {
+@WebServlet("/data/gradesAndPrograms")
+public class ListGradesAndProgramsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
 
-        GroupDao groupDao = new GroupDao();
         GradeDao gradeDao = new GradeDao();
+        ProgramDao programDao = new ProgramDao();
 
-        List<GroupBean> groupsList = groupDao.getAllGroups();
+        List<ProgramBean> programsList = programDao.getAllPrograms();
         List<GradeBean> gradesList = gradeDao.getAllGrades();
 
         Map<String, Object> combinedLists = new HashMap<>();
-        combinedLists.put("groups", groupsList);
+        combinedLists.put("programs", programsList);
         combinedLists.put("grades", gradesList);
 
         Gson gson = new GsonBuilder().create();

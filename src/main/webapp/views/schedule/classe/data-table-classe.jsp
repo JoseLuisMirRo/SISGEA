@@ -35,6 +35,7 @@
                 <thead> <!--Encabezado de la tabla-->
                 <tr> <!--Fila de la tabla-->
                     <th>Nombre</th>
+                    <th>Grado</th>
                     <th>Programa</th>
                     <th>Estado</th>
                     <th>Opciones</th>

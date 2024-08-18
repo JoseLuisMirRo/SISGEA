@@ -38,7 +38,7 @@ public class GroupDao extends DataBaseConnection {
         GroupBean group = null;
         try {
             con = createConnection();
-            ps = con.prepareCall("SELECT * FROM group WHERE id = ?");
+            ps = con.prepareCall("SELECT * FROM schedule_group WHERE id = ?");
             ps.setInt(1, id);
             rs = ps.executeQuery();
 

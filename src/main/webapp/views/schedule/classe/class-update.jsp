@@ -24,6 +24,14 @@
                         </div>
                     </div>
                     <div class="form-group mb-3 row">
+                        <label for="updateGrade" class="col-4 col-form-label form-label">Grado:</label>
+                        <div class="col-8">
+                            <select class="form-select" id="updateGrade" name="updateGradeId" required></select>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Selecciona un grado</span>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
                     <label for="updateProgram" class="col-4 col-form-label form-label">Programa:</label>
                         <div class="col-8">
                             <select class="form-select" id="updateProgram" name="updateProgramId" required></select>
@@ -47,13 +55,17 @@
         const classeUpdateModal = document.getElementById('classeUpdateModal');
 
         classeUpdateModal.addEventListener('shown.bs.modal', async ()=> {
-            const response = await fetch(`\${cleanBasePath}data/classes`);
+            const response = await fetch(`\${cleanBasePath}data/gradesAndPrograms`);
             const data = await response.json();
 
             const programSelect = document.getElementById('updateProgram');
+            const gradeSelect = document.getElementById('updateGrade');
 
             while(programSelect.firstChild){
                 programSelect.removeChild(programSelect.firstChild);
+            }
+            while(gradeSelect.firstChild){
+                gradeSelect.removeChild(gradeSelect.firstChild);
             }
 
             data.programs.forEach(program => {
@@ -63,22 +75,31 @@
                 programSelect.appendChild(option);
             });
 
+            data.grades.forEach(grade => {
+                const option = document.createElement('option');
+                option.value = grade.id;
+                option.textContent = grade.number;
+                gradeSelect.appendChild(option);
+            });
+
             const id = classeUpdateModal.getAttribute('data-id');
             const name = classeUpdateModal.getAttribute('data-name');
             const programId = classeUpdateModal.getAttribute('data-programid');
+            const gradeId = classeUpdateModal.getAttribute('data-gradeid');
 
             document.getElementById('updateClasseId').value = id;
             document.getElementById('updateName').value = name;
             programSelect.value = programId;
+            gradeSelect.value = gradeId;
         });
     });
 
     document.getElementById('submitButtonUpdate').addEventListener("click", () => {
         const form = document.getElementById('updateClasseForm');
         form.classList.add('was-validated');
-        const {updateName, updateProgram} = form.elements;
+        const {updateName, updateProgram, updateGrade} = form.elements;
 
-        if(updateName.value && updateProgram.value) {
+        if(updateName.value && updateProgram.value && updateGrade.value) {
             if(form.checkValidity()) {
                 form.submit();
             }

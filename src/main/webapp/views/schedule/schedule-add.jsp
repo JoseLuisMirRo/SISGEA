@@ -32,14 +32,6 @@
                         </div>
                     </div>
                     <div class="form-group mb-3 row">
-                        <label for="grade" class="col-4 col-form-label form-label">Grado:</label>
-                        <div class="col-8">
-                            <select class="form-select" id="grade" name="gradeId" required></select>
-                            <span class="valid-feedback">El dato es correcto</span>
-                            <span class="invalid-feedback">Selecciona un grado</span>
-                        </div>
-                    </div>
-                    <div class="form-group mb-3 row">
                         <label for="group" class="col-4 col-form-label form-label">Grupo:</label>
                         <div class="col-8">
                             <select class="form-select" id="group" name="groupId" required></select>
@@ -103,24 +95,21 @@
         const scheduleRegisterModal = document.getElementById('scheduleRegisterModal');
 
         scheduleRegisterModal.addEventListener('shown.bs.modal', async ()=> {
-            const [response1, response2, response3, response4] = await Promise.all([
+            const [response1, response2, response3] = await Promise.all([
                 fetch(`\${cleanBasePath}data/quarters`),
                 fetch(`\${cleanBasePath}data/classes`),
                 fetch(`\${cleanBasePath}data/rooms`),
-                fetch(`\${cleanBasePath}data/gradesAndGroups`)
             ]);
 
             const quarters = await response1.json();
-            const classes = (await response2.json()).classes;
+            const classesandgroups = await response2.json();
+            const classes = classesandgroups.classes;
+            const groups = classesandgroups.groups;
             const rooms = await response3.json();
-            const gradesgroups = await response4.json();
-            const grades = gradesgroups.grades;
-            const groups = gradesgroups.groups;
 
             const quartersElement = document.getElementById("quarter");
             const classesElement = document.getElementById("classe");
             const roomsElement = document.getElementById("room");
-            const gradesElement = document.getElementById("grade");
             const groupsElement = document.getElementById("group");
 
 
@@ -132,9 +121,6 @@
             }
             while(roomsElement.firstChild){
                 roomsElement.removeChild(roomsElement.firstChild);
-            }
-            while(gradesElement.firstChild){
-                gradesElement.removeChild(gradesElement.firstChild);
             }
             while(groupsElement.firstChild){
                 groupsElement.removeChild(groupsElement.firstChild);
@@ -185,13 +171,6 @@
                 roomsElement.appendChild(option);
             });
 
-            grades
-                .forEach((grade) => {
-                    const option = document.createElement("option");
-                    option.value = grade.id;
-                    option.textContent = grade.number;
-                    gradesElement.appendChild(option);
-                });
             groups
                 .forEach((group) => {
                     const option = document.createElement("option");
@@ -205,7 +184,7 @@
     document.getElementById("submitButtonAdd").addEventListener("click", () => {
         const form = document.getElementById("registerScheduleForm");
         form.classList.add('was-validated');
-        const {quarter, classe, room, day, starttime, endtime} = form.elements;
+        const {quarter, classe, group, room, day, starttime, endtime} = form.elements;
 
         if(starttime.value.split(":").length === 2){
             starttime.value += ":00";
@@ -225,7 +204,7 @@
         const wfinalStartTime = "15:00:00";
         const wfinalEndTime = "16:00:00";
 
-        if (quarter.value && classe.value && room.value && day.value && starttime.value && endtime.value) {
+        if (quarter.value && classe.value && room.value && day.value && starttime.value && endtime.value && group.value) {
             if (day.value != 6) {
                 if (starttime.value >= initialStartTime && starttime.value <= finalStartTime) {
                     if (endtime.value >= initialEndTime && endtime.value <= finalEndTime) {

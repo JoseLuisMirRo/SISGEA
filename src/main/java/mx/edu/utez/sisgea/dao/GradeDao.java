@@ -26,7 +26,7 @@ public class GradeDao extends DataBaseConnection {
 
             if (rs.next()) {
                 int idE = rs.getInt("id");
-                int gradeE = rs.getInt("grade");
+                int gradeE = rs.getInt("number");
                 grade = new GradeBean(idE, gradeE);
             }
         } catch (Exception e) {

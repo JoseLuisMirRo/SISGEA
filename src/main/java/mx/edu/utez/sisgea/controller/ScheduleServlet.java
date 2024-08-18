@@ -29,7 +29,6 @@ public class ScheduleServlet extends HttpServlet {
         ClassDao classDao = new ClassDao();
         QuarterDao quarterDao = new QuarterDao();
         RoomDao roomDao = new RoomDao();
-        GradeDao gradeDao = new GradeDao();
         GroupDao groupDao = new GroupDao();
 
 
@@ -47,7 +46,6 @@ public class ScheduleServlet extends HttpServlet {
                     Time startTime = Time.valueOf(req.getParameter("starttime"));
                     Time endTime = Time.valueOf(req.getParameter("endtime"));
                     int groupId = Integer.parseInt(req.getParameter("groupId"));
-                    int gradeId = Integer.parseInt(req.getParameter("gradeId"));
 
                     //VALIDAMOS HORA FINAL>HORA INICIO - EN SERVLET POR QUE TAMBIEN IRÁ CLIENT-SIDE Y SI VA CLIENT SIDE
                     //NO ES NECESARIO VALIDAR EN PROCEDIMIENTO ALMACENADO
@@ -62,7 +60,6 @@ public class ScheduleServlet extends HttpServlet {
                     scheduleBean.setStartTime(startTime);
                     scheduleBean.setEndTime(endTime);
                     scheduleBean.setGroup(groupDao.getGroupById(groupId));
-                    scheduleBean.setGrade(gradeDao.getGradeById(gradeId));
                     scheduleDao.insertSchedule(scheduleBean);
                     activeSession.setAttribute("status", "registerOk");
                     resp.sendRedirect(req.getContextPath() + "/scheduleServlet");
@@ -76,10 +73,12 @@ public class ScheduleServlet extends HttpServlet {
                 break;
 
                 case "update":
+                    System.out.println(req.getParameter("updateGroupId"));
                     try{
                         int updateScheduleId = Integer.parseInt(req.getParameter("updateScheduleId"));
                         int classId = Integer.parseInt(req.getParameter("updateClassId"));
                         int quarterId = Integer.parseInt(req.getParameter("updateQuarterId"));
+                        int groupId = Integer.parseInt(req.getParameter("updateGroupId"));
                         int roomId = Integer.parseInt(req.getParameter("updateRoomId"));
                         int dayId = Integer.parseInt(req.getParameter("updateDayId"));
                         Time startTime = Time.valueOf(req.getParameter("updateStarttime"));
@@ -90,9 +89,9 @@ public class ScheduleServlet extends HttpServlet {
                         if (endTime.before(startTime)){
                             throw new IllegalArgumentException("startAfterEnd");
                         }
-
                         scheduleBean.setId(updateScheduleId);
                         scheduleBean.setClasse(classDao.getClass(classId));
+                        scheduleBean.setGroup(groupDao.getGroupById(groupId));
                         scheduleBean.setQuarter(quarterDao.getQuarter(quarterId));
                         scheduleBean.setRoom(roomDao.getRoom(roomId));
                         scheduleBean.setDay(Day.numbToDay(dayId));
