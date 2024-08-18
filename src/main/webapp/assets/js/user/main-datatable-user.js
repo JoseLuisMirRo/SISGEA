@@ -10,8 +10,8 @@ const dataTableOptions={
     scrollX: true,
     columnDefs: [
         {className: "text-center",targets:[2,3,4,5,6]},
-        {orderable: false,targets:[4,5,6]},
-        {searchable:false,targets:[4,5,6]},
+        {orderable: false,targets:[5,6]},
+        {searchable:false,targets:[5,6]},
     ],
     pageLength:10,
     language:{
