@@ -6,8 +6,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import mx.edu.utez.sisgea.dao.ScheduleDao;
 import mx.edu.utez.sisgea.model.Day;
+import mx.edu.utez.sisgea.model.LoginBean;
 import mx.edu.utez.sisgea.model.ScheduleBean;
 
 import java.io.IOException;
@@ -23,6 +25,13 @@ public class ListSchedulesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
+        HttpSession activeSession = req.getSession();
+        LoginBean user = (LoginBean) activeSession.getAttribute("activeUser");
+
+        if(user==null || user.getRole()==null){
+            req.getRequestDispatcher("/views/layout/error403.jsp").forward(req, resp);
+            return;
+        }
 
         ScheduleDao schDao = new ScheduleDao();
         List<ScheduleBean> schList = schDao.getAllSchedules();

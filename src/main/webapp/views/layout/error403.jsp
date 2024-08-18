@@ -24,7 +24,7 @@
         <div class="col-8" style=" text-align:center; margin-top: 50px;">
                 <h1 style="font-family: Calibri Light; font-size: 80px;"> LO SENTIMOS </h1>
                 <p style="font-family: Calibri Light; font-size: 20px; margin-left: 18px;">  NO TIENES PERMISOS PARA ACCEDER A ESTE RECURSO</p>
-                <p style="font-family: Calibri Light; margin-top: -15px; margin-right: 88px; font-size: 20px;"> Verifica tu rol y vuelve a la <a href="https://getbootstrap.esdocu.com" style="text-decoration:none">pagina de inicio</a> </p>
+                <p style="font-family: Calibri Light; margin-top: -15px; margin-right: 88px; font-size: 20px;"> Verifica tu rol y vuelve a la <a href="<%=request.getContextPath()%>/calendar" style="text-decoration:none">pagina de inicio</a> </p>
             <br> <img src="<%=request.getContextPath()%>/assets/img/Chris.png" style=" width: 310px; margin-top: -30px;">
             <p style="font-family: Calibri Light; margin-top: -45px; margin-left: 250px; font-size: 26px;"><b>Chris</b></p>
             <p style=" font-family: Calibri Light; margin-left: 435px; margin-top: -25px; font-size: 20px;">Conoce los perros de la UTEZ</p>
