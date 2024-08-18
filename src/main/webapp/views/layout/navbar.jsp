@@ -114,9 +114,11 @@
         });
     }
     document.addEventListener('DOMContentLoaded', function() {
-        const currentPath = window.location.pathname;
+        let currentPath = window.location.pathname;
         const navLinks = document.querySelectorAll('.nav-link');
-        console.log(currentPath);
+        if(currentPath === "${pageContext.request.contextPath}/classServlet"){
+            currentPath = "${pageContext.request.contextPath}/scheduleServlet";
+        }
 
         navLinks.forEach(link => {
             if (link.getAttribute('href') === currentPath) {
