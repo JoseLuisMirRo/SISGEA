@@ -19,6 +19,12 @@ const dataTableOptions={
     }
 };
 const initDataTable=async(showMode)=>{
+    const loadingAnimation = document.getElementById('loading-animation');
+    const classesTable = document.getElementById('classes-table');
+
+    loadingAnimation.style.display = 'block';
+    classesTable.style.display = 'none';
+
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
@@ -29,6 +35,8 @@ const initDataTable=async(showMode)=>{
     dataTable=$('#datatable_classes').DataTable(dataTableOptions);
 
     dataTableInitiated=true;
+    loadingAnimation.style.display = 'none';
+    classesTable.style.display = 'block';
 };
 
 
