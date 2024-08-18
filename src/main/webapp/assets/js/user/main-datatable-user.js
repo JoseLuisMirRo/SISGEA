@@ -19,6 +19,12 @@ const dataTableOptions={
     }
 };
 const initDataTable=async(showMode)=>{
+    const loadingAnimation = document.getElementById('loading-animation');
+    const userTable = document.getElementById('user-table');
+
+    loadingAnimation.style.display = 'block';
+    userTable.style.display = 'none';
+
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
@@ -29,6 +35,8 @@ const initDataTable=async(showMode)=>{
     dataTable=$('#datatable_users').DataTable(dataTableOptions);
 
     dataTableInitiated=true;
+    loadingAnimation.style.display = 'none';
+    userTable.style.display = 'block';
 };
 
 
