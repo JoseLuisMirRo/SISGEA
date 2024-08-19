@@ -77,7 +77,7 @@
                     <input type="text" name="action" value="delete"/>
                 </form>
                 <div class="col-12 text-center mt-4">
-                    <button id="submitButtonDelete" type="button" class="btn btn-success">Eliminar</button>
+                    <button id="submitButtonDelete" type="button" class="btn btn-success">Inhabilitar</button>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </div>
