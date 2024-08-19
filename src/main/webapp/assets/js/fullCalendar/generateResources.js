@@ -74,7 +74,7 @@ const fetchSchedules = async () => {
                     formattedEvents.push({
                         id: `S${schedule.id}`,
                         resourceId: schedule.room.id,
-                        title: `Clase: ${schedule.classe.name} - Grupo: ${schedule.group.name}`,
+                        title: `Clase: ${schedule.classe.name} - Grupo: ${schedule.group.name} - ${schedule.classe.program.name}`,
                         start: `${formattedDate}T${startTime24}`,
                         end: `${formattedDate}T${endTime24}`,
                         color: '#d30505'
@@ -142,7 +142,7 @@ const hourTo24 = (hour12) => {
     else if (period === 'a. m.' && hour === 12){
         hour = 0;
     }
-    return `\${hour.toString().padStart(2, '0')}:\${minute}:\${second}`;
+    return `${hour.toString().padStart(2, '0')}:${minute}:${second}`;
 }
 
 
