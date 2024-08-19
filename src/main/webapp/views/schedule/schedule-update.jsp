@@ -285,7 +285,7 @@
         let [hour, minute, second] = time.split(':'); //DIVIDIMOS HORAS, MINUTOS Y SEGUNDOS
         hour = parseInt(hour,10);
 
-        if(period === 'p. m.'){
+        if(period === 'p. m.' && hour !== 12){
             hour +=12;
         }
         else if (period === 'a. m.' && hour === 12){
