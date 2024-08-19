@@ -21,6 +21,10 @@
 </head>
 <body>
 <div class="main-container-table"> <!--Contenedor de una tabla con margen de 6 unidades-->
+    <div id="loading-animation" style="display: none; text-align: center;">
+        <img src="${pageContext.request.contextPath}/assets/img/preloader.gif" alt="Cargando..." />
+    </div>
+    <div id="room-table">
     <div>
         <h2 style="color: black">Gestión de espacios</h2>
     </div>
@@ -45,6 +49,7 @@
                 <tbody id="tableBody_rooms"></tbody> <!--Cuerpo de la tabla-->
             </table>
         </div>
+    </div>
     </div>
 </div>
 <!--Bootstrap SCRIPT-->
