@@ -21,6 +21,12 @@ const dataTableOptions={
 };
 
 const initDataTable=async(showMode)=>{
+    const loadingAnimation = document.getElementById('loading-animation');
+    const reserveTable = document.getElementById('reserve-table');
+
+    loadingAnimation.style.display = 'block';
+    reserveTable.style.display = 'none';
+
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
@@ -31,6 +37,8 @@ const initDataTable=async(showMode)=>{
     dataTable=$('#datatable_reserves').DataTable(dataTableOptions);
 
     dataTableInitiated=true;
+    loadingAnimation.style.display = 'none';
+    reserveTable.style.display = 'block';
 };
 
 const listReserves=async(filterStatus)=>{
