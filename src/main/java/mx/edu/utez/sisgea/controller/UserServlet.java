@@ -81,23 +81,26 @@ import mx.edu.utez.sisgea.utility.EmailService;
 
                         //SOPORTE MULTIROL
                         String[] updateRolesIds = req.getParameterValues("updateRoles[]");
+                        for(String s : updateRolesIds){
+                            System.out.println(s);
+                        }
                         List<Integer> currentRolesIds = userRoleDao.getUserRoles(userBean.getId());
 
                         List<Integer> updateRolesIdsList = Arrays.stream(updateRolesIds).map(Integer::parseInt).collect(Collectors.toList());
 
                         if(!(updateRolesIdsList.equals(currentRolesIds))){ //COMPARO SI LAS LISTAS DE ROLES NO SON IGUALES
-                            if(updateRolesIdsList.size()>currentRolesIds.size()){ //EN CASO DE QUE SE AGREGUE UN ROL
-                                for(Integer ur : updateRolesIdsList){ //RECORRO LA LISTA DE IDS ACTUALIZADOS
-                                    if(!currentRolesIds.contains(ur)){ //BUSCO LOS IDS QUE NO ESTAN EN LA LISTA SIN ACTUALIZAR
-                                        userRoleDao.insertUserRole(new UserroleBean(userBean.getId(),ur)); //ASIGNO EL ID DE ROL NUEVO
-                                    }
+                            //ELIMINO LOS ROLES QUE YA NO TIENE
+                            for (Integer currentRoleId : currentRolesIds) {
+                                if (!updateRolesIdsList.contains(currentRoleId)) {
+                                    UserroleBean userrole = new UserroleBean(userBean.getId(), currentRoleId);
+                                    userRoleDao.deleteUserRoles(userrole);
                                 }
                             }
-                            else{
-                                for(Integer cr : currentRolesIds){ //EN CASO DE QUE SE ELIMINE UN ROL RECORRO LA LISTA DE IDS ANTIGUOS
-                                    if(!updateRolesIdsList.contains(cr)){ //BUSCO LOS IDS QUE NO ESTÉN EN LA LISTA ACTUALIZADA
-                                        userRoleDao.deleteUserRoles(new UserroleBean(userBean.getId(),cr)); //ELIMINO ESOS IDS
-                                    }
+                            //AGREGO LOS ROLES NUEVOS
+                            for (Integer updateRoleId : updateRolesIdsList) {
+                                if (!currentRolesIds.contains(updateRoleId)) {
+                                    UserroleBean userrole = new UserroleBean(userBean.getId(), updateRoleId);
+                                    userRoleDao.insertUserRole(userrole);
                                 }
                             }
                         }

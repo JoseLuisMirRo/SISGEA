@@ -60,7 +60,7 @@
                             <label class="btn btn-outline-primary" for="btncheck2">Docente</label>
 
                             <input type="checkbox" class="btn-check" id="btncheck3" value="3" autocomplete="off" name="roles[]">
-                            <label class="btn btn-outline-primary" for="btncheck3">Estudiante</label>
+                            <label class="btn btn-outline-primary" for="btncheck3">Alumno</label>
                         </div>
                     </div>
                     <input type="text" name="action" value="add" hidden />
