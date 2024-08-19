@@ -17,6 +17,16 @@
     <!--Bootstrap ICONS-->
     <link href="${pageContext.request.contextPath}/assets/css/bootstrap-5-3-3/bootstrap-icons.min.css" rel="stylesheet">
 
+    <style>
+        @media (max-width: 768px) {
+            .btn-responsive {
+                width: 100%;
+                max-width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+
 </head>
 <body>
 
@@ -28,7 +38,7 @@
     <div>
         <h2 style="color: black">Gestión de horarios</h2>
     </div>
-    <div class="text-end">
+    <div class="d-flex flex-column flex-md-row justify-content-md-end align-items-center gap-2 mb-4">
         <button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/classServlet';">Gestionar clases</button>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#scheduleRegisterModal" id="scheduleRegisterButton">
             <i class="bi bi-plus-lg"></i> Agregar horario </button>
