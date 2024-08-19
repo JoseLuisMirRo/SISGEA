@@ -17,6 +17,15 @@
     <link href="${pageContext.request.contextPath}/assets/css/datatables-2-1-3/datatables.min.css" rel="stylesheet">
     <!--Bootstrap ICONS-->
     <link href="${pageContext.request.contextPath}/assets/css/bootstrap-5-3-3/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        @media (max-width: 768px) {
+            .btn-responsive {
+                width: 50%;
+                max-width: 50%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
 
 </head>
 <body>
@@ -28,8 +37,8 @@
     <div>
         <h2 style="color: black">Gestión de feriados</h2>
     </div>
-    <div class="text-end">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nbdRegisterModal" id="nbdRegisterButton">
+    <div class="d-flex flex-column flex-md-row justify-content-md-end align-items-center gap-2 mb-4">
+        <button type="button" class="btn btn-primary btn-responsive" data-bs-toggle="modal" data-bs-target="#nbdRegisterModal" id="nbdRegisterButton">
             <i class="bi bi-plus-lg"></i> Agregar feriado </button>
     </div>
     <div class="row"> <!--Fila de la tabla-->
