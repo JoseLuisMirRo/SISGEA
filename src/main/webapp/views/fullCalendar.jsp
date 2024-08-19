@@ -69,7 +69,7 @@
                 selectable: false,
                 editable: false,
                 height: 'auto',
-                slotDuration: '00:30:00',
+                slotDuration: '00:20:00',
                 dayMinWidth: 200,
                 nowIndicator: true,
                 slotMinTime: "07:00:00",

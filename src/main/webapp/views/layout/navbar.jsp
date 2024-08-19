@@ -31,10 +31,10 @@
                     aria-labelledby="offcanvasNavbarLabel"
             >
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">SISGEA</h5>
+                    <img class="offcanvas-title" src="${pageContext.request.contextPath}/assets/img/LogoSisgea.png" alt="logoSisgea" width=auto height="70">
                     <button
                             type="button"
-                            class="btn-close"
+                            class="btn-close btn-close-white"
                             data-bs-dismiss="offcanvas"
                             aria-label="Close"
                     ></button>
@@ -92,7 +92,7 @@
                     data-bs-target="#offcanvasNavbar"
                     aria-controls="offcanvasNavbar"
                     aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <i class="bi bi-list" style="color:#e6e6ff; font-size: 2rem;"></i>
             </button>
         </div>
     </nav>
