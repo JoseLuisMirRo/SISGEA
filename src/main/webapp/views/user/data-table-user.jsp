@@ -21,8 +21,8 @@
     <style>
         @media (max-width: 768px) { /* Ajuste para pantallas pequeñas, el ancho del toggler del navbar */
             .btn-responsive {
-                width: 50%;
-                max-width: 50%;
+                width: 75%;
+                max-width: 75%;
             }
         }
     </style>
