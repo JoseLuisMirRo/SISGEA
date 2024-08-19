@@ -20,6 +20,11 @@ const dataTableOptions={
     }
 };
 const initDataTable=async()=>{
+    const loadingAnimation = document.getElementById('loading-animation');
+    const nbdTable = document.getElementById('nbd-table');
+    loadingAnimation.style.display = 'block';
+    nbdTable.style.display = 'none';
+
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
@@ -30,6 +35,8 @@ const initDataTable=async()=>{
     dataTable=$('#datatable_nbd').DataTable(dataTableOptions);
 
     dataTableInitiated=true;
+    loadingAnimation.style.display = 'none';
+    nbdTable.style.display = 'block';
 };
 
 
