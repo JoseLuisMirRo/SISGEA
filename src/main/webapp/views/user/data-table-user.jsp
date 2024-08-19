@@ -17,6 +17,16 @@
     <link href="${pageContext.request.contextPath}/assets/css/datatables-2-1-3/datatables.min.css" rel="stylesheet">
     <!--Bootstrap ICONS-->
     <link href="${pageContext.request.contextPath}/assets/css/bootstrap-5-3-3/bootstrap-icons.min.css" rel="stylesheet">
+
+    <style>
+        @media (max-width: 768px) { /* Ajuste para pantallas pequeñas, el ancho del toggler del navbar */
+            .btn-responsive {
+                width: 50%;
+                max-width: 50%;
+            }
+        }
+    </style>
+
 </head>
 <body>
 <div class="main-container-table">
@@ -27,12 +37,12 @@
     <div>
         <h2 style="color: black">Gestión de usuarios</h2>
     </div>
-    <div class="text-end">
-        <button type="button" id="showBtn" class="btn btn-primary">Ver usuarios inactivos</button>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bulkRegisterModal">Agregar usuarios masivamente</button>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userRegisterModal">
+        <div class="d-flex flex-column flex-md-row justify-content-md-end align-items-center gap-2 mb-4">
+        <button type="button" id="showBtn" class="btn btn-primary btn-responsive">Ver usuarios inactivos</button>
+        <button type="button" class="btn btn-primary btn-responsive" data-bs-toggle="modal" data-bs-target="#bulkRegisterModal">Agregar usuarios masivamente</button>
+        <button type="button" class="btn btn-primary btn-responsive" data-bs-toggle="modal" data-bs-target="#userRegisterModal">
             <i class="bi bi-plus-lg"></i> Agregar Usuario </button>
-    </div>
+        </div>
     <div class="row"> <!--Fila de la tabla-->
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"><!--Columna de la tabla que va a ser de 12 en todos los tamaños de pantallas-->
             <table id="datatable_users" class="table table-striped" style="width: 100%;">
