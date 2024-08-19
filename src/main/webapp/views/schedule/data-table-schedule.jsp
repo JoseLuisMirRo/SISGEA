@@ -51,6 +51,7 @@
                     <th>Clase</th>
                     <th>Grado</th>
                     <th>Grupo</th>
+                    <th>Carrera</th>
                     <th>Espacio</th>
                     <th>Dia</th>
                     <th>Hora de inicio</th>

@@ -8,9 +8,9 @@ const dataTableOptions={
     lengthMenu:[5,10,25],
     scrollX: true,
     columnDefs: [
-        {className: "text-center",targets:[0,1,2,3,4,5,6,7]},
-        {orderable: false,targets:[7]},
-        {searchable:false,targets:[7]},
+        {className: "text-center",targets:[0,1,2,3,4,5,6,7,8]},
+        {orderable: false,targets:[8]},
+        {searchable:false,targets:[8]},
         {width:"",targets:[]}
     ],
     pageLength:10,
@@ -54,6 +54,7 @@ const listSchedules=async()=>{
                 <td>${sch.classe.name}</td>
                 <td>${sch.classe.grade.number}</td>
                 <td>${sch.group.name}</td>
+                <td>${sch.classe.program.name}</td>
                 <td>${sch.room.roomType.abbreviation}${sch.room.number} - ${sch.room.building.name}</td>
                 <td>${sch.day.name}</td>
                 <td>${startTime}</td>
