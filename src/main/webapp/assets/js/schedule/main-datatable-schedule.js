@@ -8,9 +8,9 @@ const dataTableOptions={
     lengthMenu:[5,10,25],
     scrollX: true,
     columnDefs: [
-        {className: "text-center",targets:[0,1,2,3,4,5]},
-        {orderable: false,targets:[5]},
-        {searchable:false,targets:[5]},
+        {className: "text-center",targets:[0,1,2,3,4,5,6,7,8]},
+        {orderable: false,targets:[8]},
+        {searchable:false,targets:[8]},
         {width:"",targets:[]}
     ],
     pageLength:10,
@@ -52,6 +52,9 @@ const listSchedules=async()=>{
             content+=`
             <tr>
                 <td>${sch.classe.name}</td>
+                <td>${sch.classe.grade.number}</td>
+                <td>${sch.group.name}</td>
+                <td>${sch.classe.program.name}</td>
                 <td>${sch.room.roomType.abbreviation}${sch.room.number} - ${sch.room.building.name}</td>
                 <td>${sch.day.name}</td>
                 <td>${startTime}</td>
@@ -60,6 +63,7 @@ const listSchedules=async()=>{
                     <button class="btn btn-primary btn-sm edit-btn" 
                     data-id="${sch.id}"
                     data-classid="${sch.classe.id}"
+                    data-groupid="${sch.group.id}"
                     data-quarterid="${sch.quarter.id}" //CUIDADO: NO USAR MAYUSCULAS EN DATA
                     data-roomid="${sch.room.id}"
                     data-day="${sch.day.id}"
@@ -99,6 +103,7 @@ $(document).ready(function(){
         const id = $(this).data('id');
         const classId = $(this).data('classid');
         const quarterId = $(this).data('quarterid');
+        const groupId = $(this).data('groupid');
         const roomId = $(this).data('roomid');
         const day = $(this).data('day');
         const startime = $(this).data('startime');
@@ -107,6 +112,7 @@ $(document).ready(function(){
         $('#scheduleUpdateModal').attr('data-id', id);
         $('#scheduleUpdateModal').attr('data-classid', classId);
         $('#scheduleUpdateModal').attr('data-quarterid', quarterId);
+        $('#scheduleUpdateModal').attr('data-groupid', groupId);
         $('#scheduleUpdateModal').attr('data-roomid', roomId);
         $('#scheduleUpdateModal').attr('data-day', day);
         $('#scheduleUpdateModal').attr('data-startime', startime);

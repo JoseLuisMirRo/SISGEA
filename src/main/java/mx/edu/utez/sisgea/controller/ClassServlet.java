@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import mx.edu.utez.sisgea.dao.ClassDao;
+import mx.edu.utez.sisgea.dao.GradeDao;
 import mx.edu.utez.sisgea.dao.ProgramDao;
 import mx.edu.utez.sisgea.model.ClassBean;
 import mx.edu.utez.sisgea.model.LoginBean;
@@ -25,6 +26,7 @@ public class ClassServlet extends HttpServlet {
         ClassBean classBean = new ClassBean();
         ClassDao classDao = new ClassDao();
         ProgramDao programDao = new ProgramDao();
+        GradeDao gradeDao = new GradeDao();
 
         String action = req.getParameter("action");
         HttpSession activeSession = req.getSession();
@@ -34,6 +36,7 @@ public class ClassServlet extends HttpServlet {
                 try{
                     classBean.setName(req.getParameter("name"));
                     classBean.setProgram(programDao.getProgram(Integer.parseInt(req.getParameter("programId"))));
+                    classBean.setGrade(gradeDao.getGradeById(Integer.parseInt(req.getParameter("gradeId"))));
                     classBean.setStatus(true);
                     classDao.insertClass(classBean);
                     activeSession.setAttribute("status", "registerOk");
@@ -55,6 +58,7 @@ public class ClassServlet extends HttpServlet {
                         classBean.setId(Integer.parseInt(req.getParameter("updateClasseId")));
                         classBean.setName(req.getParameter("updateName"));
                         classBean.setProgram(programDao.getProgram(Integer.parseInt(req.getParameter("updateProgramId"))));
+                        classBean.setGrade(gradeDao.getGradeById(Integer.parseInt(req.getParameter("updateGradeId"))));
                         classDao.updateClass(classBean);
                         activeSession.setAttribute("status", "updateOk");
                         resp.sendRedirect(req.getContextPath() + "/classServlet");

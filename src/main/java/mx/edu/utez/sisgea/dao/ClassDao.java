@@ -1,6 +1,7 @@
 package mx.edu.utez.sisgea.dao;
 
 import mx.edu.utez.sisgea.model.ClassBean;
+import mx.edu.utez.sisgea.model.GradeBean;
 import mx.edu.utez.sisgea.utility.DataBaseConnection;
 
 import java.sql.*;
@@ -16,10 +17,11 @@ public class ClassDao extends DataBaseConnection {
     public void insertClass(ClassBean classe) throws SQLException {
         try{
             con = createConnection();
-            cs = con.prepareCall("{CALL insert_class(?,?,?)}");
+            cs = con.prepareCall("{CALL insert_class(?,?,?,?)}");
             cs.setString(1, classe.getName());
             cs.setInt(2, classe.getProgram().getId());
-            cs.setBoolean(3,true);
+            cs.setInt(3, classe.getGrade().getId());
+            cs.setBoolean(4,true);
             cs.execute();
         }catch(SQLException e){
             e.printStackTrace();
@@ -31,6 +33,7 @@ public class ClassDao extends DataBaseConnection {
 
     public ClassBean getClass(int id) throws SQLException {
         ProgramDao programDao = new ProgramDao();
+        GradeDao gradeDao = new GradeDao();
         ClassBean classe = null;
         try{
             con = createConnection();
@@ -42,8 +45,9 @@ public class ClassDao extends DataBaseConnection {
                 int idE=rs.getInt("id");
                 String name=rs.getString("name");
                 int programId=rs.getInt("program_id");
+                int gradeId=rs.getInt("grade_id");
                 boolean status = rs.getBoolean("status");
-                classe = new ClassBean(id, name, programDao.getProgram(programId), status);
+                classe = new ClassBean(id, name, programDao.getProgram(programId), gradeDao.getGradeById(gradeId), status);
             }
         }catch(SQLException e){
             e.printStackTrace();
@@ -56,6 +60,7 @@ public class ClassDao extends DataBaseConnection {
 
     public List<ClassBean> getAllClasses() {
         ProgramDao programDao = new ProgramDao();
+        GradeDao gradeDao = new GradeDao();
         try{
             List<ClassBean> classesList = new ArrayList<ClassBean>();
             con = createConnection();
@@ -65,8 +70,9 @@ public class ClassDao extends DataBaseConnection {
                 int id=rs.getInt("id");
                 String name=rs.getString("name");
                 int programId=rs.getInt("program_id");
+                int gradeId=rs.getInt("grade_id");
                 boolean status = rs.getBoolean("status");
-                classesList.add(new ClassBean(id,name,programDao.getProgram(programId),status));
+                classesList.add(new ClassBean(id,name,programDao.getProgram(programId),gradeDao.getGradeById(gradeId),status));
             }
             return classesList;
         }catch (SQLException e){
@@ -80,10 +86,11 @@ public class ClassDao extends DataBaseConnection {
     public void updateClass(ClassBean classe) throws SQLException {
         try{
             con = createConnection();
-            cs = con.prepareCall("{CALL update_class(?,?,?)}");
+            cs = con.prepareCall("{CALL update_class(?,?,?,?)}");
             cs.setString(1, classe.getName());
             cs.setInt(2, classe.getProgram().getId());
-            cs.setInt(3, classe.getId());
+            cs.setInt(3, classe.getGrade().getId());
+            cs.setInt(4, classe.getId());
             cs.execute();
         }catch(SQLException e){
             e.printStackTrace();

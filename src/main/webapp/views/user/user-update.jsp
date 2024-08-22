@@ -57,7 +57,7 @@
                             <label class="btn btn-outline-primary" for="btnUpdate2">Docente</label>
 
                             <input type="checkbox" class="btn-check" id="btnUpdate3" value="3" autocomplete="off" name="updateRoles[]">
-                            <label class="btn btn-outline-primary" for="btnUpdate3">Estudiante</label>
+                            <label class="btn btn-outline-primary" for="btnUpdate3">Alumno</label>
                         </div>
                     </div>
                     <input type="text" name="action" value="update" hidden/> <!--VALOR PARA INDICAR AL SERVLET QUE ES UN ACCION DE UPDATE-->

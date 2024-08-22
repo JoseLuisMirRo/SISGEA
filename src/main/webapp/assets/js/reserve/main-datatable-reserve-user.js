@@ -21,6 +21,12 @@ const dataTableOptions={
 };
 
 const initDataTable=async(showMode)=>{
+    const loadingAnimation = document.getElementById('loading-animation');
+    const reserveTable = document.getElementById('reserve-table');
+
+    loadingAnimation.style.display = 'block';
+    reserveTable.style.display = 'none';
+
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
@@ -31,6 +37,8 @@ const initDataTable=async(showMode)=>{
     dataTable=$('#datatable_reserves').DataTable(dataTableOptions);
 
     dataTableInitiated=true;
+    loadingAnimation.style.display = 'none';
+    reserveTable.style.display = 'block';
 };
 
 const listReserves=async(filterStatus)=>{
@@ -96,7 +104,9 @@ const listReserves=async(filterStatus)=>{
         });
         tableBody_reserves.innerHTML=content;
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl, {
+            offset: [0, -80] // Ajusta el desplazamiento vertical
+        }));
 
     }catch(ex){
         alert(ex);

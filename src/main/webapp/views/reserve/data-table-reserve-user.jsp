@@ -17,6 +17,15 @@
     <link href="${pageContext.request.contextPath}/assets/css/datatables-2-1-3/datatables.min.css" rel="stylesheet">
     <!--Bootstrap ICONS-->
     <link href="${pageContext.request.contextPath}/assets/css/bootstrap-5-3-3/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        @media (max-width: 768px) {
+            .btn-responsive {
+                width: 50%;
+                max-width: 50%;
+                margin-bottom: 10px; /* Espacio entre botones cuando están apilados */
+            }
+        }
+    </style>
 
 </head>
 <body>
@@ -30,12 +39,16 @@
 </script>
 
 <div class="main-container-table"> <!--Contenedor de una tabla con margen de 6 unidades-->
+    <div id="loading-animation" style="display: none; text-align: center;">
+        <img src="${pageContext.request.contextPath}/assets/img/preloader.gif" alt="Cargando..." />
+    </div>
+    <div id="reserve-table">
     <div>
         <h2 style="color: black">Mis reservas</h2>
     </div>
-    <div class="text-end">
-        <button id="historyBtn" class="btn btn-primary">Ver historial completo</button>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reserveRegisterModal" id="reserveRegisterButton">
+    <div class="d-flex flex-column flex-md-row justify-content-md-end align-items-center gap-2 mb-4">
+        <button id="historyBtn" class="btn btn-primary responsive">Ver historial completo</button>
+        <button type="button" class="btn btn-primary responsive" data-bs-toggle="modal" data-bs-target="#reserveRegisterModal" id="reserveRegisterButton">
             <i class="bi bi-plus-lg"></i> Agregar reserva </button>
     </div>
     <div class="row"> <!--Fila de la tabla-->
@@ -55,6 +68,7 @@
                 <tbody id="tableBody_reserves"></tbody> <!--Cuerpo de la tabla-->
             </table>
         </div>
+    </div>
     </div>
 </div>
 <!--Bootstrap SCRIPT-->

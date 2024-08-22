@@ -31,10 +31,10 @@
                     aria-labelledby="offcanvasNavbarLabel"
             >
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">SISGEA</h5>
+                    <img class="offcanvas-title" src="${pageContext.request.contextPath}/assets/img/LogoSisgea.png" alt="logoSisgea" width=auto height="70">
                     <button
                             type="button"
-                            class="btn-close"
+                            class="btn-close btn-close-white"
                             data-bs-dismiss="offcanvas"
                             aria-label="Close"
                     ></button>
@@ -71,9 +71,9 @@
                 </div>
             </div>
             <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle"></i>
-                </button>
+                <a class="nav-link dropdown-toggle" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="bi bi-person-circle" style="font-size: 2rem";></i>
+                </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style="width: 250px;">
                     <li><a class="dropdown-item-text text-end"><%=user.getFirstName()%> <%=user.getLastNameP()%> <%=user.getLastNameM()%></a></li>
                     <li><a class="dropdown-item-text text-end"><%=user.getRole().getName()%></a></li>
@@ -92,7 +92,7 @@
                     data-bs-target="#offcanvasNavbar"
                     aria-controls="offcanvasNavbar"
                     aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <i class="bi bi-list" style="color:#e6e6ff; font-size: 2rem;"></i>
             </button>
         </div>
     </nav>
@@ -114,9 +114,11 @@
         });
     }
     document.addEventListener('DOMContentLoaded', function() {
-        const currentPath = window.location.pathname;
+        let currentPath = window.location.pathname;
         const navLinks = document.querySelectorAll('.nav-link');
-        console.log(currentPath);
+        if(currentPath === "${pageContext.request.contextPath}/classServlet"){
+            currentPath = "${pageContext.request.contextPath}/scheduleServlet";
+        }
 
         navLinks.forEach(link => {
             if (link.getAttribute('href') === currentPath) {

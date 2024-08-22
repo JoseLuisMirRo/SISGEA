@@ -20,6 +20,12 @@ const dataTableOptions={
     }
 };
 const initDataTable=async(showMode)=>{
+    const loadingAnimation = document.getElementById('loading-animation');
+    const roomTable = document.getElementById('room-table');
+
+    loadingAnimation.style.display = 'block';
+    roomTable.style.display = 'none';
+
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
@@ -30,6 +36,8 @@ const initDataTable=async(showMode)=>{
     dataTable=$('#datatable_rooms').DataTable(dataTableOptions);
 
     dataTableInitiated=true;
+    loadingAnimation.style.display = 'none';
+    roomTable.style.display = 'block';
 };
 
 

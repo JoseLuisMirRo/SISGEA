@@ -31,6 +31,14 @@
                         </div>
                     </div>
                     <div class="form-group mb-3 row">
+                        <label for="updateGroup" class="col-4 col-form-label form-label">Grupo:</label>
+                        <div class="col-8">
+                            <select class="form-select" id="updateGroup" name="updateGroupId" required></select>
+                            <span class="valid-feedback">El dato es correcto</span>
+                            <span class="invalid-feedback">Selecciona un grupo</span>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
                     <label for="updateRoom" class="col-4 col-form-label form-label">Espacio:</label>
                         <div class="col-8">
                             <select class="form-select" id="updateRoom" name="updateRoomId" required></select>
@@ -90,12 +98,15 @@
             ]);
 
             const quarters = await response1.json();
-            const classes = (await response2.json()).classes;
+            const classesandgroups = await response2.json();
+            const classes = classesandgroups.classes;
+            const groups = classesandgroups.groups;
             const rooms = await response3.json();
 
             const quartersElement = document.getElementById("updateQuarter");
             const classesElement = document.getElementById("updateClass");
             const roomsElement = document.getElementById("updateRoom");
+            const groupsElement = document.getElementById("updateGroup");
 
             while(quartersElement.firstChild){
                 quartersElement.removeChild(quartersElement.firstChild);
@@ -106,8 +117,16 @@
             while(roomsElement.firstChild){
                 roomsElement.removeChild(roomsElement.firstChild);
             }
+            while(groupsElement.firstChild){
+                groupsElement.removeChild(groupsElement.firstChild);
+            }
 
             quarters
+                .sort((a, b) => {
+                    if (a.name > b.name) return 1;
+                    if (a.name < b.name) return -1;
+                    return 0;
+                })
                 .forEach((quarter) => {
                 const option = document.createElement("option");
                 option.value = quarter.id;
@@ -126,6 +145,15 @@
 
             rooms
                 .filter((room) => room.status === true)
+                .sort((a, b) => {
+                    if (a.roomType.name > b.roomType.name) return 1;
+                    if (a.roomType.name < b.roomType.name) return -1;
+                    if (a.number > b.number) return 1;
+                    if (a.number < b.number) return -1;
+                    if (a.building.name > b.building.name) return 1;
+                    if (a.building.name < b.building.name) return -1;
+                    return 0;
+                })
                 .forEach((room) => {
                 const option = document.createElement("option");
                 option.value = room.id;
@@ -133,9 +161,18 @@
                 roomsElement.appendChild(option);
             });
 
+            groups
+                .forEach((group) => {
+                const option = document.createElement("option");
+                option.value = group.id;
+                option.textContent = group.name;
+                groupsElement.appendChild(option);
+            });
+
             const id = updateScheduleModal.getAttribute('data-id');
             const classId = updateScheduleModal.getAttribute('data-classId');
             const quarterId = updateScheduleModal.getAttribute('data-quarterId');
+            const groupId = updateScheduleModal.getAttribute('data-groupId');
             const roomId = updateScheduleModal.getAttribute('data-roomid')
             const dayId = updateScheduleModal.getAttribute('data-day');
             const starttime = updateScheduleModal.getAttribute('data-startime');
@@ -147,6 +184,7 @@
             document.getElementById('updateScheduleId').value = id;
             classesElement.value = classId;
             quartersElement.value = quarterId;
+            groupsElement.value = groupId;
             roomsElement.value = roomId;
             document.getElementById('updateDay').value = dayId;
             document.getElementById('updateStarttime').value = starttime24;
@@ -178,7 +216,7 @@
         const wfinalStartTime = "15:00:00";
         const wfinalEndTime = "16:00:00";
 
-        if (updateQuarter.value && updateClass.value && updateRoom.value && updateDay.value && updateStarttime.value && updateEndtime.value) {
+        if (updateQuarter.value && updateClass.value && updateRoom.value && updateDay.value && updateStarttime.value && updateEndtime.value && updateGroup.value) {
             if (updateDay.value !== 6) {
                 if (updateStarttime.value >= initialStartTime && updateStarttime.value <= finalStartTime) {
                     if (updateEndtime.value >= initialEndTime && updateEndtime.value <= finalEndTime) {
@@ -247,7 +285,7 @@
         let [hour, minute, second] = time.split(':'); //DIVIDIMOS HORAS, MINUTOS Y SEGUNDOS
         hour = parseInt(hour,10);
 
-        if(period === 'p. m.'){
+        if(period === 'p. m.' && hour !== 12){
             hour +=12;
         }
         else if (period === 'a. m.' && hour === 12){

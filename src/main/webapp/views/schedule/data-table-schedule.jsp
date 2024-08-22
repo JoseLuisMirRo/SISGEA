@@ -17,6 +17,16 @@
     <!--Bootstrap ICONS-->
     <link href="${pageContext.request.contextPath}/assets/css/bootstrap-5-3-3/bootstrap-icons.min.css" rel="stylesheet">
 
+    <style>
+        @media (max-width: 768px) {
+            .btn-responsive {
+                width: 50%;
+                max-width: 50%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+
 </head>
 <body>
 
@@ -28,9 +38,9 @@
     <div>
         <h2 style="color: black">Gestión de horarios</h2>
     </div>
-    <div class="text-end">
-        <button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/classServlet';">Gestionar clases</button>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#scheduleRegisterModal" id="scheduleRegisterButton">
+    <div class="d-flex flex-column flex-md-row justify-content-md-end align-items-center gap-2 mb-4">
+        <button type="button" class="btn btn-primary btn-responsive" onclick="location.href='${pageContext.request.contextPath}/classServlet';">Gestionar clases</button>
+        <button type="button" class="btn btn-primary btn-responsive" data-bs-toggle="modal" data-bs-target="#scheduleRegisterModal" id="scheduleRegisterButton">
             <i class="bi bi-plus-lg"></i> Agregar horario </button>
     </div>
     <div class="row"> <!--Fila de la tabla-->
@@ -39,6 +49,9 @@
                 <thead> <!--Encabezado de la tabla-->
                 <tr> <!--Fila de la tabla-->
                     <th>Clase</th>
+                    <th>Grado</th>
+                    <th>Grupo</th>
+                    <th>Carrera</th>
                     <th>Espacio</th>
                     <th>Dia</th>
                     <th>Hora de inicio</th>

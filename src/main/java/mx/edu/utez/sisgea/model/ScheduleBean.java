@@ -10,11 +10,22 @@ public class ScheduleBean {
     private Day day;
     private Time startTime;
     private Time endTime;
+    private GroupBean group;
 
     public ScheduleBean() {
     }
 
-    public ScheduleBean(int id, ClassBean classe, QuarterBean quarter, RoomBean room, Day day, Time startTime, Time endTime) {
+    public ScheduleBean(ClassBean classe, QuarterBean quarter, RoomBean room, Day day, Time startTime, Time endTime, GroupBean group) {
+        this.classe = classe;
+        this.quarter = quarter;
+        this.room = room;
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.group = group;
+    }
+
+    public ScheduleBean(int id, ClassBean classe, QuarterBean quarter, RoomBean room, Day day, Time startTime, Time endTime, GroupBean group) {
         this.id = id;
         this.classe = classe;
         this.quarter = quarter;
@@ -22,15 +33,7 @@ public class ScheduleBean {
         this.day = day;
         this.startTime = startTime;
         this.endTime = endTime;
-    }
-
-    public ScheduleBean(ClassBean classe, QuarterBean quarter, RoomBean room, Day day, Time startTime, Time endTime) {
-        this.classe = classe;
-        this.quarter = quarter;
-        this.room = room;
-        this.day = day;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.group = group;
     }
 
     public int getId() {
@@ -87,6 +90,14 @@ public class ScheduleBean {
 
     public void setEndTime(Time endTime) {
         this.endTime = endTime;
+    }
+
+    public GroupBean getGroup() {
+        return group;
+    }
+
+    public void setGroup(GroupBean group) {
+        this.group = group;
     }
 }
 

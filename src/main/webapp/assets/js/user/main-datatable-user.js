@@ -10,8 +10,8 @@ const dataTableOptions={
     scrollX: true,
     columnDefs: [
         {className: "text-center",targets:[2,3,4,5,6]},
-        {orderable: false,targets:[4,5,6]},
-        {searchable:false,targets:[4,5,6]},
+        {orderable: false,targets:[5,6]},
+        {searchable:false,targets:[5,6]},
     ],
     pageLength:10,
     language:{
@@ -19,6 +19,12 @@ const dataTableOptions={
     }
 };
 const initDataTable=async(showMode)=>{
+    const loadingAnimation = document.getElementById('loading-animation');
+    const userTable = document.getElementById('user-table');
+
+    loadingAnimation.style.display = 'block';
+    userTable.style.display = 'none';
+
     if(dataTableInitiated){
         dataTable.destroy();
         destroy=true;
@@ -29,6 +35,8 @@ const initDataTable=async(showMode)=>{
     dataTable=$('#datatable_users').DataTable(dataTableOptions);
 
     dataTableInitiated=true;
+    loadingAnimation.style.display = 'none';
+    userTable.style.display = 'block';
 };
 
 

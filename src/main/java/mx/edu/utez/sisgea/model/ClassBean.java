@@ -4,21 +4,24 @@ public class ClassBean {
     private int id;
     private String name;
     private ProgramBean program;
+    private GradeBean grade;
     private boolean status;
 
     public ClassBean() {
     }
 
-    public ClassBean(int id, String name, ProgramBean program, boolean status) {
+    public ClassBean(int id, String name, ProgramBean program, GradeBean grade, boolean status) {
         this.id = id;
         this.name = name;
         this.program = program;
+        this.grade = grade;
         this.status = status;
     }
 
-    public ClassBean(String name, ProgramBean program, boolean status) {
+    public ClassBean(String name, ProgramBean program, GradeBean grade, boolean status) {
         this.name = name;
         this.program = program;
+        this.grade = grade;
         this.status = status;
     }
 
@@ -52,5 +55,13 @@ public class ClassBean {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public GradeBean getGrade() {
+        return grade;
+    }
+
+    public void setGrade(GradeBean grade) {
+        this.grade = grade;
     }
 }

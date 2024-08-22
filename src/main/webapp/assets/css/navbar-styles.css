@@ -37,6 +37,10 @@ header .navbar-toggler{
     border: none;
     font-size: 1.25rem;
 }
+header .navbar-toggler-icon {
+    color: white;
+    border-radius: 4px;
+}
 
 header .navbar-toggler:focus, .btn-close:focus{
     box-shadow: none;
@@ -77,6 +81,11 @@ header .navbar-nav .nav-link.active {
         visibility: visible;
         color: #009970;
     }
+}
+header .offcanvas{
+    background-color: #002e60;
+    border-radius: 16px 0 0 16px;
+    padding: 0.5rem;
 }
 
 body{
